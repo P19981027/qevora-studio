@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="common.site_title">我的订单 — Qevora Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order.css">
+    <style>
+        .lang-switch { position:fixed; top:12px; right:20px; z-index:9999; }
+        .lang-switch select { padding:4px 8px; border:1px solid var(--pale); background:var(--near-white); font-family:var(--body-serif); font-size:12px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="images/logo.png" alt="Logo" class="logo-img">
+                    <span data-i18n="common.site_title">Qevora Studio</span>
+                </a>
+            </div>
+            <div class="nav-icons"></div>
+        </div>
+    </nav>
+
+    <div class="orders-page">
+        <div class="page-header">
+            <h1 data-i18n="orders.title">我的订单</h1>
+            <p data-i18n="orders.subtitle">MY ORDERS</p>
+        </div>
+        <div class="orders-container" id="ordersContent"></div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/order.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        let currentView = 'list';
+        let currentOrderId = null;
+        let currentPage = 1;
+
+        async function loadOrders() {
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get('order');
+            const guestToken = orderId ? localStorage.getItem('qv_order_' + orderId) : '';
+
+            if (orderId && (Auth.isLoggedIn() || guestToken)) {
+                currentView = 'detail';
+                currentOrderId = orderId;
+                await renderOrderDetail(orderId);
+                return;
+            }
+
+            if (!Auth.requireAuth()) return;
+            await renderOrderList();
+        }
+
+        async function renderOrderList(page = 1) {
+            currentPage = page;
+            const res = await Order.getList(page);
+            if (!res.success) {
+                document.getElementById('ordersContent').innerHTML = '<p style="text-align:center;color:var(--silver);padding:40px;" data-i18n="orders.load_fail">加载失败</p>';
+                return;
+            }
+            const orders = res.orders || [];
+            if (!orders.length) {
+                document.getElementById('ordersContent').innerHTML = `
+                    <div class="orders-empty">
+                        <p data-i18n="orders.empty">暂无订单</p>
+                        <a href="/" data-i18n="orders.browse">浏览商品</a>
+                    </div>`;
+                return;
+            }
+
+            const html = orders.map(o => `
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div>
+                            <div class="order-no">${o.orderNo}</div>
+                            <div class="order-date">${formatDate(o.createdAt)}</div>
+                        </div>
+                        <span class="order-status ${Order.getStatusClass(o.status)}">${Order.getStatusLabel(o.status)}</span>
+                    </div>
+                    <div class="order-items">
+                        ${(o.items || []).map(item => `
+                            <div class="order-item">
+                                <img src="${item.image}" alt="" class="order-item-img">
+                                <span class="order-item-name">${item.name} × ${item.quantity || 1}</span>
+                                <span class="order-item-price">${item.price}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">${o.totalAmount}</div>
+                        <div class="order-actions">
+                            <button class="order-btn" onclick="viewOrder('${o.id}')" data-i18n="orders.view">查看详情</button>
+                            ${o.status === 'pending' ? `<button class="order-btn order-btn-danger" onclick="cancelOrder('${o.id}')" data-i18n="orders.cancel">取消订单</button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const pagination = res.page < res.totalPages ? `<div style="text-align:center;padding:20px"><button class="order-btn" onclick="renderOrderList(${page + 1})" data-i18n="orders.load_more">加载更多</button></div>` : '';
+
+            document.getElementById('ordersContent').innerHTML = html + pagination;
+            I18n._applyDOM();
+        }
+
+        async function renderOrderDetail(id) {
+            const res = await Order.getDetail(id);
+            if (!res.success) {
+                document.getElementById('ordersContent').innerHTML = '<p style="text-align:center;color:var(--silver);padding:40px;" data-i18n="orders.not_found">订单不存在</p>';
+                I18n._applyDOM();
+                return;
+            }
+            const o = res.order;
+
+            document.getElementById('ordersContent').innerHTML = `
+                <a class="order-back" onclick="backToList()" data-i18n="orders.back_to_list">← 返回订单列表</a>
+                <div class="order-detail-card">
+                    <h3 data-i18n="orders.order_info">订单信息</h3>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.order_no">订单号</span><span class="value">${o.orderNo}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.date">下单时间</span><span class="value">${formatDate(o.createdAt)}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.status">状态</span><span class="value"><span class="order-status ${Order.getStatusClass(o.status)}">${Order.getStatusLabel(o.status)}</span></span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.amount">金额</span><span class="value" style="color:var(--gold-dark);font-family:var(--serif);font-size:18px;">${o.totalAmount}</span></div>
+                    ${o.trackingNo ? `<div class="order-detail-row"><span class="label" data-i18n="orders.tracking_no">快递单号</span><span class="value">${o.trackingNo}</span></div>` : ''}
+                    ${o.remark ? `<div class="order-detail-row"><span class="label" data-i18n="orders.remark_label">备注</span><span class="value">${o.remark}</span></div>` : ''}
+                </div>
+
+                <div class="order-detail-card" style="margin-top:16px">
+                    <h3 data-i18n="orders.shipping_addr">收货地址</h3>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.recipient">收件人</span><span class="value">${o.address?.name || ''}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.phone_label">电话</span><span class="value">${o.address?.phone || ''}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.address">地址</span><span class="value">${[o.address?.line1, o.address?.line2, o.address?.city, o.address?.state, o.address?.zip, o.address?.country].filter(Boolean).join(' ')}</span></div>
+                </div>
+
+                <div class="order-detail-card" style="margin-top:16px">
+                    <h3 data-i18n="orders.items">商品清单</h3>
+                    ${(o.items || []).map(item => `
+                        <div class="order-item" style="padding:10px 0;border-bottom:1px solid var(--off-white)">
+                            <img src="${item.image}" alt="" class="order-item-img">
+                            <span class="order-item-name">${item.name} × ${item.quantity || 1}</span>
+                            <span class="order-item-price">${item.price}</span>
+                        </div>
+                    `).join('')}
+                </div>
+
+                ${o.status === 'pending' ? `
+                    <div style="margin-top:20px;text-align:center">
+                        <button class="order-btn order-btn-danger" onclick="cancelOrder('${o.id}')" style="padding:10px 30px" data-i18n="orders.cancel">取消订单</button>
+                    </div>
+                ` : ''}
+            `;
+            I18n._applyDOM();
+        }
+
+        async function viewOrder(id) {
+            currentView = 'detail';
+            currentOrderId = id;
+            window.history.pushState({}, '', '/orders.html?order=' + id);
+            await renderOrderDetail(id);
+        }
+
+        async function cancelOrder(id) {
+            if (!confirm(I18n.t('orders.confirm_cancel'))) return;
+            const res = await Order.cancel(id);
+            if (res.success) {
+                if (currentView === 'detail') {
+                    await renderOrderDetail(id);
+                } else {
+                    await renderOrderList(currentPage);
+                }
+            } else {
+                alert(res.message || I18n.t('orders.cancel_fail'));
+            }
+        }
+
+        function backToList() {
+            if (!Auth.isLoggedIn()) {
+                window.location.href = '/index.html';
+                return;
+            }
+            currentView = 'list';
+            window.history.pushState({}, '', '/orders.html');
+            renderOrderList();
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.getFullYear() + '-' +
+                String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                String(d.getDate()).padStart(2, '0') + ' ' +
+                String(d.getHours()).padStart(2, '0') + ':' +
+                String(d.getMinutes()).padStart(2, '0');
+        }
+
+        window.addEventListener('popstate', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('order')) {
+                renderOrderDetail(params.get('order'));
+            } else {
+                renderOrderList();
+            }
+        });
+
+        const _origSetLang = I18n.setLang;
+        I18n.setLang = function(lang) {
+            _origSetLang.call(I18n, lang);
+            if (currentView === 'detail' && currentOrderId) {
+                renderOrderDetail(currentOrderId);
+            } else {
+                renderOrderList(currentPage);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+            loadOrders();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+{
+  "orders": [
+    {
+      "id": "o_1781242672720_844dr7hmg",
+      "orderNo": "QV2026061205375283",
+      "memberId": null,
+      "memberEmail": "",
+      "guestAccessToken": "7a71261b5618b1dc1cd3c5b5c197fb6c21b7294b332b5354",
+      "items": [
+        {
+          "productId": "ev1",
+          "brandSlug": "evening",
+          "name": "银月晚宴包",
+          "price": "¥860",
+          "unitPrice": 860,
+          "image": "https://placehold.co/600x800/C9C5BD/1E1E1E?text=Qevora+Evening",
+          "quantity": 1,
+          "specs": {
+            "color": "银灰色",
+            "size": "18x11x5cm"
+          }
+        }
+      ],
+      "totalAmount": "¥860",
+      "totalAmountNumber": 860,
+      "address": {
+        "name": "朴容辉",
+        "phone": "19703163330",
+        "country": "中国",
+        "countryCode": "CN",
+        "line1": "三河市林荫大道23号楼2单元B102",
+        "line2": "",
+        "city": "廊坊",
+        "state": "河北",
+        "zip": "000000"
+      },
+      "status": "pending",
+      "paymentStatus": "unpaid",
+      "paymentMethod": "",
+      "paymentTxid": "",
+      "paymentSubmittedAt": "",
+      "remark": "",
+      "trackingNo": "",
+      "trackingCompany": "",
+      "createdAt": "2026-06-12T05:37:52.720Z",
+      "updatedAt": "2026-06-12T05:37:52.720Z"
+    },
+    {
+      "id": "o_1781447768957_d5tbcwb9u",
+      "orderNo": "QV2026061414360830",
+      "memberId": "m_1781367005271_gl6iqdeag",
+      "memberEmail": "admin@qevora.com",
+      "guestAccessToken": "",
+      "items": [
+        {
+          "productId": "at1",
+          "brandSlug": "atelier",
+          "name": "月影手提包",
+          "price": "¥1,280",
+          "unitPrice": 1280,
+          "image": "https://placehold.co/600x800/222222/F5F1EA?text=Qevora+Moonshade",
+          "quantity": 2,
+          "specs": {
+            "color": "黑色",
+            "size": "26x18x10cm"
+          }
+        },
+        {
+          "productId": "cu1",
+          "brandSlug": "custom",
+          "name": "手工包定制咨询",
+          "price": "¥300起",
+          "unitPrice": 300,
+          "image": "https://placehold.co/600x800/111111/F5F1EA?text=Qevora+Custom",
+          "quantity": 1,
+          "specs": {
+            "color": "可选",
+            "size": "可定制"
+          }
+        },
+        {
+          "productId": "di1",
+          "brandSlug": "dior",
+          "name": "花漾托特包",
+          "price": "¥2,680",
+          "unitPrice": 2680,
+          "image": "https://placehold.co/600x800/1A1A2E/F5F1EA?text=Dior+Tote",
+          "quantity": 1,
+          "specs": {
+            "color": "午夜蓝",
+            "size": "34x26x14cm"
+          }
+        }
+      ],
+      "totalAmount": "¥5,540",
+      "totalAmountNumber": 5540,
+      "address": {
+        "name": "朴容辉",
+        "phone": "19703163330",
+        "country": "中国",
+        "countryCode": "CN",
+        "line1": "三河市林荫大道23号楼2单元B102",
+        "line2": "",
+        "city": "廊坊",
+        "state": "河北",
+        "zip": "000000"
+      },
+      "status": "pending",
+      "paymentStatus": "unpaid",
+      "paymentMethod": "",
+      "paymentTxid": "",
+      "paymentSubmittedAt": "",
+      "remark": "",
+      "trackingNo": "",
+      "trackingCompany": "",
+      "createdAt": "2026-06-14T14:36:08.957Z",
+      "updatedAt": "2026-06-14T14:36:08.957Z"
+    },
+    {
+      "id": "o_1781448330695_sqnudpmmo",
+      "orderNo": "QV2026061414453015",
+      "memberId": "m_1781367005271_gl6iqdeag",
+      "memberEmail": "admin@qevora.com",
+      "guestAccessToken": "",
+      "items": [
+        {
+          "productId": "cu1",
+          "brandSlug": "custom",
+          "name": "手工包定制咨询",
+          "price": "¥300起",
+          "unitPrice": 300,
+          "image": "https://placehold.co/600x800/111111/F5F1EA?text=Qevora+Custom",
+          "quantity": 1,
+          "specs": {
+            "color": "可选",
+            "size": "可定制"
+          }
+        }
+      ],
+      "totalAmount": "¥300",
+      "totalAmountNumber": 300,
+      "address": {
+        "name": "朴容辉",
+        "phone": "19703163330",
+        "country": "中国",
+        "countryCode": "CN",
+        "line1": "三河市林荫大道23号楼2单元B102",
+        "line2": "",
+        "city": "廊坊",
+        "state": "河北",
+        "zip": "000000"
+      },
+      "status": "pending",
+      "paymentStatus": "unpaid",
+      "paymentMethod": "",
+      "paymentTxid": "",
+      "paymentSubmittedAt": "",
+      "remark": "",
+      "trackingNo": "",
+      "trackingCompany": "",
+      "createdAt": "2026-06-14T14:45:30.695Z",
+      "updatedAt": "2026-06-14T14:45:30.695Z"
+    },
+    {
+      "id": "o_1781505024593_qfya222re",
+      "orderNo": "QV2026061506302441",
+      "memberId": "m_1781367005271_gl6iqdeag",
+      "memberEmail": "admin@qevora.com",
+      "guestAccessToken": "",
+      "items": [
+        {
+          "productId": "at2",
+          "brandSlug": "atelier",
+          "name": "暮光腋下包",
+          "price": "¥980",
+          "unitPrice": 980,
+          "image": "https://placehold.co/600x800/3A332C/F5F1EA?text=Qevora+Twilight",
+          "quantity": 1,
+          "specs": {
+            "color": "焦糖棕",
+            "size": "24x14x7cm"
+          }
+        }
+      ],
+      "totalAmount": "¥980",
+      "totalAmountNumber": 980,
+      "address": {
+        "name": "朴容辉",
+        "phone": "19703163330",
+        "country": "中国",
+        "countryCode": "CN",
+        "line1": "三河市林荫大道23号楼2单元B102",
+        "line2": "",
+        "city": "廊坊",
+        "state": "河北",
+        "zip": "000000"
+      },
+      "status": "pending",
+      "paymentStatus": "unpaid",
+      "paymentMethod": "",
+      "paymentTxid": "",
+      "paymentSubmittedAt": "",
+      "remark": "",
+      "trackingNo": "",
+      "trackingCompany": "",
+      "createdAt": "2026-06-15T06:30:24.593Z",
+      "updatedAt": "2026-06-15T06:30:24.593Z"
+    }
+  ],
+  "nextId": 5
+}

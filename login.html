@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="common.site_title">登录 — Qevora Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        .lang-switch { position:fixed; top:12px; right:20px; z-index:9999; }
+        .lang-switch select { padding:4px 8px; border:1px solid var(--pale); background:var(--near-white); font-family:var(--body-serif); font-size:12px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <img src="images/logo.png" alt="Logo">
+                <h2 data-i18n="common.site_title">Qevora Studio</h2>
+                <p>Welcome Back</p>
+            </div>
+
+            <div class="auth-error" id="loginError"></div>
+
+            <form class="auth-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label data-i18n="login.email">邮箱</label>
+                    <input type="email" id="loginEmail" data-i18n-ph="login.ph_email" placeholder="请输入邮箱地址" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="login.password">密码</label>
+                    <input type="password" id="loginPassword" data-i18n-ph="login.ph_password" placeholder="请输入密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="auth-submit" data-i18n="login.submit">登 录</button>
+            </form>
+
+            <div class="auth-links">
+                <span data-i18n="login.no_account">还没有账号？</span><a href="register.html" data-i18n="login.go_register">立即注册</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        function showError(msg) {
+            const el = document.getElementById('loginError');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            hideError();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError(I18n.t('login.invalid_email'));
+            if (!password) return showError(I18n.t('login.empty_pwd'));
+            const btn = e.target.querySelector('.auth-submit');
+            btn.disabled = true;
+            btn.textContent = I18n.t('login.logging_in');
+            try {
+                const res = await Auth.login(email, password);
+                if (res.success) {
+                    if (typeof Cart !== 'undefined') await Cart.mergeGuestCart();
+                    window.location.href = Utils.resolvePath('/index.html');
+                } else {
+                    showError(res.message || I18n.t('login.failed'));
+                }
+            } catch (err) {
+                showError(I18n.t('login.network_err'));
+            } finally {
+                btn.disabled = false;
+                btn.textContent = I18n.t('login.submit');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+        });
+
+        if (Auth.isLoggedIn()) window.location.href = Utils.resolvePath('/index.html');
+    </script>
+</body>
+</html>

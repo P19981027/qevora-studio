@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Image Fix Verification</title></head>
+<body>
+<h2>Image Fix Verification Results</h2>
+<div id="results"></div>
+<script>
+async function verifyImages() {
+    const resultsDiv = document.getElementById('results');
+    
+    // 获取 products.json
+    const resp = await fetch('/data/products.json');
+    const data = await resp.json();
+    const products = data.atelier?.products || [];
+    
+    let html = '<h3>Atelier Products Image Check:</h3>';
+    html += '<table border="1" style="border-collapse:collapse">';
+    html += '<tr><th>#</th><th>Name</th><th>Image Path</th><th>Status</th></tr>';
+    
+    let successCount = 0;
+    let failCount = 0;
+    
+    // 检查前10个产品（包括前2个占位图和8个香奈儿商品）
+    for (let i = 0; i < Math.min(15, products.length); i++) {
+        const p = products[i];
+        const name = p.name?.en || p.name?.zh || 'Unknown';
+        let imgSrc = p.image;
+        
+        // 测试图片可访问性
+        try {
+            const imgResp = await fetch(imgSrc, { method: 'HEAD' });
+            if (imgResp.ok) {
+                html += <tr style="color:green"><td></td><td></td><td>...</td><td>✓ OK ()</td></tr>;
+                successCount++;
+            } else {
+                html += <tr style="color:red"><td></td><td></td><td>...</td><td>✗ FAIL ()</td></tr>;
+                failCount++;
+            }
+        } catch(e) {
+            html += <tr style="color:red"><td></td><td></td><td>...</td><td>✗ ERROR: </td></tr>;
+            failCount++;
+        }
+    }
+    
+    html += '</table>';
+    html += <p><strong>Summary:</strong>  OK,  Failed</p>;
+    
+    // 检查 brand-template.js 是否包含 /images/ 前缀处理
+    try {
+        const jsResp = await fetch('/js/brand-template.js');
+        const jsText = await jsResp.text();
+        const hasPrefixFix = jsText.includes('/images/') || jsText.includes("imagePrefix");
+        html += <h3>JS Code Check:</h3>;
+        html += <p>brand-template.js contains image prefix fix: <strong></strong></p>;
+        
+        // 显示相关代码片段
+        if (hasPrefixFix) {
+            const lines = jsText.split('\n');
+            const relevantLines = lines.filter(line => 
+                line.includes('image') || line.includes('img.src') || line.includes('/images/')
+            ).slice(0, 10);
+            html += <pre style="background:#f0f0f0;padding:10px"></pre>;
+        }
+    } catch(e) {
+        html += <p>Error checking JS: </p>;
+    }
+    
+    resultsDiv.innerHTML = html;
+}
+
+verifyImages();
+</script>
+</body>
+</html>

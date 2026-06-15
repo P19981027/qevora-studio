@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="payment.title">支付 — Qevora Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <style>
+        .lang-switch { position:fixed; top:12px; right:20px; z-index:9999; }
+        .lang-switch select { padding:4px 8px; border:1px solid var(--pale); background:var(--near-white); font-family:var(--body-serif); font-size:12px; cursor:pointer; }
+        .payment-page { max-width: 560px; margin: 40px auto; padding: 0 16px; }
+        .payment-card { background: #fff; border: 1px solid #e0e0e0; padding: 32px; }
+        .payment-card h2 { font-family: var(--serif); font-size: 20px; letter-spacing: 2px; margin-bottom: 8px; }
+        .payment-card .subtitle { color: #999; font-size: 12px; letter-spacing: 3px; margin-bottom: 28px; }
+
+        .order-info { background: #f9f9f9; padding: 16px; margin-bottom: 24px; }
+        .order-info .row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+        .order-info .row:last-child { margin-bottom: 0; }
+        .order-info .label { color: #888; }
+        .order-info .val { font-family: var(--serif); }
+
+        .amount-box { text-align: center; padding: 24px; border: 2px solid #d4af37; margin-bottom: 24px; }
+        .amount-box .cny { font-size: 14px; color: #888; margin-bottom: 8px; }
+        .amount-box .usdt { font-size: 36px; font-family: var(--serif); color: #d4af37; font-weight: 700; }
+        .amount-box .rate { font-size: 12px; color: #aaa; margin-top: 6px; }
+
+        .address-box { background: #1a1a1a; border-radius: 4px; padding: 20px; margin-bottom: 12px; position: relative; }
+        .address-box .addr-label { color: #888; font-size: 12px; letter-spacing: 2px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .address-box .addr-label .network-tag { background: #d4af37; color: #000; padding: 2px 8px; border-radius: 2px; font-size: 10px; letter-spacing: 1px; font-weight: 600; }
+        .address-box .addr-text { color: #fff; font-size: 13px; word-break: break-all; font-family: monospace; line-height: 1.6; margin-bottom: 12px; }
+        .copy-btn { background: #d4af37; color: #000; border: none; padding: 6px 16px; cursor: pointer; font-size: 12px; letter-spacing: 1px; font-weight: 600; }
+        .copy-btn:hover { background: #c4a030; }
+
+        .warning-box { background: #fff8e1; border: 1px solid #ffe082; padding: 12px 16px; margin-bottom: 24px; font-size: 12px; color: #8d6e00; }
+        .warning-box strong { display: block; margin-bottom: 4px; }
+
+        .txid-input { margin-bottom: 24px; }
+        .txid-input label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; letter-spacing: 1px; }
+        .txid-input input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; font-size: 13px; font-family: monospace; outline: none; box-sizing: border-box; }
+        .txid-input input:focus { border-color: #d4af37; }
+
+        .pay-action button { width: 100%; padding: 14px; background: #d4af37; color: #000; border: none; font-size: 15px; letter-spacing: 2px; font-weight: 700; cursor: pointer; }
+        .pay-action button:hover { background: #c4a030; }
+        .pay-action button:disabled { background: #ccc; cursor: not-allowed; }
+
+        .pay-hint { font-size: 11px; color: #aaa; text-align: center; margin-top: 16px; }
+        .pay-hint a { color: #d4af37; text-decoration: none; }
+
+        .error-msg { background: #ffebee; color: #c62828; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; display: none; }
+        .error-msg.show { display: block; }
+        .success-msg { background: #e8f5e9; color: #2e7d32; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; display: none; }
+        .success-msg.show { display: block; }
+
+        .step-list { margin-bottom: 24px; }
+        .step-list .step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+        .step-list .step-num { background: #d4af37; color: #000; width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+        .step-list .step-text { line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Logo" class="logo-img">
+                    <span data-i18n="common.site_title">Qevora Studio</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="payment-page">
+        <div class="payment-card">
+            <h2 data-i18n="payment.title">USDT 支付</h2>
+            <p class="subtitle" data-i18n="payment.subtitle_text">CRYPTOCURRENCY PAYMENT</p>
+
+            <div class="error-msg" id="payError"></div>
+            <div class="success-msg" id="paySuccess"></div>
+
+            <div class="order-info">
+                <div class="row"><span class="label" data-i18n="payment.order_no">订单号</span><span class="val" id="orderNo">-</span></div>
+                <div class="row"><span class="label" data-i18n="payment.amount">金额</span><span class="val" id="cnyAmount">-</span></div>
+            </div>
+
+            <div class="amount-box">
+                <div class="cny" data-i18n="payment.rmb_amount">应付金额（人民币）</div>
+                <div class="usdt" id="usdtAmount">-</div>
+                <div class="rate" id="usdtRate" data-i18n="payment.rate_label">USDT (TRC20)</div>
+            </div>
+
+            <div class="step-list">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-text" data-i18n="payment.wallet_step1">打开您的钱包（Binance / OKX / Trust Wallet 等）</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-text" data-i18n="payment.wallet_step2">复制下方 USDT 地址，向该地址转账 <strong>精确金额</strong></div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-text" data-i18n="payment.wallet_step3">转账完成后，粘贴交易哈希（TxID）并提交确认</div>
+                </div>
+            </div>
+
+            <div class="address-box">
+                <div class="addr-label">
+                    <span data-i18n="payment.usdt_addr">USDT 收款地址</span>
+                    <span class="network-tag">TRC20</span>
+                </div>
+                <div class="addr-text" id="usdtAddress">-</div>
+                <button class="copy-btn" onclick="copyAddress()" data-i18n="payment.copy_addr">复制地址</button>
+            </div>
+
+            <div class="warning-box">
+                <strong data-i18n="payment.warning">请务必注意</strong>
+                <span data-i18n="payment.warning_text">必须使用 TRC20 网络转账，其他网络（ERC20 / BEP20）将无法到账。转账金额请与上方显示完全一致。</span>
+            </div>
+
+            <div class="txid-input">
+                <label data-i18n="payment.txid">交易哈希 (TxID)</label>
+                <input type="text" id="txidInput" data-i18n-ph="payment.ph_txid" placeholder="转账完成后粘贴交易哈希" maxlength="128">
+            </div>
+
+            <div class="pay-action">
+                <button id="confirmPayBtn" onclick="confirmPayment()" data-i18n="payment.submit">我已支付，提交验证</button>
+            </div>
+
+            <div class="pay-hint">
+                <span data-i18n="payment.help">支付遇到问题？</span><a id="viewOrderLink" href="orders.html" data-i18n="payment.view_order">查看订单</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('order');
+
+        if (!orderId) {
+            document.getElementById('payError').classList.add('show');
+            document.getElementById('payError').textContent = I18n.t('payment.missing_order');
+        }
+
+        let paymentInfo = null;
+
+        async function loadPayment() {
+            try {
+                const orderToken = localStorage.getItem('qv_order_' + orderId) || '';
+                const headers = orderToken ? { 'X-Order-Token': orderToken } : {};
+                const authToken = localStorage.getItem('lb_token');
+                if (authToken) headers.Authorization = 'Bearer ' + authToken;
+                const res = await fetch('/api/payment/info/' + orderId, { headers });
+                const data = await res.json();
+                if (!data.success) {
+                    showError(data.message || I18n.t('payment.load_fail'));
+                    return;
+                }
+                paymentInfo = data;
+                document.getElementById('orderNo').textContent = data.order.orderNo;
+                document.getElementById('cnyAmount').textContent = data.order.totalAmount;
+                document.getElementById('usdtAmount').textContent = data.payment.usdtAmount + ' USDT';
+                document.getElementById('usdtAddress').textContent = data.payment.address || '-';
+                const network = data.payment.network || 'TRC20';
+                const networkTag = document.querySelector('.network-tag');
+                if (networkTag) networkTag.textContent = network;
+                document.getElementById('usdtRate').textContent = '1 USDT ' + I18n.t('payment.rate_approx') + ' ' + data.payment.rate + ' CNY | ' + network;
+            } catch (err) {
+                showError(I18n.t('payment.network_retry'));
+            }
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('payError');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
+        function hideError() {
+            document.getElementById('payError').classList.remove('show');
+        }
+
+        function copyAddress() {
+            const addr = document.getElementById('usdtAddress').textContent;
+            navigator.clipboard.writeText(addr).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = I18n.t('payment.copied');
+                setTimeout(() => btn.textContent = I18n.t('payment.copy_addr'), 2000);
+            });
+        }
+
+        async function confirmPayment() {
+            hideError();
+            const txid = document.getElementById('txidInput').value.trim();
+            if (!txid || txid.length < 10) {
+                return showError(I18n.t('payment.invalid_txid'));
+            }
+            const btn = document.getElementById('confirmPayBtn');
+            btn.disabled = true;
+            btn.textContent = I18n.t('payment.submitting');
+            try {
+                const res = await fetch('/api/payment/confirm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('lb_token') ? { Authorization: 'Bearer ' + localStorage.getItem('lb_token') } : {}), ...(localStorage.getItem('qv_order_' + orderId) ? { 'X-Order-Token': localStorage.getItem('qv_order_' + orderId) } : {}) },
+                    body: JSON.stringify({ orderId, txid, accessToken: localStorage.getItem('qv_order_' + orderId) || '' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('paySuccess').textContent = I18n.t('payment.submitted');
+                    document.getElementById('paySuccess').classList.add('show');
+                    btn.style.display = 'none';
+                    document.getElementById('txidInput').disabled = true;
+                    setTimeout(() => { window.location.href = '/orders.html?order=' + encodeURIComponent(orderId); }, 3000);
+                } else {
+                    showError(data.message || I18n.t('payment.submit_fail'));
+                    btn.disabled = false;
+                    btn.textContent = I18n.t('payment.submit');
+                }
+            } catch (err) {
+                showError(I18n.t('payment.network'));
+                btn.disabled = false;
+                btn.textContent = I18n.t('payment.submit');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+            const viewOrderLink = document.getElementById('viewOrderLink');
+            if (viewOrderLink && orderId) viewOrderLink.href = '/orders.html?order=' + encodeURIComponent(orderId);
+            if (orderId) loadPayment();
+        });
+    </script>
+</body>
+</html>

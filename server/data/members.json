@@ -1,0 +1,17 @@
+{
+  "members": [
+    {
+      "id": "m_1781367005271_gl6iqdeag",
+      "email": "admin@qevora.com",
+      "passwordHash": "$2a$10$.Edc9IeYMJA9IioAPl6to.g/05IRIfY7EY7HM9h5wi1ozjyk0HrlW",
+      "nickname": "Admin",
+      "role": "admin",
+      "defaultAddress": null,
+      "addresses": [],
+      "createdAt": "2026-06-13T16:10:05.271Z",
+      "updatedAt": "2026-06-13T16:10:05.272Z",
+      "lastLoginAt": "2026-06-15T07:43:30.488Z"
+    }
+  ],
+  "nextId": 2
+}

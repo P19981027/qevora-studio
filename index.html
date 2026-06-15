@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qevora Studio — 原创手工包 | 精品手袋</title>
+    <meta name="description" content="Qevora Studio 原创手工包独立站，精选 Chanel 经典手袋、口盖包、22 Bag、Le Boy 等精品系列，实物拍摄、正品保证。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/i18n/zh.js?v=20260615"></script>
+    <script src="js/i18n/en.js?v=20260615"></script>
+    <script src="js/i18n/ko.js?v=20260615"></script>
+    <script src="js/i18n/ja.js?v=20260615"></script>
+    <script src="js/i18n/fr.js?v=20260615"></script>
+    <script src="js/i18n/es.js?v=20260615"></script>
+    <script src="js/i18n/ar.js?v=20260615"></script>
+    <script src="js/i18n/ru.js?v=20260615"></script>
+    <script src="js/i18n/de.js?v=20260615"></script>
+    <script src="js/i18n/pt.js?v=20260615"></script>
+    <script src="js/i18n/it.js?v=20260615"></script>
+    <script src="js/i18n/th.js?v=20260615"></script>
+    <script src="js/i18n/vi.js?v=20260615"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/brands-config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="images/logo.png" alt="Logo" class="logo-img">
+                <span data-i18n="nav.logo">Qevora Studio</span>
+            </div>
+            <div class="nav-icons">
+                <div class="lang-switch">
+                    <select id="langSelect" onchange="Language.changeLanguage(this.value)"></select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="home-hero">
+        <div class="home-hero-bg"></div>
+        <div class="home-hero-inner">
+            <p class="home-hero-subtitle" data-i18n="hero.subtitle">Classique · Luxe · Raffinement</p>
+            <h1 class="home-hero-title" data-i18n="hero.title">原创手工包</h1>
+            <hr class="vintage-rule">
+            <p class="home-hero-desc" data-i18n="hero.description">原创设计手作 · 日常可用质感</p>
+            <div>
+                <button class="home-hero-btn" onclick="document.getElementById('brands').scrollIntoView({behavior:'smooth'})" data-i18n="hero.explore">浏览商品</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="brands-section" id="brands">
+        <div class="brands-header">
+            <div class="vintage-divider">※</div>
+            <h2 data-i18n="brands.title">原创系列</h2>
+            <hr class="vintage-rule-double">
+            <p data-i18n="brands.subtitle">按使用场景浏览原创包款</p>
+        </div>
+        <div class="brands-grid" id="brandsGrid"></div>
+    </section>
+
+    <section class="quality-section">
+        <div class="quality-content">
+            <div class="quality-header">
+                <div class="vintage-divider">❧</div>
+                <h2 data-i18n="quality.title">品质保证</h2>
+                <hr class="vintage-rule-double">
+                <p data-i18n="quality.subtitle">每一件产品都经过严格品质把控</p>
+            </div>
+            <div class="quality-grid" id="qualityGrid"></div>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <div class="featured-content">
+            <div class="featured-header">
+                <div class="vintage-divider">◈</div>
+                <h2 data-i18n="featured.title">精选推荐</h2>
+                <hr class="vintage-rule-double">
+                <p data-i18n="featured.subtitle">本季热门单品</p>
+            </div>
+            <div class="featured-grid" id="featuredGrid"></div>
+            <div class="featured-more">
+                <a href="pages/atelier/index.html" class="btn btn-outline" data-i18n="featured.viewAll">查看全部</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="contact-content">
+            <div class="contact-header">
+                <div class="vintage-divider">✦</div>
+                <h2 data-i18n="contact.title">联系我们</h2>
+                <hr class="vintage-rule-double">
+                <p data-i18n="contact.subtitle">尊享一对一专属服务</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon" data-i18n="contact.x">X</div>
+                    <p class="contact-value" data-i18n="contact.xValue">@QevoraStudio</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon" data-i18n="contact.wechat">微信</div>
+                    <p class="contact-value" data-i18n="contact.wechatValue">QevoraStudio</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon" data-i18n="contact.ins">Instagram</div>
+                    <p class="contact-value" data-i18n="contact.insValue">@QevoraStudio</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-watermark"></div>
+        <div class="footer-content">
+            <img src="images/logo.png" alt="" class="footer-logo-img-main">
+            <p class="footer-logo" data-i18n="footer.logo">Qevora Studio</p>
+            <hr class="vintage-rule" style="background: var(--gold); width: 30px; margin-bottom: 20px;">
+            <p class="footer-text" data-i18n="footer.text">原创设计手作手袋 · 精工细作 · 真实展示</p>
+            <p class="footer-note" data-i18n="footer.note">仅供展示 · 请尊重知识产权</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            CMSManager.applySettings();
+
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) langSelect.innerHTML = Language.getLanguageOptionsHTML();
+
+            const brandsGrid = document.getElementById('brandsGrid');
+            if (brandsGrid) {
+                const brands = BrandsConfig.getAllBrands();
+                brandsGrid.innerHTML = brands.map(brand => {
+                    const brandData = CMSManager.getBrandData(brand.slug) || {};
+                    const bgImage = brandData.homeBgImage || '';
+                    const hasBg = bgImage ? 'has-bg' : '';
+                    const bgStyle = bgImage ? `background-image:url('${bgImage}')` : '';
+                    return `
+                    <a href="pages/${brand.slug}/index.html" class="brand-card ${brand.slug} ${hasBg}" style="${bgStyle}">
+                        <div class="brand-name">${Language.t('brands.' + brand.slug)}</div>
+                        <div class="brand-subtitle">${brand.englishName}</div>
+                    </a>
+                `;
+                }).join('');
+            }
+
+            const qualityGrid = document.getElementById('qualityGrid');
+            if (qualityGrid) {
+                const features = CMSManager.getQualityFeatures();
+                if (features && features.length > 0) {
+                    qualityGrid.innerHTML = features.map((f, i) => `
+                        <div class="quality-card">
+                            <div class="quality-icon" data-i18n="quality.features.${i}.icon">${f.icon || ''}</div>
+                            <h3 data-i18n="quality.features.${i}.title">${f.title?.[Language.currentLang] || Language.t('quality.features.' + i + '.title')}</h3>
+                            <p data-i18n="quality.features.${i}.desc">${f.desc?.[Language.currentLang] || Language.t('quality.features.' + i + '.desc')}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    const transObj = Language.translations[Language.currentLang];
+                    if (transObj && transObj.quality && transObj.quality.features) {
+                        qualityGrid.innerHTML = transObj.quality.features.map((f, i) => `
+                            <div class="quality-card">
+                                <div class="quality-icon" data-i18n="quality.features.${i}.icon">${f.icon}</div>
+                                <h3 data-i18n="quality.features.${i}.title">${f.title}</h3>
+                                <p data-i18n="quality.features.${i}.desc">${f.desc}</p>
+                            </div>
+                        `).join('');
+                    }
+                }
+            }
+
+            // Load featured products
+            const featuredGrid = document.getElementById('featuredGrid');
+            if (featuredGrid) {
+                fetch('data/products.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        const atelierProds = data.atelier && data.atelier.products ? data.atelier.products : [];
+                        const featured = atelierProds.slice(0, 8);
+                        const lang = Language.currentLang;
+                        featuredGrid.innerHTML = featured.map(p => {
+                            const imgSrc = (p.images && p.images.length > 0)
+                                ? (p.images[0].startsWith('http') ? p.images[0] : '/images/' + p.images[0])
+                                : (p.image ? (p.image.startsWith('http') ? p.image : '/images/' + p.image) : '');
+                            const name = (typeof p.name === 'object' && p.name) ? (p.name[lang] || p.name['zh'] || '') : (p.name || '');
+                            const price = p.price || '询价';
+                            const imgCount = (p.images && p.images.length > 1) ? `<span class="card-img-count">${p.images.length} 张</span>` : '';
+                            return `
+                            <a href="pages/atelier/index.html" class="featured-card">
+                                <div class="featured-img" style="${imgSrc ? `background-image:url('${imgSrc}')` : ''}">${imgCount}</div>
+                                <div class="featured-info">
+                                    <h3 class="featured-name">${name}</h3>
+                                    <p class="featured-price">${price}</p>
+                                </div>
+                            </a>
+                            `;
+                        }).join('');
+                    })
+                    .catch(() => {
+                        featuredGrid.innerHTML = '<p style="text-align:center;color:var(--mid-gray);padding:40px;">商品加载中...</p>';
+                    });
+            }
+        });
+    </script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Cart !== 'undefined') Cart.renderBadgeFromServer();
+        });
+    </script>
+</body>
+</html>

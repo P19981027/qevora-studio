@@ -1,0 +1,696 @@
+{
+  "atelier": {
+    "name": "原创手作系列",
+    "brand": "ATELIER ORIGINALS",
+    "slug": "atelier",
+    "products": [
+      {
+        "id": "at1",
+        "name": {
+          "zh": "月影手提包",
+          "en": "Moonshade Top Handle Bag",
+          "ko": "문섀이드 탑핸들 백",
+          "ja": "ムーンシェード トップハンドルバッグ",
+          "fr": "Sac à poignée Moonshade",
+          "es": "Bolso de asa superior Moonshade",
+          "ar": "حقيبة مونشيد بمقبض علوي",
+          "ru": "Сумка с верхней ручкой Moonshade",
+          "de": "Moonshade Tasche mit Tragegriff",
+          "pt": "Bolsa Moonshade de alça superior",
+          "it": "Borsa Moonshade con manico superiore",
+          "th": "กระเป๋าหูหิ้ว Moonshade",
+          "vi": "Túi xách tay Moonshade"
+        },
+        "price": "¥1,280",
+        "image": "https://placehold.co/600x800/222222/F5F1EA?text=Qevora+Moonshade",
+        "description": {
+          "zh": "原创廓形，手工裁片与细致边油处理，适合通勤和约会。",
+          "en": "Original silhouette with hand-cut panels and refined edge finishing, suitable for workdays and dates.",
+          "ko": "독창적인 실루엣, 손으로 재단한 패널과 섬세한 엣지 마감으로 출근과 약속에 어울립니다.",
+          "ja": "オリジナルのシルエットに手裁断パネルと丁寧なコバ仕上げを施し、通勤やお出かけに適しています。",
+          "fr": "Silhouette originale, panneaux découpés à la main et finition soignée des bords, idéale pour le travail et les rendez-vous.",
+          "es": "Silueta original con piezas cortadas a mano y bordes refinados, ideal para el trabajo y las citas.",
+          "ar": "تصميم أصلي مع قطع يدوية وتشطيب حواف دقيق، مناسب للعمل والمواعيد.",
+          "ru": "Оригинальный силуэт, детали ручного кроя и аккуратная обработка краев для работы и встреч.",
+          "de": "Originelle Silhouette mit handgeschnittenen Teilen und sauberem Kantenfinish, passend für Alltag und Verabredungen.",
+          "pt": "Silhueta original com painéis cortados à mão e acabamento refinado nas bordas, ideal para trabalho e encontros.",
+          "it": "Silhouette originale con pannelli tagliati a mano e finitura accurata dei bordi, adatta a lavoro e appuntamenti.",
+          "th": "ทรงออกแบบเฉพาะ ตัดชิ้นงานด้วยมือและเก็บขอบอย่างประณีต เหมาะกับวันทำงานและนัดพบ",
+          "vi": "Phom dáng nguyên bản, mảnh cắt thủ công và hoàn thiện viền tinh tế, phù hợp đi làm và hẹn gặp."
+        },
+        "color": "黑色",
+        "size": "26x18x10cm",
+        "category": "classic",
+        "featured": true
+      },
+      {
+        "id": "at2",
+        "name": {
+          "zh": "暮光腋下包",
+          "en": "Twilight Shoulder Bag",
+          "ko": "트와일라이트 숄더백",
+          "ja": "トワイライト ショルダーバッグ",
+          "fr": "Sac épaule Twilight",
+          "es": "Bolso de hombro Twilight",
+          "ar": "حقيبة كتف توايلايت",
+          "ru": "Сумка на плечо Twilight",
+          "de": "Twilight Schultertasche",
+          "pt": "Bolsa de ombro Twilight",
+          "it": "Borsa a spalla Twilight",
+          "th": "กระเป๋าสะพายไหล่ Twilight",
+          "vi": "Túi đeo vai Twilight"
+        },
+        "price": "¥980",
+        "image": "https://placehold.co/600x800/3A332C/F5F1EA?text=Qevora+Twilight",
+        "description": {
+          "zh": "轻巧腋下款，保留复古线条，适合日常搭配。",
+          "en": "A lightweight shoulder bag with vintage-inspired lines for daily styling.",
+          "ko": "가벼운 숄더형 디자인에 빈티지한 라인을 더해 데일리 스타일링에 좋습니다.",
+          "ja": "軽量なショルダータイプで、ヴィンテージ感のあるラインが日常の装いに合います。",
+          "fr": "Sac épaule léger aux lignes d’inspiration vintage, facile à porter au quotidien.",
+          "es": "Bolso de hombro ligero con líneas de inspiración vintage para el uso diario.",
+          "ar": "حقيبة كتف خفيفة بخطوط مستوحاة من الطراز الكلاسيكي للاستخدام اليومي.",
+          "ru": "Легкая сумка на плечо с винтажными линиями для ежедневных образов.",
+          "de": "Leichte Schultertasche mit vintage-inspirierten Linien für den Alltag.",
+          "pt": "Bolsa de ombro leve com linhas de inspiração vintage para combinações diárias.",
+          "it": "Borsa a spalla leggera con linee di ispirazione vintage per l’uso quotidiano.",
+          "th": "ทรงสะพายไหล่น้ำหนักเบา เส้นสายวินเทจ เหมาะกับการแต่งตัวประจำวัน",
+          "vi": "Túi đeo vai nhẹ với đường nét lấy cảm hứng cổ điển, phù hợp phối đồ hằng ngày."
+        },
+        "color": "焦糖棕",
+        "size": "24x14x7cm",
+        "category": "handbags",
+        "featured": true
+      }
+    ]
+  },
+  "totes": {
+    "name": "托特通勤系列",
+    "brand": "EVERYDAY TOTES",
+    "slug": "totes",
+    "products": [
+      {
+        "id": "to1",
+        "name": {
+          "zh": "北岸托特包",
+          "en": "Northbank Tote",
+          "ko": "노스뱅크 토트백",
+          "ja": "ノースバンク トート",
+          "fr": "Cabas Northbank",
+          "es": "Bolso tote Northbank",
+          "ar": "حقيبة توت نورثبانك",
+          "ru": "Тоут Northbank",
+          "de": "Northbank Tote",
+          "pt": "Tote Northbank",
+          "it": "Tote Northbank",
+          "th": "กระเป๋าโท้ท Northbank",
+          "vi": "Túi tote Northbank"
+        },
+        "price": "¥1,180",
+        "image": "https://placehold.co/600x800/4B4A45/F5F1EA?text=Qevora+Northbank",
+        "description": {
+          "zh": "大容量通勤托特，可放平板、文件和日常随身物品。",
+          "en": "A roomy everyday tote for tablet, documents and daily essentials.",
+          "ko": "태블릿, 문서와 일상 소지품을 담기 좋은 넉넉한 데일리 토트입니다.",
+          "ja": "タブレット、書類、毎日の必需品を収納できる大容量のデイリートートです。",
+          "fr": "Cabas spacieux pour tablette, documents et essentiels du quotidien.",
+          "es": "Tote amplio para tableta, documentos y objetos esenciales diarios.",
+          "ar": "حقيبة توت واسعة للتابلت والمستندات والمستلزمات اليومية.",
+          "ru": "Вместительный повседневный тоут для планшета, документов и ежедневных вещей.",
+          "de": "Geräumige Alltagstasche für Tablet, Dokumente und tägliche Essentials.",
+          "pt": "Tote espaçosa para tablet, documentos e itens essenciais do dia a dia.",
+          "it": "Tote capiente per tablet, documenti e oggetti quotidiani.",
+          "th": "โท้ทความจุเยอะ ใส่แท็บเล็ต เอกสาร และของใช้ประจำวันได้",
+          "vi": "Túi tote rộng rãi cho máy tính bảng, tài liệu và vật dụng hằng ngày."
+        },
+        "color": "岩灰色",
+        "size": "36x28x13cm",
+        "category": "handbags",
+        "featured": true
+      },
+      {
+        "id": "to2",
+        "name": {
+          "zh": "云谷软托特",
+          "en": "Cloud Valley Soft Tote",
+          "ko": "클라우드 밸리 소프트 토트",
+          "ja": "クラウドバレー ソフトトート",
+          "fr": "Cabas souple Cloud Valley",
+          "es": "Tote suave Cloud Valley",
+          "ar": "حقيبة توت ناعمة كلاود فالي",
+          "ru": "Мягкий тоут Cloud Valley",
+          "de": "Cloud Valley Soft Tote",
+          "pt": "Tote macia Cloud Valley",
+          "it": "Tote morbida Cloud Valley",
+          "th": "กระเป๋าโท้ทนุ่ม Cloud Valley",
+          "vi": "Túi tote mềm Cloud Valley"
+        },
+        "price": "¥1,380",
+        "image": "https://placehold.co/600x800/B7A48A/1E1E1E?text=Qevora+Cloud+Valley",
+        "description": {
+          "zh": "柔软包身与宽肩带设计，兼顾容量和舒适度。",
+          "en": "Soft body construction with a wide shoulder strap for comfort and capacity.",
+          "ko": "부드러운 바디와 넓은 숄더 스트랩으로 수납력과 착용감을 함께 갖췄습니다.",
+          "ja": "柔らかな本体と幅広ショルダーで、容量と快適さを両立します。",
+          "fr": "Structure souple et large bandoulière pour conjuguer confort et capacité.",
+          "es": "Cuerpo suave con correa ancha para combinar comodidad y capacidad.",
+          "ar": "هيكل ناعم مع حزام كتف عريض يجمع بين السعة والراحة.",
+          "ru": "Мягкая конструкция и широкий ремень обеспечивают вместительность и комфорт.",
+          "de": "Weiche Form mit breitem Schulterriemen für Komfort und Stauraum.",
+          "pt": "Estrutura macia com alça larga para conforto e capacidade.",
+          "it": "Struttura morbida con tracolla ampia per comfort e capienza.",
+          "th": "ตัวกระเป๋านุ่มและสายสะพายกว้าง ให้ทั้งความจุและความสบาย",
+          "vi": "Thân túi mềm cùng quai vai bản rộng, cân bằng sức chứa và sự thoải mái."
+        },
+        "color": "燕麦色",
+        "size": "34x26x12cm",
+        "category": "classic",
+        "featured": false
+      }
+    ]
+  },
+  "crossbody": {
+    "name": "斜挎小包系列",
+    "brand": "CROSSBODY EDIT",
+    "slug": "crossbody",
+    "products": [
+      {
+        "id": "cr1",
+        "name": {
+          "zh": "星桥斜挎包",
+          "en": "Starbridge Crossbody",
+          "ko": "스타브리지 크로스바디",
+          "ja": "スターブリッジ クロスボディ",
+          "fr": "Sac bandoulière Starbridge",
+          "es": "Bolso bandolera Starbridge",
+          "ar": "حقيبة كروس بودي ستاربريدج",
+          "ru": "Кроссбоди Starbridge",
+          "de": "Starbridge Crossbody",
+          "pt": "Crossbody Starbridge",
+          "it": "Crossbody Starbridge",
+          "th": "กระเป๋าสะพายข้าง Starbridge",
+          "vi": "Túi đeo chéo Starbridge"
+        },
+        "price": "¥760",
+        "image": "https://placehold.co/600x800/2F2A26/F5F1EA?text=Qevora+Starbridge",
+        "description": {
+          "zh": "可调节肩带，小巧但能容纳手机、钥匙和卡包。",
+          "en": "Adjustable strap with compact storage for phone, keys and card holder.",
+          "ko": "조절 가능한 스트랩과 컴팩트한 수납으로 휴대폰, 열쇠, 카드지갑을 넣기 좋습니다.",
+          "ja": "調節可能なストラップ付きで、スマートフォン、鍵、カードケースを収納できます。",
+          "fr": "Bandoulière réglable et format compact pour téléphone, clés et porte-cartes.",
+          "es": "Correa ajustable y almacenamiento compacto para teléfono, llaves y tarjetero.",
+          "ar": "حزام قابل للتعديل مع مساحة مدمجة للهاتف والمفاتيح وحافظة البطاقات.",
+          "ru": "Регулируемый ремень и компактный объем для телефона, ключей и картхолдера.",
+          "de": "Verstellbarer Riemen mit kompaktem Platz für Telefon, Schlüssel und Kartenetui.",
+          "pt": "Alça ajustável com espaço compacto para celular, chaves e porta-cartões.",
+          "it": "Tracolla regolabile con spazio compatto per telefono, chiavi e portacarte.",
+          "th": "สายปรับได้ ขนาดกะทัดรัดแต่ใส่โทรศัพท์ กุญแจ และซองบัตรได้",
+          "vi": "Dây đeo điều chỉnh được, nhỏ gọn nhưng chứa vừa điện thoại, chìa khóa và ví thẻ."
+        },
+        "color": "咖啡色",
+        "size": "19x13x6cm",
+        "category": "handbags",
+        "featured": true
+      }
+    ]
+  },
+  "woven": {
+    "name": "编织纹理系列",
+    "brand": "WOVEN TEXTURES",
+    "slug": "woven",
+    "products": [
+      {
+        "id": "wo1",
+        "name": {
+          "zh": "藤影编织包",
+          "en": "Rattan Shadow Woven Bag",
+          "ko": "라탄 섀도우 우븐 백",
+          "ja": "ラタンシャドウ ウーブンバッグ",
+          "fr": "Sac tressé Rattan Shadow",
+          "es": "Bolso tejido Rattan Shadow",
+          "ar": "حقيبة منسوجة راتان شادو",
+          "ru": "Плетеная сумка Rattan Shadow",
+          "de": "Rattan Shadow Flechttasche",
+          "pt": "Bolsa trançada Rattan Shadow",
+          "it": "Borsa intrecciata Rattan Shadow",
+          "th": "กระเป๋าสาน Rattan Shadow",
+          "vi": "Túi đan Rattan Shadow"
+        },
+        "price": "¥1,560",
+        "image": "https://placehold.co/600x800/7B6552/F5F1EA?text=Qevora+Woven",
+        "description": {
+          "zh": "原创编织纹理与手工收边，适合复古风穿搭。",
+          "en": "Original woven texture with hand-finished edges for a vintage look.",
+          "ko": "독창적인 우븐 텍스처와 손마감 가장자리로 빈티지 룩에 잘 어울립니다.",
+          "ja": "オリジナルの編み込み質感と手仕上げの縁で、ヴィンテージスタイルに合います。",
+          "fr": "Texture tressée originale et bords finis à la main pour un style vintage.",
+          "es": "Textura tejida original con bordes acabados a mano para un look vintage.",
+          "ar": "نسيج منسوج أصلي مع حواف منتهية يدويًا لإطلالة كلاسيكية.",
+          "ru": "Оригинальная плетеная фактура и ручная отделка краев для винтажного образа.",
+          "de": "Originelle Flechtstruktur mit handgearbeiteten Kanten für einen Vintage-Look.",
+          "pt": "Textura trançada original com bordas acabadas à mão para um visual vintage.",
+          "it": "Texture intrecciata originale con bordi rifiniti a mano per un look vintage.",
+          "th": "ลายสานออกแบบเฉพาะและเก็บขอบด้วยมือ เหมาะกับลุควินเทจ",
+          "vi": "Kết cấu đan nguyên bản với viền hoàn thiện thủ công, phù hợp phong cách cổ điển."
+        },
+        "color": "栗棕色",
+        "size": "28x20x9cm",
+        "category": "classic",
+        "featured": true
+      }
+    ]
+  },
+  "evening": {
+    "name": "晚宴小包系列",
+    "brand": "EVENING EDIT",
+    "slug": "evening",
+    "products": [
+      {
+        "id": "ev1",
+        "name": {
+          "zh": "银月晚宴包",
+          "en": "Silvermoon Evening Bag",
+          "ko": "실버문 이브닝 백",
+          "ja": "シルバームーン イブニングバッグ",
+          "fr": "Sac de soirée Silvermoon",
+          "es": "Bolso de noche Silvermoon",
+          "ar": "حقيبة سهرة سيلفرمون",
+          "ru": "Вечерняя сумка Silvermoon",
+          "de": "Silvermoon Abendtasche",
+          "pt": "Bolsa de noite Silvermoon",
+          "it": "Borsa da sera Silvermoon",
+          "th": "กระเป๋าออกงาน Silvermoon",
+          "vi": "Túi dự tiệc Silvermoon"
+        },
+        "price": "¥860",
+        "image": "https://placehold.co/600x800/C9C5BD/1E1E1E?text=Qevora+Evening",
+        "description": {
+          "zh": "小尺寸礼服包，适合宴会、聚会与正式场合。",
+          "en": "A compact occasion bag designed for events, dinners and formal styling.",
+          "ko": "행사, 만찬, 격식 있는 스타일에 어울리는 컴팩트한 오케이전 백입니다.",
+          "ja": "イベント、ディナー、フォーマルな装いに適したコンパクトなバッグです。",
+          "fr": "Petit sac d’occasion conçu pour événements, dîners et tenues formelles.",
+          "es": "Bolso compacto para eventos, cenas y looks formales.",
+          "ar": "حقيبة صغيرة للمناسبات والعشاء والإطلالات الرسمية.",
+          "ru": "Компактная сумка для мероприятий, ужинов и официальных образов.",
+          "de": "Kompakte Tasche für Events, Abendessen und formelle Looks.",
+          "pt": "Bolsa compacta para eventos, jantares e looks formais.",
+          "it": "Borsa compatta per eventi, cene e look formali.",
+          "th": "กระเป๋าขนาดเล็กสำหรับงานเลี้ยง ดินเนอร์ และโอกาสทางการ",
+          "vi": "Túi nhỏ gọn cho sự kiện, tiệc tối và phong cách trang trọng."
+        },
+        "color": "银灰色",
+        "size": "18x11x5cm",
+        "category": "limited",
+        "featured": false
+      }
+    ]
+  },
+  "custom": {
+    "name": "定制服务系列",
+    "brand": "CUSTOM SERVICE",
+    "slug": "custom",
+    "products": [
+      {
+        "id": "cu1",
+        "name": {
+          "zh": "手工包定制咨询",
+          "en": "Custom Bag Consultation",
+          "ko": "핸드메이드 백 맞춤 상담",
+          "ja": "ハンドメイドバッグ カスタム相談",
+          "fr": "Consultation de sac personnalisé",
+          "es": "Consulta de bolso personalizado",
+          "ar": "استشارة حقيبة مخصصة",
+          "ru": "Консультация по индивидуальной сумке",
+          "de": "Beratung für Maßtasche",
+          "pt": "Consulta de bolsa personalizada",
+          "it": "Consulenza borsa personalizzata",
+          "th": "ปรึกษากระเป๋าสั่งทำ",
+          "vi": "Tư vấn túi đặt làm"
+        },
+        "price": "¥300起",
+        "image": "https://placehold.co/600x800/111111/F5F1EA?text=Qevora+Custom",
+        "description": {
+          "zh": "支持颜色、尺寸和五金偏好咨询，最终价格按定制方案确认。",
+          "en": "Consultation for color, size and hardware preferences; final pricing by quote.",
+          "ko": "색상, 크기, 금속 장식 선호를 상담하며 최종 가격은 맞춤안에 따라 확정됩니다.",
+          "ja": "色、サイズ、金具の希望を相談できます。最終価格はカスタム内容により確定します。",
+          "fr": "Conseil sur couleur, taille et finitions métalliques ; prix final selon devis.",
+          "es": "Consulta sobre color, tamaño y herrajes; precio final según presupuesto.",
+          "ar": "استشارة حول اللون والحجم والإكسسوارات المعدنية؛ السعر النهائي حسب عرض السعر.",
+          "ru": "Консультация по цвету, размеру и фурнитуре; итоговая цена по расчету.",
+          "de": "Beratung zu Farbe, Größe und Beschlägen; Endpreis nach Angebot.",
+          "pt": "Consulta sobre cor, tamanho e ferragens; preço final mediante orçamento.",
+          "it": "Consulenza su colore, dimensione e hardware; prezzo finale su preventivo.",
+          "th": "ปรึกษาเรื่องสี ขนาด และอะไหล่โลหะ ราคาสุดท้ายยืนยันตามแบบที่สั่งทำ",
+          "vi": "Tư vấn màu sắc, kích thước và phụ kiện kim loại; giá cuối cùng theo báo giá."
+        },
+        "color": "可选",
+        "size": "可定制",
+        "category": "accessories",
+        "featured": true
+      }
+    ]
+  },
+  "dior": {
+    "name": "Dior 系列",
+    "brand": "DIOR EDIT",
+    "slug": "dior",
+    "products": [
+      {
+        "id": "di1",
+        "name": {
+          "zh": "花漾托特包",
+          "en": "Floral Lady Tote",
+          "ko": "플로럴 레이디 토트",
+          "ja": "フローラル レディ トート",
+          "fr": "Cabas Fleuri Lady",
+          "es": "Tote Floral Lady",
+          "ar": "حقيبة فلورال ليدي توت",
+          "ru": "Цветочный тоут Lady",
+          "de": "Floral Lady Tote",
+          "pt": "Tote Floral Lady",
+          "it": "Tote Floreale Lady",
+          "th": "กระเป๋าโท้ทลายดอกไม้",
+          "vi": "Túi tote hoa Lady"
+        },
+        "price": "¥2,680",
+        "image": "https://placehold.co/600x800/1A1A2E/F5F1EA?text=Dior+Tote",
+        "description": {
+          "zh": "经典廓形与现代花漾元素结合，适合优雅通勤与下午茶。",
+          "en": "Classic silhouette with modern floral elements, perfect for elegant commutes and afternoon tea.",
+          "ko": "클래식한 실루엣에 현대적인 플로럴 요소를 더해 우아한 출근길과 티타임에 어울립니다.",
+          "ja": "クラシックなシルエットにモダンな花柄要素を組み合わせ、エレガントな通勤やアフタヌーンティーに最適です。",
+          "fr": "Silhouette classique aux éléments floraux modernes, idéale pour les trajets élégants et le thé.",
+          "es": "Silueta clásica con elementos florales modernos, ideal para trayectos elegantes y té de la tarde.",
+          "ar": "تصميم كلاسيكي مع عناصر زهرية عصرية، مثالي للتنقل الأنيق وشاي بعد الظهر.",
+          "ru": "Классический силуэт с современными цветочными элементами для элегантных поездок и чаепитий.",
+          "de": "Klassische Silhouette mit modernen floralen Elementen, perfekt für elegante Wege und Nachmittagstee.",
+          "pt": "Silhueta clássica com elementos florais modernos, ideal para deslocações elegantes e chá da tarde.",
+          "it": "Silhouette classica con elementi floreali moderni, perfetta per spostamenti eleganti e tè pomeridiano.",
+          "th": "ทรงคลาสสิกผสานลายดอกไม้ร่วมสมัย เหมาะกับการเดินทางหรูหราและน้ำชายามบ่าย",
+          "vi": "Phom dáng cổ điển kết hợp họa tiết hoa hiện đại, phù hợp đi làm thanh lịch và trà chiều."
+        },
+        "color": "午夜蓝",
+        "size": "34x26x14cm",
+        "category": "classic",
+        "featured": true
+      },
+      {
+        "id": "di2",
+        "name": {
+          "zh": "马鞍斜挎包",
+          "en": "Saddle Crossbody Bag",
+          "ko": "새들 크로스바디 백",
+          "ja": "サドル クロスボディバッグ",
+          "fr": "Sac bandoulière Saddle",
+          "es": "Bolso bandolera Saddle",
+          "ar": "حقيبة كروس بودي سادل",
+          "ru": "Кроссбоди Saddle",
+          "de": "Saddle Crossbody Bag",
+          "pt": "Bolsa transversal Saddle",
+          "it": "Borsa a tracolla Saddle",
+          "th": "กระเป๋าสะพายข้างทรงอานม้า",
+          "vi": "Túi đeo chéo Saddle"
+        },
+        "price": "¥2,180",
+        "image": "https://placehold.co/600x800/8B4513/F5F1EA?text=Dior+Saddle",
+        "description": {
+          "zh": "标志性马鞍廓形，精致五金细节，适合日常与约会穿搭。",
+          "en": "Iconic saddle silhouette with refined hardware details for daily wear and dates.",
+          "ko": "시그니처 새들 실루엣에 정교한 하드웨어 디테일로 데일리와 데이트에 어울립니다.",
+          "ja": "アイコニックなサドルシルエットに洗練された金具ディテール、日常使いやデートに最適です。",
+          "fr": "Silhouette Saddle iconique avec détails de quincaillerie raffinés, idéale au quotidien et en rendez-vous.",
+          "es": "Icónica silueta Saddle con herrajes refinados, ideal para el día a día y citas.",
+          "ar": "تصميم سادل الأيقوني مع تفاصيل معدنية راقية، مثالي للاستخدام اليومي والمواعيد.",
+          "ru": "Знаковая силуэтная форма Saddle с изысканной фурнитурой для повседневных и романтических образов.",
+          "de": "Ikonische Saddle-Silhouette mit raffinierten Beschlägen, ideal für Alltag und Dates.",
+          "pt": "Silhueta icónica Saddle com detalhes refinados de ferragens, ideal para o dia a dia e encontros.",
+          "it": "Iconica silhouette Saddle con dettagli hardware raffinati, ideale per tutti i giorni e appuntamenti.",
+          "th": "ทรงอานม้าอันเป็นเอกลักษณ์ พร้อมรายละเอียดโลหะประณีต เหมาะกับชีวิตประจำวันและนัดพบ",
+          "vi": "Phom dáng yên ngựa biểu tượng với chi tiết kim loại tinh xảo, phù hợp hằng ngày và hẹn hò."
+        },
+        "color": "焦糖棕",
+        "size": "22x16x6cm",
+        "category": "handbags",
+        "featured": true
+      }
+    ]
+  },
+  "hermes": {
+    "name": "Hermès 系列",
+    "brand": "HERMÈS EDIT",
+    "slug": "hermes",
+    "products": [
+      {
+        "id": "he1",
+        "name": {
+          "zh": "铂金手提包",
+          "en": "Platinum Top Handle Bag",
+          "ko": "플래티넘 탑핸들 백",
+          "ja": "プラチナム トップハンドルバッグ",
+          "fr": "Sac à poignée Platine",
+          "es": "Bolso de asa Platino",
+          "ar": "حقيبة بلاتين بمقبض علوي",
+          "ru": "Сумка с верхней ручкой Platinum",
+          "de": "Platinum Henkeltasche",
+          "pt": "Bolsa de alça Platina",
+          "it": "Borsa con manico Platino",
+          "th": "กระเป๋าหูหิ้วแพลตตินัม",
+          "vi": "Túi xách tay Platinum"
+        },
+        "price": "¥3,880",
+        "image": "https://placehold.co/600x800/2D1B0E/F5F1EA?text=Hermes+Birkin",
+        "description": {
+          "zh": "手工精制的标志性廓形，顶级质感和优雅比例。",
+          "en": "Handcrafted iconic silhouette with premium texture and elegant proportions.",
+          "ko": "수제로 제작된 시그니처 실루엣, 최고급 질감과 우아한 비율.",
+          "ja": "手作業で仕上げたアイコニックなシルエット、最高級の質感とエレガントなプロポーション。",
+          "fr": "Silhouette emblématique façonnée à la main, texture premium et proportions élégantes.",
+          "es": "Silueta icónica hecha a mano, textura premium y proporciones elegantes.",
+          "ar": "تصميم أيقوني مصنوع يدويًا، ملمس فاخر ونسب أنيقة.",
+          "ru": "Ручная работа, знаковый силуэт с премиальной фактурой и элегантными пропорциями.",
+          "de": "Handgefertigte ikonische Silhouette mit Premium-Textur und eleganten Proportionen.",
+          "pt": "Silhueta icónica artesanal, textura premium e proporções elegantes.",
+          "it": "Silhouette iconica realizzata a mano, texture premium e proporzioni eleganti.",
+          "th": "ทรงกระเป๋าสุดไอคอนิกตัดเย็บด้วยมือ เนื้อสัมผัสระดับพรีเมียมและสัดส่วนงดงาม",
+          "vi": "Phom dáng biểu tượng làm thủ công, chất liệu cao cấp và tỷ lệ thanh lịch."
+        },
+        "color": "金色",
+        "size": "35x25x18cm",
+        "category": "classic",
+        "featured": true
+      },
+      {
+        "id": "he2",
+        "name": {
+          "zh": "凯莉单肩包",
+          "en": "Kelly Shoulder Bag",
+          "ko": "켈리 숄더백",
+          "ja": "ケリー ショルダーバッグ",
+          "fr": "Sac épaule Kelly",
+          "es": "Bolso de hombro Kelly",
+          "ar": "حقيبة كتف كيلي",
+          "ru": "Сумка на плечо Kelly",
+          "de": "Kelly Schultertasche",
+          "pt": "Bolsa de ombro Kelly",
+          "it": "Borsa a spalla Kelly",
+          "th": "กระเป๋าสะพายไหล่ Kelly",
+          "vi": "Túi đeo vai Kelly"
+        },
+        "price": "¥3,280",
+        "image": "https://placehold.co/600x800/8B0000/F5F1EA?text=Hermes+Kelly",
+        "description": {
+          "zh": "精致梯形廓形与旋转锁扣，传达永恒的法式优雅。",
+          "en": "Refined trapezoid silhouette with turn-lock closure, conveying timeless French elegance.",
+          "ko": "세련된 사다리꼴 실루엣과 턴락 클로저로 시대를 초월한 프렌치 우아함을 전합니다.",
+          "ja": "洗練された台形シルエットとターンロックで、時代を超えたフレンチエレガンスを表現。",
+          "fr": "Silhouette trapézoïdale raffinée avec fermoir tournant, incarnant l'élégance française intemporelle.",
+          "es": "Silueta trapezoidal refinada con cierre giratorio, transmitiendo elegancia francesa atemporal.",
+          "ar": "تصميم شبه منحرف راقٍ مع قفل دوار، يعكس الأناقة الفرنسية الخالدة.",
+          "ru": "Изысканный трапециевидный силуэт с поворотным замком, воплощение вечной французской элегантности.",
+          "de": "Raffinierte Trapez-Silhouette mit Drehverschluss für zeitlose französische Eleganz.",
+          "pt": "Silhueta trapezoidal refinada com fecho giratório, transmitindo elegância francesa intemporal.",
+          "it": "Raffinata silhouette trapezoidale con chiusura a rotazione, eleganza francese senza tempo.",
+          "th": "ทรงสี่เหลี่ยมคางหมูประณีตพร้อมตัวล็อกหมุน สื่อถึงความสง่างามแบบฝรั่งเศสเหนือกาลเวลา",
+          "vi": "Phom dáng hình thang tinh tế với khóa xoay, truyền tải vẻ thanh lịch Pháp vượt thời gian."
+        },
+        "color": "波尔多红",
+        "size": "28x22x10cm",
+        "category": "handbags",
+        "featured": false
+      }
+    ]
+  },
+  "balenciaga": {
+    "name": "Balenciaga 系列",
+    "brand": "BALENCIAGA EDIT",
+    "slug": "balenciaga",
+    "products": [
+      {
+        "id": "ba1",
+        "name": {
+          "zh": "城市机车包",
+          "en": "City Moto Bag",
+          "ko": "시티 모토 백",
+          "ja": "シティ モト バッグ",
+          "fr": "Sac City Moto",
+          "es": "Bolso City Moto",
+          "ar": "حقيبة سيتي موتو",
+          "ru": "Сумка City Moto",
+          "de": "City Moto Bag",
+          "pt": "Bolsa City Moto",
+          "it": "Borsa City Moto",
+          "th": "กระเป๋าซิตี้โมโต",
+          "vi": "Túi City Moto"
+        },
+        "price": "¥2,480",
+        "image": "https://placehold.co/600x800/2F2F2F/F5F1EA?text=Balenciaga+City",
+        "description": {
+          "zh": "做旧皮革与铆钉细节，标志性的随性都市风格。",
+          "en": "Distressed leather with stud details, the iconic casual urban style.",
+          "ko": "빈티지한 가죽과 스터드 디테일로 아이코닉한 캐주얼 어반 스타일을 완성합니다.",
+          "ja": "エイジングレザーとスタッズディテールが生み出すアイコニックなカジュアルアーバンスタイル。",
+          "fr": "Cuir vieilli et détails à clous pour un style urbain décontracté iconique.",
+          "es": "Cuero envejecido con tachuelas, el icónico estilo urbano casual.",
+          "ar": "جلد معتق مع تفاصيل مسامير، الطراز الحضري غير الرسمي الأيقوني.",
+          "ru": "Состаренная кожа с клепками, знаковый повседневный городской стиль.",
+          "de": "Used-Leder mit Nieten-Details, der ikonische lässige Urban-Style.",
+          "pt": "Couro envelhecido com detalhes de tachas, o icónico estilo urbano casual.",
+          "it": "Pelle invecchiata con dettagli di borchie, l'iconico stile urbano casual.",
+          "th": "หนังผ่านการบ่มพร้อมหมุดโลหะ สไตล์คนเมืองลำลองอันเป็นเอกลักษณ์",
+          "vi": "Da xử lý cổ điển với đinh tán, phong cách đô thị giản dị biểu tượng."
+        },
+        "color": "黑色",
+        "size": "38x24x14cm",
+        "category": "classic",
+        "featured": true
+      },
+      {
+        "id": "ba2",
+        "name": {
+          "zh": "沙漏手提包",
+          "en": "Hourglass Top Handle Bag",
+          "ko": "아워글라스 탑핸들 백",
+          "ja": "アワーグラス トップハンドルバッグ",
+          "fr": "Sac à poignée Sablier",
+          "es": "Bolso de asa Reloj de Arena",
+          "ar": "حقيبة الساعة الرملية بمقبض علوي",
+          "ru": "Сумка с верхней ручкой Hourglass",
+          "de": "Hourglass Henkeltasche",
+          "pt": "Bolsa de alça Ampulheta",
+          "it": "Borsa con manico Clessidra",
+          "th": "กระเป๋าหูหิ้วทรงนาฬิกาทราย",
+          "vi": "Túi xách tay đồng hồ cát"
+        },
+        "price": "¥1,980",
+        "image": "https://placehold.co/600x800/4A004A/F5F1EA?text=Balenciaga+Hourglass",
+        "description": {
+          "zh": "弧形底座和锐利线条，前卫的建筑感廓形。",
+          "en": "Curved base with sharp lines, an avant-garde architectural silhouette.",
+          "ko": "곡선형 바닥과 날카로운 라인으로 아방가르드한 건축적 실루엣을 보여줍니다.",
+          "ja": "曲線的なベースとシャープなラインで前衛的な建築美を表現。",
+          "fr": "Base incurvée et lignes nettes pour une silhouette architecturale avant-gardiste.",
+          "es": "Base curvada y líneas marcadas, una silueta arquitectónica vanguardista.",
+          "ar": "قاعدة منحنية وخطوط حادة، تصميم معماري طليعي.",
+          "ru": "Изогнутое основание и четкие линии для авангардного архитектурного силуэта.",
+          "de": "Geschwungene Basis mit scharfen Linien für eine avantgardistische architektonische Silhouette.",
+          "pt": "Base curvada com linhas nítidas, uma silhueta arquitetónica vanguardista.",
+          "it": "Base curva e linee nette per una silhouette architettonica all'avanguardia.",
+          "th": "ฐานโค้งและเส้นคมชัด ทรงกระเป๋าดีไซน์ล้ำยุคแนวอาร์คิเทคเจอร์",
+          "vi": "Đế cong và đường nét sắc sảo, phom dáng kiến trúc tiên phong."
+        },
+        "color": "深紫色",
+        "size": "24x16x9cm",
+        "category": "limited",
+        "featured": false
+      }
+    ]
+  },
+  "bottega-veneta": {
+    "name": "Bottega Veneta 系列",
+    "brand": "BOTTEGA VENETA EDIT",
+    "slug": "bottega-veneta",
+    "products": [
+      {
+        "id": "bv1",
+        "name": {
+          "zh": "编织托特包",
+          "en": "Intrecciato Tote Bag",
+          "ko": "인트레치아토 토트백",
+          "ja": "イントレッチアート トートバッグ",
+          "fr": "Cabas Intrecciato",
+          "es": "Tote Intrecciato",
+          "ar": "حقيبة توت إنتريتشاتو",
+          "ru": "Тоут Intrecciato",
+          "de": "Intrecciato Tote",
+          "pt": "Tote Intrecciato",
+          "it": "Tote Intrecciato",
+          "th": "กระเป๋าโท้ทลายสาน",
+          "vi": "Túi tote đan Intrecciato"
+        },
+        "price": "¥3,280",
+        "image": "https://placehold.co/600x800/556B2F/F5F1EA?text=Bottega+Tote",
+        "description": {
+          "zh": "标志性皮革编织工艺，低调奢华的日常大容量包款。",
+          "en": "Signature leather weaving craftsmanship, understated luxury for daily capacity.",
+          "ko": "시그니처 가죽 위빙 공예로 완성한 절제된 럭셔리 데일리 백.",
+          "ja": "シグネチャーのレザーウィービングが光る、控えめなラグジュアリー。",
+          "fr": "Artisanat de tressage du cuir signature, luxe discret pour une capacité quotidienne.",
+          "es": "Artesanía de trenzado de cuero distintiva, lujo discreto para uso diario.",
+          "ar": "حرفة نسج الجلد المميزة، فخامة هادئة للاستخدام اليومي.",
+          "ru": "Фирменное кожаное плетение, сдержанная роскошь на каждый день.",
+          "de": "Charakteristische Lederflechtkunst, dezenter Luxus für den Alltag.",
+          "pt": "Artesanato de trançado de couro exclusivo, luxo discreto para uso diário.",
+          "it": "Artigianato di intreccio in pelle iconico, lusso sobrio per l'uso quotidiano.",
+          "th": "งานสานหนังอันเป็นเอกลักษณ์ หรูหราแบบไม่โอ้อวด ใส่ของใช้ประจำวันได้จุใจ",
+          "vi": "Nghệ thuật đan da đặc trưng, sang trọng tinh tế cho sức chứa hằng ngày."
+        },
+        "color": "橄榄绿",
+        "size": "36x28x15cm",
+        "category": "classic",
+        "featured": true
+      },
+      {
+        "id": "bv2",
+        "name": {
+          "zh": "卡带斜挎包",
+          "en": "Cassette Crossbody Bag",
+          "ko": "카세트 크로스바디 백",
+          "ja": "カセット クロスボディバッグ",
+          "fr": "Sac bandoulière Cassette",
+          "es": "Bolso bandolera Cassette",
+          "ar": "حقيبة كروس بودي كاسيت",
+          "ru": "Кроссбоди Cassette",
+          "de": "Cassette Crossbody Bag",
+          "pt": "Bolsa transversal Cassette",
+          "it": "Borsa a tracolla Cassette",
+          "th": "กระเป๋าสะพายข้าง Cassette",
+          "vi": "Túi đeo chéo Cassette"
+        },
+        "price": "¥2,680",
+        "image": "https://placehold.co/600x800/D4C5B9/1E1E1E?text=Bottega+Cassette",
+        "description": {
+          "zh": "蓬松编织皮革与可调节肩带，现代感与工艺并存。",
+          "en": "Padded woven leather with adjustable strap, modernity and craftsmanship combined.",
+          "ko": "패딩 처리된 위빙 가죽과 조절 가능한 스트랩으로 현대적 감각과 장인 정신을 동시에 보여줍니다.",
+          "ja": "パッド入りウィービングレザーと調節可能なストラップ、モダンさとクラフトマンシップの融合。",
+          "fr": "Cuir tressé matelassé avec bandoulière réglable, modernité et artisanat réunis.",
+          "es": "Cuero trenzado acolchado con correa ajustable, modernidad y artesanía combinadas.",
+          "ar": "جلد منسوج مبطن مع حزام قابل للتعديل، مزيج من الحداثة والحرفية.",
+          "ru": "Стеганая плетеная кожа с регулируемым ремнем — современность и мастерство.",
+          "de": "Gepolstertes Flechtleder mit verstellbarem Riemen, Moderne und Handwerk vereint.",
+          "pt": "Couro trançado acolchoado com alça ajustável, modernidade e artesanato combinados.",
+          "it": "Pelle intrecciata imbottita con tracolla regolabile, modernità e artigianato insieme.",
+          "th": "หนังสานบุนวมและสายปรับได้ ผสานความโมเดิร์นเข้ากับงานฝีมือ",
+          "vi": "Da đan đệm với dây đeo điều chỉnh, hiện đại và thủ công hòa quyện."
+        },
+        "color": "米白色",
+        "size": "20x14x7cm",
+        "category": "handbags",
+        "featured": true
+      }
+    ]
+  }
+}

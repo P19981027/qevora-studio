@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="common.site_title">购物车 — Qevora Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <style>
+        .lang-switch { position:fixed; top:12px; right:20px; z-index:9999; }
+        .lang-switch select { padding:4px 8px; border:1px solid var(--pale); background:var(--near-white); font-family:var(--body-serif); font-size:12px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Logo" class="logo-img">
+                    <span data-i18n="common.site_title">Qevora Studio</span>
+                </a>
+            </div>
+            <div class="nav-icons"></div>
+        </div>
+    </nav>
+
+    <div class="cart-page">
+        <div class="cart-header">
+            <h1 data-i18n="cart.title">购物车</h1>
+            <p data-i18n="cart.subtitle">SHOPPING CART</p>
+        </div>
+        <div class="cart-container">
+            <div id="cartContent"></div>
+        </div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        let cartItems = [];
+
+        async function loadCart() {
+            cartItems = await Cart.getItems();
+            renderCart();
+        }
+
+        function renderCart() {
+            const el = document.getElementById('cartContent');
+            if (!cartItems || !cartItems.length) {
+                el.innerHTML = `
+                    <div class="cart-empty">
+                        <p data-i18n="cart.empty">购物车是空的</p>
+                        <a href="index.html" data-i18n="cart.browse">浏览商品</a>
+                    </div>`;
+                Cart.renderBadge([]);
+                return;
+            }
+
+            const itemsHtml = cartItems.map((item, i) => {
+                const specs = item.specs || {};
+                const specStr = Object.entries(specs).map(([k, v]) => `<span>${k}: ${v}</span>`).join('');
+                return `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        ${specStr ? `<div class="cart-item-specs">${specStr}</div>` : ''}
+                        <div class="cart-item-price">${item.price}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="cart-qty">
+                            <button onclick="updateQty(${i}, -1)">−</button>
+                            <span>${item.quantity || 1}</span>
+                            <button onclick="updateQty(${i}, 1)">+</button>
+                        </div>
+                        <button class="cart-remove" onclick="removeItem(${i})">×</button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            const total = Cart.getTotal(cartItems);
+            el.innerHTML = `
+                <div class="cart-items">${itemsHtml}</div>
+                <div class="cart-summary">
+                    <div class="cart-total"><span data-i18n="cart.total">合计</span> <strong>${total}</strong></div>
+                    <button class="cart-checkout-btn" onclick="goCheckout()" data-i18n="cart.checkout">去结算</button>
+                </div>`;
+        }
+
+        async function updateQty(index, delta) {
+            const item = cartItems[index];
+            if (!item) return;
+            const newQty = (item.quantity || 1) + delta;
+            if (newQty < 1) return;
+            const res = await Cart.update(item.productId, item.brandSlug, newQty);
+            if (res.success) {
+                cartItems = res.items;
+                renderCart();
+            }
+        }
+
+        async function removeItem(index) {
+            const item = cartItems[index];
+            if (!item) return;
+            const res = await Cart.remove(item.productId, item.brandSlug);
+            if (res.success) {
+                cartItems = res.items;
+                renderCart();
+            }
+        }
+
+        function goCheckout() {
+            window.location.href = Utils.resolvePath('/checkout.html');
+        }
+
+        const _origSetLang = I18n.setLang;
+        I18n.setLang = function(lang) {
+            _origSetLang.call(I18n, lang);
+            renderCart();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+            loadCart();
+        });
+    </script>
+</body>
+</html>

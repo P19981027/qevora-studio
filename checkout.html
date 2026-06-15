@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="checkout.title">确认订单</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/address-selector.css">
+    <link rel="stylesheet" href="css/order.css">
+    <style>
+        /* 语言切换按钮 */
+        .lang-switch {
+            position: fixed;
+            top: 12px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .lang-switch select {
+            padding: 4px 8px;
+            border: 1px solid var(--pale);
+            background: var(--near-white);
+            font-family: var(--body-serif);
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Logo" class="logo-img">
+                    <span>Qevora Studio</span>
+                </a>
+            </div>
+            <div class="nav-icons"></div>
+        </div>
+    </nav>
+
+    <div class="checkout-page">
+        <div class="page-header">
+            <h1 data-i18n="checkout.title">确认订单</h1>
+            <p data-i18n="checkout.subtitle">CHECKOUT</p>
+        </div>
+        <div class="checkout-container">
+            <div class="checkout-error" id="checkoutError"></div>
+
+            <div class="checkout-section">
+                <h3 data-i18n="checkout.section_items">商品清单</h3>
+                <div id="checkoutItems"></div>
+            </div>
+
+            <div class="checkout-section">
+                <h3 data-i18n="checkout.section_address">收货地址 / Shipping Address</h3>
+                <div class="address-form">
+                    <div id="addressSelector"></div>
+                    <div class="format-hint" id="addrFormatHint"></div>
+                    <div class="address-row">
+                        <div class="form-group">
+                            <label data-i18n="form.recipient">收件人 / Full Name</label>
+                            <input type="text" id="addrName" data-i18n-ph="ph.recipient" placeholder="请输入收件人姓名" maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form.phone">联系电话 / Phone</label>
+                            <input type="text" id="addrPhone" data-i18n-ph="ph.phone" placeholder="含国家区号，如 +1 555-0100" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="form.line1">地址 1 / Address Line 1</label>
+                        <input type="text" id="addrLine1" data-i18n-ph="ph.line1" placeholder="街道、门牌号等" maxlength="120">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="form.line2">地址 2 / Address Line 2（可选）</label>
+                        <input type="text" id="addrLine2" data-i18n-ph="ph.line2" placeholder="公寓、单元号等" maxlength="120">
+                    </div>
+                    <div class="address-row address-row-3">
+                        <div class="form-group">
+                            <label data-i18n="form.city">城市 / City</label>
+                            <input type="text" id="addrCity" data-i18n-ph="ph.city" placeholder="城市" maxlength="60">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form.state">省/州 / State/Province</label>
+                            <input type="text" id="addrState" data-i18n-ph="ph.state" placeholder="省或州" maxlength="60">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form.zip">邮编 / ZIP Code</label>
+                            <input type="text" id="addrZip" data-i18n-ph="ph.zip" placeholder="邮政编码" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-section">
+                <h3 data-i18n="checkout.section_remark">订单备注</h3>
+                <input type="text" id="orderRemark" data-i18n-ph="ph.remark" placeholder="如有特殊要求请备注（选填）" style="width:100%;padding:10px 12px;border:1px solid var(--pale);background:var(--near-white);font-family:var(--body-serif);font-size:14px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--pale)'">
+            </div>
+
+            <div class="checkout-summary">
+                <div class="checkout-total">合计 <strong id="checkoutTotal">¥0</strong></div>
+                <button class="checkout-submit" id="submitOrderBtn" onclick="submitOrder()" data-i18n="btn.submit">提交订单</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/order.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/address-selector.js?v=3"></script>
+    <script>
+        let cartItems = [];
+
+        async function loadCheckout() {
+            cartItems = await Cart.getItems();
+            if (!cartItems || !cartItems.length) {
+                window.location.href = Utils.resolvePath('/cart.html');
+                return;
+            }
+            renderItems();
+            await CountrySelector.init('addressSelector');
+            document.getElementById('checkoutTotal').textContent = Cart.getTotal(cartItems);
+        }
+
+        function renderItems() {
+            const el = document.getElementById('checkoutItems');
+            el.innerHTML = cartItems.map(item => `
+                <div class="checkout-item">
+                    <img src="${item.image}" alt="${item.name}" class="checkout-item-img">
+                    <div class="checkout-item-info">
+                        <div class="checkout-item-name">${item.name}</div>
+                        <div class="checkout-item-qty">×${item.quantity || 1}</div>
+                    </div>
+                    <div class="checkout-item-price">${item.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('checkoutError');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('checkoutError').classList.remove('show');
+        }
+
+        async function submitOrder() {
+            hideError();
+            const addrErr = CountrySelector.validate();
+            if (addrErr) return showError(addrErr);
+
+            const name = document.getElementById('addrName').value.trim();
+            const phone = document.getElementById('addrPhone').value.trim();
+            const line1 = document.getElementById('addrLine1').value.trim();
+            const line2 = document.getElementById('addrLine2').value.trim();
+            const city = document.getElementById('addrCity').value.trim();
+            const state = document.getElementById('addrState').value.trim();
+            const zip = document.getElementById('addrZip').value.trim();
+            const remark = document.getElementById('orderRemark').value.trim();
+
+            if (!name || name.length < 2) return showError(I18n.t('err.name'));
+            if (!phone || phone.length < 6) return showError(I18n.t('err.phone'));
+            if (!line1 || line1.length < 5) return showError(I18n.t('err.line1'));
+            if (!city) return showError(I18n.t('err.city'));
+            if (!zip) return showError(I18n.t('err.zip'));
+
+            const country = CountrySelector.getSelected();
+            const address = {
+                name,
+                phone,
+                country: country.name,
+                countryCode: country.code,
+                line1,
+                line2,
+                city,
+                state,
+                zip
+            };
+
+            const items = cartItems.map(i => ({
+                productId: i.productId,
+                brandSlug: i.brandSlug,
+                name: i.name,
+                price: i.price,
+                image: i.image,
+                quantity: i.quantity || 1,
+                specs: i.specs || {}
+            }));
+
+            const totalAmount = Cart.getTotal(cartItems);
+
+            const btn = document.getElementById('submitOrderBtn');
+            btn.disabled = true;
+            btn.textContent = I18n.t('btn.submitting');
+
+            try {
+                const res = await Order.create(address, items, totalAmount, remark);
+                if (res.success) {
+                    if (res.accessToken) localStorage.setItem('qv_order_' + res.order.id, res.accessToken);
+                    if (Auth.isLoggedIn()) {
+                        await API.delete('/cart/clear', null, true);
+                    } else {
+                        localStorage.removeItem('lb_guest_cart');
+                        Cart.renderBadge([]);
+                    }
+                    window.location.href = Utils.resolvePath('/payment.html?order=' + res.order.id);
+                } else {
+                    showError(res.message || '提交订单失败');
+                }
+            } catch (err) {
+                showError(I18n.t('err.network'));
+            } finally {
+                btn.disabled = false;
+                btn.textContent = I18n.t('btn.submit');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+            loadCheckout();
+        });
+    </script>
+</body>
+</html>

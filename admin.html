@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Qevora Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="index.html" class="admin-nav-logo"><img src="images/logo.png" alt="Logo" class="admin-logo-img"> Qevora Studio</a>
+            <div class="admin-nav-right">
+                <a href="index.html" class="admin-nav-link" id="navHome">返回网站</a>
+                <span class="admin-badge">Admin</span>
+                <select id="langSelect" onchange="Language.changeLanguage(this.value)"></select>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active" data-section="products" onclick="AdminApp.switchSection('products')">
+                    <span class="sidebar-icon">📦</span>
+                    <span class="sidebar-text">商品管理</span>
+                </li>
+                <li class="sidebar-item" data-section="homepage" onclick="AdminApp.switchSection('homepage')">
+                    <span class="sidebar-icon">🏠</span>
+                    <span class="sidebar-text">首页编辑</span>
+                </li>
+                <li class="sidebar-item" data-section="brands" onclick="AdminApp.switchSection('brands')">
+                    <span class="sidebar-icon">👜</span>
+                    <span class="sidebar-text">品牌管理</span>
+                </li>
+                <li class="sidebar-item" data-section="brandnames" onclick="AdminApp.switchSection('brandnames')">
+                    <span class="sidebar-icon">🏷️</span>
+                    <span class="sidebar-text">品牌名称</span>
+                </li>
+                <li class="sidebar-item" data-section="contact" onclick="AdminApp.switchSection('contact')">
+                    <span class="sidebar-icon">📞</span>
+                    <span class="sidebar-text">联系方式</span>
+                </li>
+                <li class="sidebar-item" data-section="footer" onclick="AdminApp.switchSection('footer')">
+                    <span class="sidebar-icon">📄</span>
+                    <span class="sidebar-text">页脚设置</span>
+                </li>
+                <li class="sidebar-item" data-section="members" onclick="AdminApp.switchSection('members')">
+                    <span class="sidebar-icon">👤</span>
+                    <span class="sidebar-text">会员管理</span>
+                </li>
+                <li class="sidebar-item" data-section="orders" onclick="AdminApp.switchSection('orders')">
+                    <span class="sidebar-icon">📋</span>
+                    <span class="sidebar-text">订单管理</span>
+                </li>
+                <li class="sidebar-item" data-section="settings" onclick="AdminApp.switchSection('settings')">
+                    <span class="sidebar-icon">⚙️</span>
+                    <span class="sidebar-text">网站设置</span>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <!-- ========== 商品管理 ========== -->
+            <div class="cms-section" id="section-products">
+                <div class="stats-row" id="statsRow"></div>
+                <div class="admin-toolbar">
+                    <div class="toolbar-left">
+                        <button class="btn btn-primary" onclick="AdminApp.openModal()" id="addProductBtn">+ 添加商品</button>
+                        <button class="btn btn-outline" onclick="AdminApp.exportData()" id="exportBtn">导出数据</button>
+                        <button class="btn btn-outline" onclick="AdminApp.syncToServer()" id="syncBtn">同步到服务器</button>
+                        <button class="btn btn-outline" onclick="AdminApp.batchTranslateAll()">批量翻译全部商品</button>
+                    </div>
+                    <div class="toolbar-right">
+                        <div class="filter-group">
+                            <select id="filterBrand" onchange="AdminApp.filterProducts()">
+                                <option value="all">全部品牌</option>
+                            </select>
+                            <select id="filterCategory" onchange="AdminApp.filterProducts()">
+                                <option value="all">全部分类</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="products-grid" id="productsGrid"></div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📦</div>
+                    <h3 id="emptyTitle">暂无商品</h3>
+                    <p id="emptyMessage">请先添加商品</p>
+                </div>
+                <div class="admin-pagination" id="paginationSection">
+                    <div class="pagination-info">
+                        <span id="totalCount">0 件商品</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm" onclick="AdminApp.changePage(-1)" id="prevBtn">上一页</button>
+                        <span id="pageInfo">1 / 1</span>
+                        <button class="btn btn-sm" onclick="AdminApp.changePage(1)" id="nextBtn">下一页</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 首页编辑 ========== -->
+            <div class="cms-section" id="section-homepage" style="display:none">
+                <div class="section-header-cms">
+                    <h2>首页编辑</h2>
+                    <div class="lang-selector">
+                        <label>编辑语言：</label>
+                        <select id="homepageLangSelect" onchange="AdminApp.loadHomepageEditor()"></select>
+                    </div>
+                </div>
+                <div class="cms-form">
+                    <h3 class="form-section-title">Hero 横幅</h3>
+                    <div class="form-group">
+                        <label>副标题</label>
+                        <input type="text" data-cms-key="hero.subtitle" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>主标题</label>
+                        <input type="text" data-cms-key="hero.title" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" data-cms-key="hero.description" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>按钮文字</label>
+                        <input type="text" data-cms-key="hero.explore" class="cms-input">
+                    </div>
+
+                    <h3 class="form-section-title">品牌区域</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>区域标题</label>
+                            <input type="text" data-cms-key="brands.title" class="cms-input">
+                        </div>
+                        <div class="form-group">
+                            <label>区域副标题</label>
+                            <input type="text" data-cms-key="brands.subtitle" class="cms-input">
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title">品质区域</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>区域标题</label>
+                            <input type="text" data-cms-key="quality.title" class="cms-input">
+                        </div>
+                        <div class="form-group">
+                            <label>区域副标题</label>
+                            <input type="text" data-cms-key="quality.subtitle" class="cms-input">
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title">品质特性卡片</h3>
+                    <div id="qualityFeaturesEditor"></div>
+                    <button class="btn btn-outline" onclick="AdminApp.addFeature()">+ 添加特性</button>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveHomepage()">保存</button>
+                    <button class="btn btn-outline" onclick="AdminApp.resetHomepage()">重置为默认</button>
+                </div>
+            </div>
+
+            <!-- ========== 品牌管理 ========== -->
+            <div class="cms-section" id="section-brands" style="display:none">
+                <div class="section-header-cms">
+                    <h2>品牌管理</h2>
+                    <div class="lang-selector">
+                        <label>选择品牌：</label>
+                        <select id="brandSlugSelect" onchange="AdminApp.loadBrandsEditor()"></select>
+                        <label style="margin-left:12px">编辑语言：</label>
+                        <select id="brandLangSelect" onchange="AdminApp.loadBrandsEditor()"></select>
+                    </div>
+                </div>
+                <div class="cms-form" id="brandForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>品牌名称（当前语言）</label>
+                            <input type="text" id="brandNameInput" class="cms-input">
+                        </div>
+                        <div class="form-group">
+                            <label>英文名称</label>
+                            <input type="text" id="brandEnglishNameInput" class="cms-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>首页品牌卡片背景图</label>
+                        <div class="image-upload-area" id="brandBgUploadArea">
+                            <div class="image-upload-hint" id="brandBgUploadHint">
+                                <span>点击或拖拽上传品牌背景图</span>
+                                <span class="image-upload-sub">建议尺寸 800x600 · JPG / PNG / WebP</span>
+                            </div>
+                            <img id="brandBgPreview" class="image-preview" style="display:none" alt="preview">
+                            <input type="file" id="brandBgImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                        </div>
+                        <div class="image-url-row">
+                            <input type="text" id="brandBgImageUrl" placeholder="或输入图片URL">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.loadBrandBgFromUrl()">加载</button>
+                            <button type="button" class="btn btn-sm btn-delete" onclick="AdminApp.clearBrandBgImage()">清除</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero 标题</label>
+                        <input type="text" id="brandHeroTitleInput" class="cms-input">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hero 价格</label>
+                            <input type="text" id="brandHeroPriceInput" class="cms-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero 描述</label>
+                            <input type="text" id="brandHeroDescInput" class="cms-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>介绍标题</label>
+                        <input type="text" id="brandIntroTitleInput" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>品牌介绍 第一段</label>
+                        <textarea id="brandIntroP1Input" rows="3" class="cms-input"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>品牌介绍 第二段</label>
+                        <textarea id="brandIntroP2Input" rows="3" class="cms-input"></textarea>
+                    </div>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveBrands()">保存</button>
+                    <button class="btn btn-outline" onclick="AdminApp.resetBrands()">重置为默认</button>
+                </div>
+            </div>
+
+            <!-- ========== 品牌名称 ========== -->
+            <div class="cms-section" id="section-brandnames" style="display:none">
+                <div class="section-header-cms">
+                    <h2>品牌名称</h2>
+                </div>
+                <div class="cms-form" id="brandNamesForm">
+                    <p style="color:var(--silver);font-size:13px;margin-bottom:16px">修改品牌中文名称，保存后点击「翻译所有品牌名」自动同步到全部12种语言。</p>
+                    <div id="brandNamesEditor"></div>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveBrandNames()">保存</button>
+                    <button class="btn btn-translate-all" onclick="AdminApp.translateBrandNames()" title="将10个品牌的中文名称翻译为其他12种语言">🌐 翻译所有品牌名</button>
+                    <button class="btn btn-outline" onclick="AdminApp.loadBrandNamesEditor()">重置</button>
+                </div>
+            </div>
+
+            <!-- ========== 联系方式 ========== -->
+            <div class="cms-section" id="section-contact" style="display:none">
+                <div class="section-header-cms">
+                    <h2>联系方式</h2>
+                    <div class="lang-selector">
+                        <label>编辑语言：</label>
+                        <select id="contactLangSelect" onchange="AdminApp.loadContactEditor()"></select>
+                    </div>
+                </div>
+                <div class="cms-form">
+                    <div class="form-group">
+                        <label>X</label>
+                        <input type="text" data-cms-key="contact.xValue" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>微信</label>
+                        <input type="text" data-cms-key="contact.wechatValue" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram</label>
+                        <input type="text" data-cms-key="contact.insValue" class="cms-input">
+                    </div>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveContact()">保存</button>
+                    <button class="btn btn-outline" onclick="AdminApp.resetContact()">重置为默认</button>
+                </div>
+            </div>
+
+            <!-- ========== 页脚设置 ========== -->
+            <div class="cms-section" id="section-footer" style="display:none">
+                <div class="section-header-cms">
+                    <h2>页脚设置</h2>
+                    <div class="lang-selector">
+                        <label>编辑语言：</label>
+                        <select id="footerLangSelect" onchange="AdminApp.loadFooterEditor()"></select>
+                    </div>
+                </div>
+                <div class="cms-form">
+                    <div class="form-group">
+                        <label>Logo 文字</label>
+                        <input type="text" data-cms-key="footer.logo" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>标语</label>
+                        <input type="text" data-cms-key="footer.text" class="cms-input">
+                    </div>
+                    <div class="form-group">
+                        <label>免责声明</label>
+                        <input type="text" data-cms-key="footer.note" class="cms-input">
+                    </div>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveFooter()">保存</button>
+                    <button class="btn btn-outline" onclick="AdminApp.resetFooter()">重置为默认</button>
+                </div>
+            </div>
+
+            <!-- ========== 会员管理 ========== -->
+            <div class="cms-section" id="section-members" style="display:none">
+                <div class="section-header-cms">
+                    <h2>会员管理</h2>
+                </div>
+                <div class="admin-toolbar">
+                    <div class="toolbar-right">
+                        <input type="text" id="memberSearchInput" placeholder="搜索邮箱/昵称" style="padding:6px 12px;border:1px solid var(--pale);font-family:var(--body-serif);font-size:13px;width:220px" oninput="AdminApp.searchMembers()">
+                    </div>
+                </div>
+                <div id="membersGrid" style="overflow-x:auto"></div>
+            </div>
+
+            <!-- ========== 订单管理 ========== -->
+            <div class="cms-section" id="section-orders" style="display:none">
+                <div class="section-header-cms">
+                    <h2>订单管理</h2>
+                </div>
+                <div class="admin-toolbar">
+                    <div class="toolbar-right">
+                        <select id="orderStatusFilter" onchange="AdminApp.loadOrdersEditor()" style="padding:6px 10px;border:1px solid var(--pale);font-family:var(--body-serif);font-size:13px">
+                            <option value="">全部状态</option>
+                            <option value="pending">待确认</option>
+                            <option value="confirmed">已确认</option>
+                            <option value="processing">处理中</option>
+                            <option value="shipped">已发货</option>
+                            <option value="delivered">已完成</option>
+                            <option value="cancelled">已取消</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="ordersGrid" style="overflow-x:auto"></div>
+            </div>
+
+            <!-- ========== 网站设置 ========== -->
+            <div class="cms-section" id="section-settings" style="display:none">
+                <div class="section-header-cms">
+                    <h2>网站设置</h2>
+                </div>
+                <div class="cms-form">
+                    <h3 class="form-section-title">外观设置</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hero 背景色</label>
+                            <input type="color" id="settingHeroBgColor" class="cms-color-input">
+                        </div>
+                        <div class="form-group">
+                            <label>主题色</label>
+                            <input type="color" id="settingPrimaryColor" class="cms-color-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero 背景图片 URL</label>
+                        <input type="url" id="settingHeroBgImage" class="cms-input" placeholder="输入图片URL">
+                    </div>
+                    <div class="form-group">
+                        <label>Logo 文字</label>
+                        <input type="text" id="settingLogoText" class="cms-input" placeholder="留空使用默认">
+                    </div>
+                    <h3 class="form-section-title">高级设置</h3>
+                    <div class="form-group">
+                        <label>自定义 CSS</label>
+                        <textarea id="settingCustomCSS" rows="6" class="cms-input" placeholder="输入自定义CSS代码"></textarea>
+                    </div>
+                    <h3 class="form-section-title">USDT 收款设置</h3>
+                    <div class="form-group">
+                        <label>USDT 地址</label>
+                        <input type="text" id="settingUsdtAddress" class="cms-input" placeholder="输入 USDT 收款地址">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>网络类型</label>
+                            <select id="settingUsdtNetwork" class="cms-input" style="padding:8px 12px;border:1px solid var(--pale);font-family:var(--body-serif);font-size:13px">
+                                <option value="TRC20">TRC20</option>
+                                <option value="ERC20">ERC20</option>
+                                <option value="BEP20">BEP20</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>汇率 (USD/CNY)</label>
+                            <input type="number" id="settingUsdtRate" class="cms-input" step="0.01" min="0.01" placeholder="7.2">
+                        </div>
+                    </div>
+                    <h3 class="form-section-title">数据管理</h3>
+                    <div class="form-group">
+                        <label>导入 CMS 数据</label>
+                        <input type="file" id="importCMSFile" accept=".json" onchange="AdminApp.importCMS(event)">
+                    </div>
+                    <div class="cms-actions" style="margin-top:8px">
+                        <button class="btn btn-outline" onclick="CMSManager.exportCMS()">导出 CMS 数据</button>
+                        <button class="btn btn-delete" onclick="AdminApp.resetAllCMS()">重置所有 CMS 数据</button>
+                    </div>
+                </div>
+                <div class="cms-actions">
+                    <button class="btn btn-primary" onclick="AdminApp.saveSettings()">保存设置</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 添加/编辑商品模态框 -->
+    <div class="modal-overlay" id="productModal" style="display:none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">添加商品</h2>
+                <button class="modal-close" onclick="AdminApp.closeModal()">&times;</button>
+            </div>
+            <form id="productForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label id="labelBrand">品牌</label>
+                        <select id="brandSelect" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label id="labelCategory">分类</label>
+                        <select id="productCategory">
+                            <option value="classic">经典款</option>
+                            <option value="handbags">手袋</option>
+                            <option value="accessories">配饰</option>
+                            <option value="limited">限量款</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>编辑语言</label>
+                        <select id="productLangSelect" onchange="AdminApp.switchProductLang()"></select>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-end">
+                        <button type="button" class="btn btn-translate-modal" onclick="AdminApp.translateProduct()" title="将中文名称/描述/品牌/颜色/尺寸一键翻译到所有12种语言">🌐 一键翻译到所有语言</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label id="labelName">商品名称</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label id="labelPrice">价格</label>
+                        <input type="text" id="productPrice" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="labelImage">商品图片</label>
+                    <div class="image-upload-area" id="imageUploadArea">
+                        <div class="image-upload-hint" id="imageUploadHint">
+                            <span>点击或拖拽上传图片</span>
+                            <span class="image-upload-sub">支持 JPG / PNG / WebP</span>
+                        </div>
+                        <img id="imagePreview" class="image-preview" style="display:none" alt="preview">
+                        <input type="file" id="productImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                    </div>
+                    <div class="image-url-row">
+                        <input type="text" id="productImage" placeholder="或输入图片URL">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.loadImageFromUrl()">加载</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="labelDescription">描述</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label id="labelColor">颜色</label>
+                        <input type="text" id="productColor">
+                    </div>
+                    <div class="form-group">
+                        <label id="labelSize">尺寸</label>
+                        <input type="text" id="productSize">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productFeatured">
+                        <span id="labelFeatured">推荐商品</span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">保存</button>
+                    <button type="button" class="btn btn-outline" onclick="AdminApp.closeModal()" id="cancelBtn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="admin-footer">
+        <p>&copy; 2026 Qevora Studio Admin</p>
+    </footer>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/brands-config.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/translator.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

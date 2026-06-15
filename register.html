@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="common.site_title">注册 — Qevora Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        .lang-switch { position:fixed; top:12px; right:20px; z-index:9999; }
+        .lang-switch select { padding:4px 8px; border:1px solid var(--pale); background:var(--near-white); font-family:var(--body-serif); font-size:12px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <select class="lang-select" onchange="I18n.setLang(this.value)"></select>
+    </div>
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <img src="images/logo.png" alt="Logo">
+                <h2 data-i18n="common.site_title">Qevora Studio</h2>
+                <p>Create Account</p>
+            </div>
+
+            <div class="auth-divider"><span data-i18n="register.title">会员注册</span></div>
+
+            <div class="auth-error" id="regError"></div>
+
+            <form class="auth-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label data-i18n="register.email">邮箱</label>
+                    <input type="email" id="regPhone" data-i18n-ph="register.ph_email" placeholder="请输入邮箱地址" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="register.code">验证码</label>
+                    <div class="sms-row">
+                        <input type="text" id="regCode" data-i18n-ph="register.ph_code" placeholder="6位验证码" maxlength="6">
+                        <button type="button" class="sms-btn" id="regSendBtn" onclick="sendRegSms()" data-i18n="register.get_code">获取验证码</button>
+                    </div>
+                    <div class="sms-hint" id="regSmsHint"></div>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="register.nickname">昵称</label>
+                    <input type="text" id="regNickname" data-i18n-ph="register.ph_nickname" placeholder="请输入昵称" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="register.password">密码</label>
+                    <input type="password" id="regPassword" data-i18n-ph="register.ph_password" placeholder="至少6位密码" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="register.confirm">确认密码</label>
+                    <input type="password" id="regPassword2" data-i18n-ph="register.ph_confirm" placeholder="再次输入密码" autocomplete="new-password">
+                </div>
+                <button type="submit" class="auth-submit" data-i18n="register.submit">注 册</button>
+            </form>
+
+            <div class="auth-links">
+                <span data-i18n="register.has_account">已有账号？</span><a href="login.html" data-i18n="register.go_login">立即登录</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/i18n/zh.js"></script>
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n/ko.js"></script>
+    <script src="js/i18n/ja.js"></script>
+    <script src="js/i18n/fr.js"></script>
+    <script src="js/i18n/es.js"></script>
+    <script src="js/i18n/ar.js"></script>
+    <script src="js/i18n/ru.js"></script>
+    <script src="js/i18n/de.js"></script>
+    <script src="js/i18n/pt.js"></script>
+    <script src="js/i18n/it.js"></script>
+    <script src="js/i18n/th.js"></script>
+    <script src="js/i18n/vi.js"></script>
+    <script src="js/cms-manager.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        function showError(msg) {
+            const el = document.getElementById('regError');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('regError').classList.remove('show');
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            hideError();
+            const email = document.getElementById('regPhone').value.trim();
+            const code = document.getElementById('regCode').value.trim();
+            const nickname = document.getElementById('regNickname').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const password2 = document.getElementById('regPassword2').value;
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError(I18n.t('register.invalid_email'));
+            if (!/^\d{6}$/.test(code)) return showError(I18n.t('register.invalid_code'));
+            if (!nickname || nickname.length < 1) return showError(I18n.t('register.empty_nick'));
+            if (password.length < 6) return showError(I18n.t('register.weak_pwd'));
+            if (password !== password2) return showError(I18n.t('register.pwd_mismatch'));
+
+            const btn = e.target.querySelector('.auth-submit');
+            btn.disabled = true;
+            btn.textContent = I18n.t('register.registering');
+            try {
+                const res = await Auth.register(email, password, code, nickname);
+                if (res.success) {
+                    if (typeof Cart !== 'undefined') await Cart.mergeGuestCart();
+                    window.location.href = Utils.resolvePath('/index.html');
+                } else {
+                    showError(res.message || I18n.t('register.reg_fail'));
+                }
+            } catch (err) {
+                showError(I18n.t('register.network_err'));
+            } finally {
+                btn.disabled = false;
+                btn.textContent = I18n.t('register.submit');
+            }
+        }
+
+        let smsTimer = null;
+        async function sendRegSms() {
+            const email = document.getElementById('regPhone').value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError(I18n.t('register.invalid_email'));
+            hideError();
+            const btn = document.getElementById('regSendBtn');
+            btn.disabled = true;
+            try {
+                const res = await Auth.sendSmsCode(email, 'register');
+                if (res.success) {
+                    const hint = document.getElementById('regSmsHint');
+                    if (hint) {
+                        hint.textContent = (res.message || I18n.t('register.send_ok'));
+                        if (res.code) hint.textContent += '（' + I18n.t('register.send_ok') + '：' + res.code + '）';
+                    }
+                    if (res.code) {
+                        document.getElementById('regCode').value = res.code;
+                    }
+                    let sec = 60;
+                    btn.textContent = sec + 's';
+                    smsTimer = setInterval(() => {
+                        sec--;
+                        if (sec <= 0) {
+                            clearInterval(smsTimer);
+                            btn.textContent = I18n.t('register.get_code');
+                            btn.disabled = false;
+                        } else {
+                            btn.textContent = sec + 's';
+                        }
+                    }, 1000);
+                } else {
+                    showError(res.message || I18n.t('register.send_fail'));
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                showError(I18n.t('register.network_short'));
+                btn.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            I18n.init();
+            document.querySelectorAll('.lang-select').forEach(sel => {
+                sel.innerHTML = Language.getLanguageOptionsHTML();
+                sel.value = I18n.current;
+            });
+        });
+
+        if (Auth.isLoggedIn()) window.location.href = Utils.resolvePath('/index.html');
+    </script>
+</body>
+</html>
