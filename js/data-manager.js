@@ -1,5 +1,5 @@
 const DataManager = {
-  DATA_FILE: 'data/products.json',
+  DATA_FILE: (typeof BASE_PATH !== 'undefined' ? BASE_PATH : '') + '/data/products.json',
 
   /** Get localized product name from a product object */
   getLocalizedName(product, lang) {

@@ -2,6 +2,8 @@ const API_HOST = window.location.protocol === 'file:'
   ? 'http://localhost:3000'
   : '';
 
+const BASE_PATH = window.location.hostname.includes('github.io') ? '/qevora-studio' : '';
+
 const Utils = {
   resolvePath(targetPath) {
     if (window.location.protocol === 'file:') {
@@ -10,7 +12,17 @@ const Utils = {
       }
       return targetPath.replace(/^\//, '');
     }
-    return targetPath;
+    return BASE_PATH + targetPath;
+  },
+
+  resolveImage(imgPath) {
+    if (window.location.protocol === 'file:') {
+      if (window.location.pathname.includes('/pages/')) {
+        return '../../' + imgPath.replace(/^\//, '');
+      }
+      return imgPath.replace(/^\//, '');
+    }
+    return BASE_PATH + '/' + imgPath.replace(/^\//, '');
   }
 };
 

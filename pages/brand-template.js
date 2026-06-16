@@ -249,7 +249,7 @@ const BrandPage = {
                 : '';
             // Collect all images
             const rawImages = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
-            this.data.galleryImages = rawImages.map(img => img && !img.startsWith('http') ? '/images/' + img : img);
+            this.data.galleryImages = rawImages.map(img => img && !img.startsWith('http') ? Utils.resolveImage('/images/' + img) : img);
             this.data.galleryIndex = 0;
             const detailImageSrc = this.data.galleryImages[0] || '';
             const overlay = document.getElementById('productDetailOverlay');
@@ -428,7 +428,7 @@ const BrandPage = {
         const allImages = (product.images && product.images.length > 0) ? product.images : (product.image ? [product.image] : []);
         let imagesHtml;
         if (allImages.length > 0) {
-            const firstImgSrc = allImages[0].startsWith('http') ? allImages[0] : '/images/' + allImages[0];
+            const firstImgSrc = allImages[0].startsWith('http') ? allImages[0] : Utils.resolveImage('/images/' + allImages[0]);
             const imgCountBadge = allImages.length > 1 ? `<span class="card-img-count">${allImages.length} 张</span>` : '';
             const dotsHtml = allImages.length > 1 ? `<div class="card-dots">${allImages.map((_, i) => `<span class="card-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>` : '';
             imagesHtml = `<div class="product-gallery">${imgCountBadge}<img src="${firstImgSrc}" alt="" loading="lazy">${dotsHtml}</div>`;

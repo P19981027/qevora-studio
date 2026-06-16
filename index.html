@@ -190,8 +190,8 @@
                         const lang = Language.currentLang;
                         featuredGrid.innerHTML = featured.map(p => {
                             const imgSrc = (p.images && p.images.length > 0)
-                                ? (p.images[0].startsWith('http') ? p.images[0] : '/images/' + p.images[0])
-                                : (p.image ? (p.image.startsWith('http') ? p.image : '/images/' + p.image) : '');
+                                ? (p.images[0].startsWith('http') ? p.images[0] : Utils.resolveImage('/images/' + p.images[0]))
+                                : (p.image ? (p.image.startsWith('http') ? p.image : Utils.resolveImage('/images/' + p.image)) : '');
                             const name = (typeof p.name === 'object' && p.name) ? (p.name[lang] || p.name['zh'] || '') : (p.name || '');
                             const price = p.price || '询价';
                             const imgCount = (p.images && p.images.length > 1) ? `<span class="card-img-count">${p.images.length} 张</span>` : '';
