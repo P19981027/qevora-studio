@@ -1,0 +1,9 @@
+server/
+node_modules/
+optimize-images.js
+verify_fix.html
+.git/
+*.bat
+package.json
+package-lock.json
+wrangler.toml

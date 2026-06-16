@@ -1,20 +1,7 @@
 # Cloudflare Pages configuration
 name = "qevora-studio"
 compatibility_date = "2026-06-16"
-
-# Static site - no build needed
-[site]
-bucket = "."
+pages_build_output_dir = "."
 
 # Exclude server-side code from deployment
-exclude = [
-  "server/**",
-  "node_modules/**",
-  "package.json",
-  "package-lock.json",
-  "optimize-images.js",
-  ".git/**",
-  "verify_fix.html",
-  "启动服务器.bat",
-  "打开后台.bat"
-]
+# These are handled via .cfpagesignore
