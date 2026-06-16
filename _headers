@@ -1,0 +1,20 @@
+# Cache static assets for 7 days
+/images/*
+  Cache-Control: public, max-age=604800
+
+/css/*
+  Cache-Control: public, max-age=604800
+
+/js/*
+  Cache-Control: public, max-age=604800
+
+# Cache fonts for 30 days
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
+# HTML pages - short cache, revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
