@@ -5,6 +5,24 @@ const API_HOST = window.location.protocol === 'file:'
 const BASE_PATH = window.location.hostname.includes('github.io') ? '/qevora-studio' : '';
 
 const Utils = {
+  _webpSupported: null,
+
+  async checkWebP() {
+    if (this._webpSupported !== null) return this._webpSupported;
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => { this._webpSupported = img.width > 0; resolve(this._webpSupported); };
+      img.onerror = () => { this._webpSupported = false; resolve(false); };
+      img.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+    });
+  },
+
+  toWebP(path) {
+    if (!path || !this._webpSupported) return path;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    return path.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+  },
+
   resolvePath(targetPath) {
     if (window.location.protocol === 'file:') {
       if (window.location.pathname.includes('/pages/')) {
@@ -16,13 +34,17 @@ const Utils = {
   },
 
   resolveImage(imgPath) {
+    let resolved;
     if (window.location.protocol === 'file:') {
       if (window.location.pathname.includes('/pages/')) {
-        return '../../' + imgPath.replace(/^\//, '');
+        resolved = '../../' + imgPath.replace(/^\//, '');
+      } else {
+        resolved = imgPath.replace(/^\//, '');
       }
-      return imgPath.replace(/^\//, '');
+    } else {
+      resolved = BASE_PATH + '/' + imgPath.replace(/^\//, '');
     }
-    return BASE_PATH + '/' + imgPath.replace(/^\//, '');
+    return this.toWebP(resolved);
   },
 
   escapeHtml(str) {
@@ -30,6 +52,9 @@ const Utils = {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 };
+
+// Detect WebP support on load
+Utils.checkWebP();
 
 const API = {
   baseUrl: API_HOST + '/api',

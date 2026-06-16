@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="common.site_title">我的订单 — Qevora Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=20260616">
     <link rel="stylesheet" href="css/order.css?v=20260616">
     <style>
@@ -39,20 +37,8 @@
         <div class="orders-container" id="ordersContent"></div>
     </div>
 
-    <script src="js/i18n/zh.js?v=20260616"></script>
-    <script src="js/i18n/en.js?v=20260616"></script>
-    <script src="js/i18n/ko.js?v=20260616"></script>
-    <script src="js/i18n/ja.js?v=20260616"></script>
-    <script src="js/i18n/fr.js?v=20260616"></script>
-    <script src="js/i18n/es.js?v=20260616"></script>
-    <script src="js/i18n/ar.js?v=20260616"></script>
-    <script src="js/i18n/ru.js?v=20260616"></script>
-    <script src="js/i18n/de.js?v=20260616"></script>
-    <script src="js/i18n/pt.js?v=20260616"></script>
-    <script src="js/i18n/it.js?v=20260616"></script>
-    <script src="js/i18n/th.js?v=20260616"></script>
-    <script src="js/i18n/vi.js?v=20260616"></script>
-    <script src="js/cms-manager.js?v=20260616"></script>
+                                                        <script src="js/i18n/all.js?v=20260616"></script>
+<script src="js/cms-manager.js?v=20260616"></script>
     <script src="js/language.js?v=20260616"></script>
     <script src="js/api.js?v=20260616"></script>
     <script src="js/auth.js?v=20260616"></script>
@@ -109,7 +95,7 @@
                     <div class="order-items">
                         ${(o.items || []).map(item => `
                             <div class="order-item">
-                                <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img">
+                                <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img" loading="lazy">
                                 <span class="order-item-name">${Utils.escapeHtml(item.name)} × ${item.quantity || 1}</span>
                                 <span class="order-item-price">${Utils.escapeHtml(item.price)}</span>
                             </div>
@@ -163,7 +149,7 @@
                     <h3 data-i18n="orders.items">商品清单</h3>
                     ${(o.items || []).map(item => `
                         <div class="order-item" style="padding:10px 0;border-bottom:1px solid var(--off-white)">
-                            <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img">
+                            <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img" loading="lazy">
                             <span class="order-item-name">${Utils.escapeHtml(item.name)} × ${item.quantity || 1}</span>
                             <span class="order-item-price">${Utils.escapeHtml(item.price)}</span>
                         </div>

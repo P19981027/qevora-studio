@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="common.site_title">购物车 — Qevora Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=20260616">
     <link rel="stylesheet" href="css/cart.css?v=20260616">
     <style>
@@ -41,20 +39,8 @@
         </div>
     </div>
 
-    <script src="js/i18n/zh.js?v=20260616"></script>
-    <script src="js/i18n/en.js?v=20260616"></script>
-    <script src="js/i18n/ko.js?v=20260616"></script>
-    <script src="js/i18n/ja.js?v=20260616"></script>
-    <script src="js/i18n/fr.js?v=20260616"></script>
-    <script src="js/i18n/es.js?v=20260616"></script>
-    <script src="js/i18n/ar.js?v=20260616"></script>
-    <script src="js/i18n/ru.js?v=20260616"></script>
-    <script src="js/i18n/de.js?v=20260616"></script>
-    <script src="js/i18n/pt.js?v=20260616"></script>
-    <script src="js/i18n/it.js?v=20260616"></script>
-    <script src="js/i18n/th.js?v=20260616"></script>
-    <script src="js/i18n/vi.js?v=20260616"></script>
-    <script src="js/cms-manager.js?v=20260616"></script>
+                                                        <script src="js/i18n/all.js?v=20260616"></script>
+<script src="js/cms-manager.js?v=20260616"></script>
     <script src="js/language.js?v=20260616"></script>
     <script src="js/api.js?v=20260616"></script>
     <script src="js/auth.js?v=20260616"></script>
@@ -85,7 +71,7 @@
                 const specStr = Object.entries(specs).map(([k, v]) => `<span>${Utils.escapeHtml(k)}: ${Utils.escapeHtml(v)}</span>`).join('');
                 return `
                 <div class="cart-item">
-                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="cart-item-img">
+                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="cart-item-img" loading="lazy">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${Utils.escapeHtml(item.name)}</div>
                         ${specStr ? `<div class="cart-item-specs">${specStr}</div>` : ''}

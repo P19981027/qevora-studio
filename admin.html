@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Qevora Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/fonts-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css?v=20260616">
 </head>
 <body>
@@ -193,7 +193,7 @@
                                 <span>点击或拖拽上传品牌背景图</span>
                                 <span class="image-upload-sub">建议尺寸 800x600 · JPG / PNG / WebP</span>
                             </div>
-                            <img id="brandBgPreview" class="image-preview" style="display:none" alt="preview">
+                            <img id="brandBgPreview" class="image-preview" style="display:none" alt="preview" loading="lazy">
                             <input type="file" id="brandBgImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
                         </div>
                         <div class="image-url-row">
@@ -456,7 +456,7 @@
                             <span>点击或拖拽上传图片</span>
                             <span class="image-upload-sub">支持 JPG / PNG / WebP</span>
                         </div>
-                        <img id="imagePreview" class="image-preview" style="display:none" alt="preview">
+                        <img id="imagePreview" class="image-preview" style="display:none" alt="preview" loading="lazy">
                         <input type="file" id="productImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
                     </div>
                     <div class="image-url-row">
@@ -496,20 +496,8 @@
         <p>&copy; 2026 Qevora Studio Admin</p>
     </footer>
 
-    <script src="js/i18n/zh.js?v=20260616"></script>
-    <script src="js/i18n/en.js?v=20260616"></script>
-    <script src="js/i18n/ko.js?v=20260616"></script>
-    <script src="js/i18n/ja.js?v=20260616"></script>
-    <script src="js/i18n/fr.js?v=20260616"></script>
-    <script src="js/i18n/es.js?v=20260616"></script>
-    <script src="js/i18n/ar.js?v=20260616"></script>
-    <script src="js/i18n/ru.js?v=20260616"></script>
-    <script src="js/i18n/de.js?v=20260616"></script>
-    <script src="js/i18n/pt.js?v=20260616"></script>
-    <script src="js/i18n/it.js?v=20260616"></script>
-    <script src="js/i18n/th.js?v=20260616"></script>
-    <script src="js/i18n/vi.js?v=20260616"></script>
-    <script src="js/cms-manager.js?v=20260616"></script>
+                                                        <script src="js/i18n/all.js?v=20260616"></script>
+<script src="js/cms-manager.js?v=20260616"></script>
     <script src="js/language.js?v=20260616"></script>
     <script src="js/brands-config.js?v=20260616"></script>
     <script src="js/data-manager.js?v=20260616"></script>

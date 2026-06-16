@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="checkout.title">确认订单</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=20260616">
     <link rel="stylesheet" href="css/cart.css?v=20260616">
     <link rel="stylesheet" href="css/address-selector.css?v=20260616">
@@ -111,20 +109,8 @@
         </div>
     </div>
 
-    <script src="js/i18n/zh.js?v=20260616"></script>
-    <script src="js/i18n/en.js?v=20260616"></script>
-    <script src="js/i18n/ko.js?v=20260616"></script>
-    <script src="js/i18n/ja.js?v=20260616"></script>
-    <script src="js/i18n/fr.js?v=20260616"></script>
-    <script src="js/i18n/es.js?v=20260616"></script>
-    <script src="js/i18n/ar.js?v=20260616"></script>
-    <script src="js/i18n/ru.js?v=20260616"></script>
-    <script src="js/i18n/de.js?v=20260616"></script>
-    <script src="js/i18n/pt.js?v=20260616"></script>
-    <script src="js/i18n/it.js?v=20260616"></script>
-    <script src="js/i18n/th.js?v=20260616"></script>
-    <script src="js/i18n/vi.js?v=20260616"></script>
-    <script src="js/cms-manager.js?v=20260616"></script>
+                                                        <script src="js/i18n/all.js?v=20260616"></script>
+<script src="js/cms-manager.js?v=20260616"></script>
     <script src="js/language.js?v=20260616"></script>
     <script src="js/api.js?v=20260616"></script>
     <script src="js/auth.js?v=20260616"></script>
@@ -150,7 +136,7 @@
             const el = document.getElementById('checkoutItems');
             el.innerHTML = cartItems.map(item => `
                 <div class="checkout-item">
-                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="checkout-item-img">
+                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="checkout-item-img" loading="lazy">
                     <div class="checkout-item-info">
                         <div class="checkout-item-name">${Utils.escapeHtml(item.name)}</div>
                         <div class="checkout-item-qty">×${item.quantity || 1}</div>
