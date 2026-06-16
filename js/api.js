@@ -17,12 +17,6 @@ const Utils = {
     });
   },
 
-  toWebP(path) {
-    if (!path || !this._webpSupported) return path;
-    if (path.startsWith('http') || path.startsWith('data:')) return path;
-    return path.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-  },
-
   resolvePath(targetPath) {
     if (window.location.protocol === 'file:') {
       if (window.location.pathname.includes('/pages/')) {
@@ -34,17 +28,13 @@ const Utils = {
   },
 
   resolveImage(imgPath) {
-    let resolved;
     if (window.location.protocol === 'file:') {
       if (window.location.pathname.includes('/pages/')) {
-        resolved = '../../' + imgPath.replace(/^\//, '');
-      } else {
-        resolved = imgPath.replace(/^\//, '');
+        return '../../' + imgPath.replace(/^\//, '');
       }
-    } else {
-      resolved = BASE_PATH + '/' + imgPath.replace(/^\//, '');
+      return imgPath.replace(/^\//, '');
     }
-    return this.toWebP(resolved);
+    return BASE_PATH + '/' + imgPath.replace(/^\//, '');
   },
 
   escapeHtml(str) {
@@ -53,8 +43,14 @@ const Utils = {
   }
 };
 
-// Detect WebP support on load
-Utils.checkWebP();
+// Global WebP fallback: if a .webp image fails to load, try the original .jpg
+document.addEventListener('error', function(e) {
+  const el = e.target;
+  if (el.tagName === 'IMG' && el.src && el.src.endsWith('.webp') && !el.dataset.webpFallback) {
+    el.dataset.webpFallback = '1';
+    el.src = el.src.replace(/\.webp$/i, '.jpg');
+  }
+}, true);
 
 const API = {
   baseUrl: API_HOST + '/api',

@@ -54,3 +54,27 @@ if (heroEl) {
     heroEl.style.opacity = '1';
     heroEl.style.transform = 'translateY(0)';
 }
+
+// WebP optimization: upgrade .jpg/.png images to .webp if browser supports it
+(function() {
+    const testImg = new Image();
+    testImg.onload = function() {
+        if (testImg.width > 0) upgradeToWebP();
+    };
+    testImg.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+
+    function upgradeToWebP() {
+        document.querySelectorAll('img').forEach(img => {
+            if (img.dataset.webpChecked) return;
+            img.dataset.webpChecked = '1';
+            const src = img.getAttribute('src');
+            if (src && /\.(jpg|jpeg|png)$/i.test(src) && !src.startsWith('http') && !src.startsWith('data:')) {
+                const webpSrc = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                const testEl = new Image();
+                testEl.onload = function() { img.src = webpSrc; };
+                testEl.onerror = function() { /* webp not available, keep original */ };
+                testEl.src = webpSrc;
+            }
+        });
+    }
+})();
