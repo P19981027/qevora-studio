@@ -37,6 +37,13 @@ const API = {
     const ok = (data) => ({ success: true, ...data });
     const fail = (msg) => ({ success: false, message: msg });
 
+    // ========== Demo: Seed default admin user on first visit ==========
+    if (!localStorage.getItem('lb_users')) {
+      localStorage.setItem('lb_users', JSON.stringify([
+        { email: 'admin@qevora.com', password: 'admin123', nickname: 'Admin', role: 'admin' }
+      ]));
+    }
+
     // ========== Auth: Register ==========
     if (method === 'POST' && path === '/auth/register') {
       const { email, password, nickname } = body || {};
