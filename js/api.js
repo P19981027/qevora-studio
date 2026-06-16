@@ -301,6 +301,24 @@ const API = {
     if (method === 'PUT' && path === '/admin/products/sync') {
       return ok({ message: '演示模式：商品数据已同步到本地' });
     }
+    if (method === 'POST' && path === '/admin/brand-names') {
+      return ok({ message: '演示模式：品牌名称已保存' });
+    }
+    if (method === 'POST' && path === '/admin/translate') {
+      // Demo: return empty translations
+      const { texts } = body || {};
+      const translations = (texts || []).map(() => ({}));
+      return ok({ translations, message: '演示模式：翻译功能需要后端服务' });
+    }
+    if (method === 'POST' && path === '/admin/translate-brands') {
+      return ok({ message: '演示模式：品牌翻译功能需要后端服务' });
+    }
+    if (method === 'GET' && path === '/admin/usdt-config') {
+      return ok({ usdt: { address: 'TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', network: 'TRC20', rate: 7.25 } });
+    }
+    if (method === 'POST' && path === '/admin/usdt-config') {
+      return ok({ message: '演示模式：USDT 配置已保存' });
+    }
 
     return fail('演示模式不支持此功能');
   },
