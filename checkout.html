@@ -150,12 +150,12 @@
             const el = document.getElementById('checkoutItems');
             el.innerHTML = cartItems.map(item => `
                 <div class="checkout-item">
-                    <img src="${item.image}" alt="${item.name}" class="checkout-item-img">
+                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="checkout-item-img">
                     <div class="checkout-item-info">
-                        <div class="checkout-item-name">${item.name}</div>
+                        <div class="checkout-item-name">${Utils.escapeHtml(item.name)}</div>
                         <div class="checkout-item-qty">×${item.quantity || 1}</div>
                     </div>
-                    <div class="checkout-item-price">${item.price}</div>
+                    <div class="checkout-item-price">${Utils.escapeHtml(item.price)}</div>
                 </div>
             `).join('');
         }

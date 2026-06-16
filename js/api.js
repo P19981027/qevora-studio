@@ -23,6 +23,11 @@ const Utils = {
       return imgPath.replace(/^\//, '');
     }
     return BASE_PATH + '/' + imgPath.replace(/^\//, '');
+  },
+
+  escapeHtml(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 };
 
@@ -42,6 +47,14 @@ const API = {
       localStorage.setItem('lb_users', JSON.stringify([
         { email: 'admin@qevora.com', password: 'admin123', nickname: 'Admin', role: 'admin' }
       ]));
+    } else {
+      // Migration: ensure existing users have role field
+      try {
+        let users = JSON.parse(localStorage.getItem('lb_users')) || [];
+        let changed = false;
+        users.forEach(u => { if (!u.role) { u.role = u.email === 'admin@qevora.com' ? 'admin' : 'user'; changed = true; } });
+        if (changed) localStorage.setItem('lb_users', JSON.stringify(users));
+      } catch (e) {}
     }
 
     // ========== Auth: Register ==========
@@ -56,7 +69,7 @@ const API = {
       localStorage.setItem('lb_users', JSON.stringify(users));
       localStorage.setItem('lb_token', email);
       localStorage.setItem('lb_member', JSON.stringify({ email, nickname: user.nickname }));
-      return ok({ token: email, user: { email, nickname: user.nickname } });
+      return ok({ token: email, member: { email, nickname: user.nickname } });
     }
 
     // ========== Auth: Login ==========
@@ -68,8 +81,8 @@ const API = {
       const user = users.find(u => u.email === email && u.password === password);
       if (!user) return fail('邮箱或密码错误');
       localStorage.setItem('lb_token', email);
-      localStorage.setItem('lb_member', JSON.stringify({ email: user.email, nickname: user.nickname }));
-      return ok({ token: email, user: { email: user.email, nickname: user.nickname } });
+      localStorage.setItem('lb_member', JSON.stringify({ email: user.email, nickname: user.nickname, role: user.role || '' }));
+      return ok({ token: email, member: { email: user.email, nickname: user.nickname, role: user.role || '' } });
     }
 
     // ========== Auth: Get current user ==========
@@ -78,7 +91,7 @@ const API = {
       if (!token) return fail('未登录');
       const member = localStorage.getItem('lb_member');
       if (!member) return fail('用户信息丢失');
-      return ok({ user: JSON.parse(member) });
+      return ok({ member: JSON.parse(member) });
     }
 
     // ========== Auth: SMS login (demo: code 123456) ==========
@@ -95,8 +108,8 @@ const API = {
         localStorage.setItem('lb_users', JSON.stringify(users));
       }
       localStorage.setItem('lb_token', email);
-      localStorage.setItem('lb_member', JSON.stringify({ email, nickname: user.nickname }));
-      return ok({ token: email, user: { email, nickname: user.nickname } });
+      localStorage.setItem('lb_member', JSON.stringify({ email, nickname: user.nickname, role: user.role || '' }));
+      return ok({ token: email, member: { email, nickname: user.nickname, role: user.role || '' } });
     }
 
     // ========== Cart mock (for demo mode logged-in users) ==========
@@ -137,6 +150,134 @@ const API = {
       const filtered = items.filter(i => !(i.productId === p.productId && i.brandSlug === p.brandSlug));
       saveCart(filtered);
       return ok({ items: filtered });
+    }
+    if (method === 'DELETE' && path === '/cart/clear') {
+      saveCart([]);
+      return ok({ items: [] });
+    }
+
+    // ========== Email mock (demo: auto-approve) ==========
+    if (method === 'POST' && path === '/email/send') {
+      return ok({ message: '验证码已发送（演示模式）', code: '123456' });
+    }
+
+    // ========== Orders mock ==========
+    const getOrders = () => { try { return JSON.parse(localStorage.getItem('lb_demo_orders')) || []; } catch (e) { return []; } };
+    const saveOrders = (orders) => localStorage.setItem('lb_demo_orders', JSON.stringify(orders));
+
+    if (method === 'POST' && path === '/orders') {
+      const { address, items, remark } = body || {};
+      const id = 'order_' + Date.now();
+      const orderNo = 'QV' + Date.now().toString().slice(-8);
+      const totalAmount = (items || []).reduce((sum, i) => {
+        const p = parseFloat(String(i.price).replace(/[¥,，\s]/g, ''));
+        return sum + (isNaN(p) ? 0 : p * (i.quantity || 1));
+      }, 0);
+      const totalAmountText = '¥' + totalAmount.toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      const guestAccessToken = 'gat_' + Math.random().toString(36).slice(2);
+      const order = {
+        id, orderNo, memberId: null, memberEmail: '',
+        items: items || [], totalAmount: totalAmountText, address: address || {},
+        remark: remark || '', status: 'pending', guestAccessToken,
+        createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+      };
+      const orders = getOrders();
+      orders.unshift(order);
+      saveOrders(orders);
+      return ok({ order: { id, orderNo, totalAmount: totalAmountText, status: 'pending', createdAt: order.createdAt }, accessToken: guestAccessToken });
+    }
+    if (method === 'GET' && path.startsWith('/orders?')) {
+      return ok({ orders: getOrders(), page: 1, totalPages: 1, total: getOrders().length });
+    }
+    if (method === 'GET' && path.match(/^\/orders\/[^?]/)) {
+      const id = path.split('/orders/')[1].split('?')[0];
+      const order = getOrders().find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      return ok({ order });
+    }
+    if (method === 'PUT' && path.match(/^\/orders\/[^/]+\/cancel$/)) {
+      const id = path.split('/orders/')[1].replace('/cancel', '');
+      const orders = getOrders();
+      const order = orders.find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      order.status = 'cancelled';
+      order.updatedAt = new Date().toISOString();
+      saveOrders(orders);
+      return ok({ order });
+    }
+
+    // ========== Payment mock ==========
+    if (method === 'GET' && path.startsWith('/payment/info/')) {
+      const id = path.split('/payment/info/')[1];
+      const orders = getOrders();
+      const order = orders.find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      return ok({
+        order: { orderNo: order.orderNo, totalAmount: order.totalAmount },
+        payment: { usdtAmount: '1.00', address: 'TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', network: 'TRC20', rate: '7.25' }
+      });
+    }
+    if (method === 'POST' && path === '/payment/confirm') {
+      const { orderId, txid } = body || {};
+      const orders = getOrders();
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return fail('订单不存在');
+      order.status = 'payment_submitted';
+      order.txid = txid;
+      order.updatedAt = new Date().toISOString();
+      saveOrders(orders);
+      return ok({ message: '支付信息已提交' });
+    }
+
+    // ========== Admin mock ==========
+    if (method === 'GET' && path === '/admin/members') {
+      let users = [];
+      try { users = JSON.parse(localStorage.getItem('lb_users')) || []; } catch (e) {}
+      const members = users.map(u => ({ id: u.email, email: u.email, nickname: u.nickname, role: u.role || 'user', createdAt: new Date().toISOString() }));
+      return ok({ members, page: 1, totalPages: 1, total: members.length });
+    }
+    if (method === 'GET' && path.match(/^\/admin\/members\//)) {
+      const id = path.split('/admin/members/')[1];
+      let users = [];
+      try { users = JSON.parse(localStorage.getItem('lb_users')) || []; } catch (e) {}
+      const u = users.find(x => x.email === id);
+      if (!u) return fail('会员不存在');
+      return ok({ member: { id: u.email, email: u.email, nickname: u.nickname, role: u.role || 'user', createdAt: new Date().toISOString() }, orders: [] });
+    }
+    if (method === 'GET' && path === '/admin/orders') {
+      return ok({ orders: getOrders(), page: 1, totalPages: 1, total: getOrders().length });
+    }
+    if (method === 'GET' && path.match(/^\/admin\/orders\//)) {
+      const id = path.split('/admin/orders/')[1];
+      const order = getOrders().find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      return ok({ order });
+    }
+    if (method === 'PUT' && path.match(/^\/admin\/orders\/[^/]+\/status$/)) {
+      const id = path.split('/admin/orders/')[1].replace('/status', '');
+      const { status } = body || {};
+      const orders = getOrders();
+      const order = orders.find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      order.status = status;
+      order.updatedAt = new Date().toISOString();
+      saveOrders(orders);
+      return ok({ order });
+    }
+    if (method === 'PUT' && path.match(/^\/admin\/orders\/[^/]+\/tracking$/)) {
+      const id = path.split('/admin/orders/')[1].replace('/tracking', '');
+      const { trackingNo, trackingCompany } = body || {};
+      const orders = getOrders();
+      const order = orders.find(o => o.id === id);
+      if (!order) return fail('订单不存在');
+      order.trackingNo = trackingNo;
+      order.trackingCompany = trackingCompany || '';
+      order.updatedAt = new Date().toISOString();
+      saveOrders(orders);
+      return ok({ order });
+    }
+    if (method === 'PUT' && path === '/admin/products/sync') {
+      return ok({ message: '演示模式：商品数据已同步到本地' });
     }
 
     return fail('演示模式不支持此功能');

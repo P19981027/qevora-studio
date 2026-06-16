@@ -82,14 +82,14 @@
 
             const itemsHtml = cartItems.map((item, i) => {
                 const specs = item.specs || {};
-                const specStr = Object.entries(specs).map(([k, v]) => `<span>${k}: ${v}</span>`).join('');
+                const specStr = Object.entries(specs).map(([k, v]) => `<span>${Utils.escapeHtml(k)}: ${Utils.escapeHtml(v)}</span>`).join('');
                 return `
                 <div class="cart-item">
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <img src="${Utils.escapeHtml(item.image)}" alt="${Utils.escapeHtml(item.name)}" class="cart-item-img">
                     <div class="cart-item-info">
-                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-name">${Utils.escapeHtml(item.name)}</div>
                         ${specStr ? `<div class="cart-item-specs">${specStr}</div>` : ''}
-                        <div class="cart-item-price">${item.price}</div>
+                        <div class="cart-item-price">${Utils.escapeHtml(item.price)}</div>
                     </div>
                     <div class="cart-item-actions">
                         <div class="cart-qty">

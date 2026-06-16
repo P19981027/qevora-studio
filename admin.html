@@ -10,10 +10,11 @@
 <body>
     <nav class="admin-nav">
         <div class="admin-nav-container">
-            <a href="index.html" class="admin-nav-logo"><img src="images/logo.png" alt="Logo" class="admin-logo-img"> Qevora Studio</a>
+            <a href="index.html" class="admin-nav-logo" id="navLogo"><img src="images/logo.png" alt="Logo" class="admin-logo-img"> Qevora Studio</a>
             <div class="admin-nav-right">
                 <a href="index.html" class="admin-nav-link" id="navHome">返回网站</a>
                 <span class="admin-badge">Admin</span>
+                <a href="javascript:void(0)" onclick="Auth.logout()" class="admin-nav-link">退出登录</a>
                 <select id="langSelect" onchange="Language.changeLanguage(this.value)"></select>
             </div>
         </div>

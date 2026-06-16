@@ -212,7 +212,7 @@ const CMSManager = {
 
         if (settings.heroBgImage) {
             const heroEl = document.querySelector('.home-hero') || document.querySelector('.brand-hero');
-            if (heroEl) heroEl.style.background = `url('${settings.heroBgImage}') center/cover no-repeat`;
+            if (heroEl) heroEl.style.backgroundImage = `url('${settings.heroBgImage.replace(/'/g, "\\'")}')`;
         } else if (settings.heroBgColor) {
             const heroEl = document.querySelector('.home-hero') || document.querySelector('.brand-hero');
             if (heroEl) heroEl.style.background = settings.heroBgColor;

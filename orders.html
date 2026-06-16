@@ -22,7 +22,7 @@
     <nav class="site-nav">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="/">
+                <a href="index.html">
                     <img src="images/logo.png" alt="Logo" class="logo-img">
                     <span data-i18n="common.site_title">Qevora Studio</span>
                 </a>
@@ -92,7 +92,7 @@
                 document.getElementById('ordersContent').innerHTML = `
                     <div class="orders-empty">
                         <p data-i18n="orders.empty">暂无订单</p>
-                        <a href="/" data-i18n="orders.browse">浏览商品</a>
+                        <a href="index.html" data-i18n="orders.browse">浏览商品</a>
                     </div>`;
                 return;
             }
@@ -101,7 +101,7 @@
                 <div class="order-card">
                     <div class="order-card-header">
                         <div>
-                            <div class="order-no">${o.orderNo}</div>
+                            <div class="order-no">${Utils.escapeHtml(o.orderNo)}</div>
                             <div class="order-date">${formatDate(o.createdAt)}</div>
                         </div>
                         <span class="order-status ${Order.getStatusClass(o.status)}">${Order.getStatusLabel(o.status)}</span>
@@ -109,17 +109,17 @@
                     <div class="order-items">
                         ${(o.items || []).map(item => `
                             <div class="order-item">
-                                <img src="${item.image}" alt="" class="order-item-img">
-                                <span class="order-item-name">${item.name} × ${item.quantity || 1}</span>
-                                <span class="order-item-price">${item.price}</span>
+                                <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img">
+                                <span class="order-item-name">${Utils.escapeHtml(item.name)} × ${item.quantity || 1}</span>
+                                <span class="order-item-price">${Utils.escapeHtml(item.price)}</span>
                             </div>
                         `).join('')}
                     </div>
                     <div class="order-footer">
-                        <div class="order-total">${o.totalAmount}</div>
+                        <div class="order-total">${Utils.escapeHtml(o.totalAmount)}</div>
                         <div class="order-actions">
-                            <button class="order-btn" onclick="viewOrder('${o.id}')" data-i18n="orders.view">查看详情</button>
-                            ${o.status === 'pending' ? `<button class="order-btn order-btn-danger" onclick="cancelOrder('${o.id}')" data-i18n="orders.cancel">取消订单</button>` : ''}
+                            <button class="order-btn" onclick="viewOrder('${Utils.escapeHtml(o.id)}')" data-i18n="orders.view">查看详情</button>
+                            ${o.status === 'pending' ? `<button class="order-btn order-btn-danger" onclick="cancelOrder('${Utils.escapeHtml(o.id)}')" data-i18n="orders.cancel">取消订单</button>` : ''}
                         </div>
                     </div>
                 </div>
@@ -144,35 +144,35 @@
                 <a class="order-back" onclick="backToList()" data-i18n="orders.back_to_list">← 返回订单列表</a>
                 <div class="order-detail-card">
                     <h3 data-i18n="orders.order_info">订单信息</h3>
-                    <div class="order-detail-row"><span class="label" data-i18n="orders.order_no">订单号</span><span class="value">${o.orderNo}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.order_no">订单号</span><span class="value">${Utils.escapeHtml(o.orderNo)}</span></div>
                     <div class="order-detail-row"><span class="label" data-i18n="orders.date">下单时间</span><span class="value">${formatDate(o.createdAt)}</span></div>
                     <div class="order-detail-row"><span class="label" data-i18n="orders.status">状态</span><span class="value"><span class="order-status ${Order.getStatusClass(o.status)}">${Order.getStatusLabel(o.status)}</span></span></div>
-                    <div class="order-detail-row"><span class="label" data-i18n="orders.amount">金额</span><span class="value" style="color:var(--gold-dark);font-family:var(--serif);font-size:18px;">${o.totalAmount}</span></div>
-                    ${o.trackingNo ? `<div class="order-detail-row"><span class="label" data-i18n="orders.tracking_no">快递单号</span><span class="value">${o.trackingNo}</span></div>` : ''}
-                    ${o.remark ? `<div class="order-detail-row"><span class="label" data-i18n="orders.remark_label">备注</span><span class="value">${o.remark}</span></div>` : ''}
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.amount">金额</span><span class="value" style="color:var(--gold-dark);font-family:var(--serif);font-size:18px;">${Utils.escapeHtml(o.totalAmount)}</span></div>
+                    ${o.trackingNo ? `<div class="order-detail-row"><span class="label" data-i18n="orders.tracking_no">快递单号</span><span class="value">${Utils.escapeHtml(o.trackingNo)}</span></div>` : ''}
+                    ${o.remark ? `<div class="order-detail-row"><span class="label" data-i18n="orders.remark_label">备注</span><span class="value">${Utils.escapeHtml(o.remark)}</span></div>` : ''}
                 </div>
 
                 <div class="order-detail-card" style="margin-top:16px">
                     <h3 data-i18n="orders.shipping_addr">收货地址</h3>
-                    <div class="order-detail-row"><span class="label" data-i18n="orders.recipient">收件人</span><span class="value">${o.address?.name || ''}</span></div>
-                    <div class="order-detail-row"><span class="label" data-i18n="orders.phone_label">电话</span><span class="value">${o.address?.phone || ''}</span></div>
-                    <div class="order-detail-row"><span class="label" data-i18n="orders.address">地址</span><span class="value">${[o.address?.line1, o.address?.line2, o.address?.city, o.address?.state, o.address?.zip, o.address?.country].filter(Boolean).join(' ')}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.recipient">收件人</span><span class="value">${Utils.escapeHtml(o.address?.name)}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.phone_label">电话</span><span class="value">${Utils.escapeHtml(o.address?.phone)}</span></div>
+                    <div class="order-detail-row"><span class="label" data-i18n="orders.address">地址</span><span class="value">${Utils.escapeHtml([o.address?.line1, o.address?.line2, o.address?.city, o.address?.state, o.address?.zip, o.address?.country].filter(Boolean).join(' '))}</span></div>
                 </div>
 
                 <div class="order-detail-card" style="margin-top:16px">
                     <h3 data-i18n="orders.items">商品清单</h3>
                     ${(o.items || []).map(item => `
                         <div class="order-item" style="padding:10px 0;border-bottom:1px solid var(--off-white)">
-                            <img src="${item.image}" alt="" class="order-item-img">
-                            <span class="order-item-name">${item.name} × ${item.quantity || 1}</span>
-                            <span class="order-item-price">${item.price}</span>
+                            <img src="${Utils.escapeHtml(item.image)}" alt="" class="order-item-img">
+                            <span class="order-item-name">${Utils.escapeHtml(item.name)} × ${item.quantity || 1}</span>
+                            <span class="order-item-price">${Utils.escapeHtml(item.price)}</span>
                         </div>
                     `).join('')}
                 </div>
 
                 ${o.status === 'pending' ? `
                     <div style="margin-top:20px;text-align:center">
-                        <button class="order-btn order-btn-danger" onclick="cancelOrder('${o.id}')" style="padding:10px 30px" data-i18n="orders.cancel">取消订单</button>
+                        <button class="order-btn order-btn-danger" onclick="cancelOrder('${Utils.escapeHtml(o.id)}')" style="padding:10px 30px" data-i18n="orders.cancel">取消订单</button>
                     </div>
                 ` : ''}
             `;
@@ -182,7 +182,7 @@
         async function viewOrder(id) {
             currentView = 'detail';
             currentOrderId = id;
-            window.history.pushState({}, '', '/orders.html?order=' + id);
+            window.history.pushState({}, '', Utils.resolvePath('/orders.html?order=' + id));
             await renderOrderDetail(id);
         }
 
@@ -202,11 +202,11 @@
 
         function backToList() {
             if (!Auth.isLoggedIn()) {
-                window.location.href = '/index.html';
+                window.location.href = Utils.resolvePath('/index.html');
                 return;
             }
             currentView = 'list';
-            window.history.pushState({}, '', '/orders.html');
+            window.history.pushState({}, '', Utils.resolvePath('/orders.html'));
             renderOrderList();
         }
 

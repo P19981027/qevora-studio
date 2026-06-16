@@ -74,7 +74,9 @@ router.put('/:id/cancel', optionalAuth, (req, res) => {
   const order = orderModel.findById(req.params.id);
   if (!order) return res.status(404).json({ success: false, message: '订单不存在' });
   const accessToken = req.headers['x-order-token'] || req.body.accessToken;
-  if (!orderModel.canAccess(order, req.member, accessToken) || (req.member && req.member.role === 'admin')) return res.status(403).json({ success: false, message: '无权操作' });
+  const isOwner = orderModel.canAccess(order, req.member, accessToken);
+  const isAdmin = req.member && req.member.role === 'admin';
+  if (!isOwner && !isAdmin) return res.status(403).json({ success: false, message: '无权操作' });
   if (!['pending','payment_submitted'].includes(order.status)) return res.status(400).json({ success: false, message: '当前状态不可取消' });
   const result = orderModel.updateStatus(req.params.id, 'cancelled');
   res.json({ success: true, order: result.order });

@@ -155,6 +155,9 @@
     <script src="js/i18n/vi.js?v=20260616"></script>
     <script src="js/cms-manager.js?v=20260616"></script>
     <script src="js/language.js?v=20260616"></script>
+    <script src="js/api.js?v=20260616"></script>
+    <script src="js/auth.js?v=20260616"></script>
+    <script src="js/order.js?v=20260616"></script>
     <script src="js/i18n.js?v=20260616"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -162,19 +165,14 @@
 
         if (!orderId) {
             document.getElementById('payError').classList.add('show');
-            document.getElementById('payError').textContent = I18n.t('payment.missing_order');
+            document.getElementById('payError').textContent = '缺少订单信息';
         }
 
         let paymentInfo = null;
 
         async function loadPayment() {
             try {
-                const orderToken = localStorage.getItem('qv_order_' + orderId) || '';
-                const headers = orderToken ? { 'X-Order-Token': orderToken } : {};
-                const authToken = localStorage.getItem('lb_token');
-                if (authToken) headers.Authorization = 'Bearer ' + authToken;
-                const res = await fetch('/api/payment/info/' + orderId, { headers });
-                const data = await res.json();
+                const data = await API.get('/payment/info/' + orderId, true);
                 if (!data.success) {
                     showError(data.message || I18n.t('payment.load_fail'));
                     return;
@@ -221,18 +219,13 @@
             btn.disabled = true;
             btn.textContent = I18n.t('payment.submitting');
             try {
-                const res = await fetch('/api/payment/confirm', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('lb_token') ? { Authorization: 'Bearer ' + localStorage.getItem('lb_token') } : {}), ...(localStorage.getItem('qv_order_' + orderId) ? { 'X-Order-Token': localStorage.getItem('qv_order_' + orderId) } : {}) },
-                    body: JSON.stringify({ orderId, txid, accessToken: localStorage.getItem('qv_order_' + orderId) || '' })
-                });
-                const data = await res.json();
+                const data = await API.post('/payment/confirm', { orderId, txid, accessToken: localStorage.getItem('qv_order_' + orderId) || '' }, true);
                 if (data.success) {
                     document.getElementById('paySuccess').textContent = I18n.t('payment.submitted');
                     document.getElementById('paySuccess').classList.add('show');
                     btn.style.display = 'none';
                     document.getElementById('txidInput').disabled = true;
-                    setTimeout(() => { window.location.href = '/orders.html?order=' + encodeURIComponent(orderId); }, 3000);
+                    setTimeout(() => { window.location.href = Utils.resolvePath('/orders.html?order=' + encodeURIComponent(orderId)); }, 3000);
                 } else {
                     showError(data.message || I18n.t('payment.submit_fail'));
                     btn.disabled = false;
@@ -252,7 +245,7 @@
                 sel.value = I18n.current;
             });
             const viewOrderLink = document.getElementById('viewOrderLink');
-            if (viewOrderLink && orderId) viewOrderLink.href = '/orders.html?order=' + encodeURIComponent(orderId);
+            if (viewOrderLink && orderId) viewOrderLink.href = Utils.resolvePath('/orders.html?order=' + encodeURIComponent(orderId));
             if (orderId) loadPayment();
         });
     </script>

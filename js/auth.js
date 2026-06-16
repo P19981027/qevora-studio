@@ -63,7 +63,8 @@ const Auth = {
     if (!this.getToken()) return false;
     const res = await API.get('/auth/me', true);
     if (res.success) {
-      localStorage.setItem('lb_member', JSON.stringify(res.member));
+      const member = res.member || res.user || null;
+      if (member) localStorage.setItem('lb_member', JSON.stringify(member));
       return true;
     }
     localStorage.removeItem('lb_token');

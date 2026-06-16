@@ -1456,5 +1456,12 @@ const AdminApp = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Auth check: must be logged in as admin
+    const member = Auth.getMember();
+    if (!Auth.isLoggedIn() || !member || member.role !== 'admin') {
+        alert('需要管理员权限才能访问后台');
+        window.location.href = Utils.resolvePath('/login.html');
+        return;
+    }
     AdminApp.init();
 });

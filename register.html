@@ -34,7 +34,7 @@
             <form class="auth-form" onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label data-i18n="register.email">邮箱</label>
-                    <input type="email" id="regPhone" data-i18n-ph="register.ph_email" placeholder="请输入邮箱地址" autocomplete="email">
+                    <input type="email" id="regEmail" data-i18n-ph="register.ph_email" placeholder="请输入邮箱地址" autocomplete="email">
                 </div>
                 <div class="form-group">
                     <label data-i18n="register.code">验证码</label>
@@ -97,7 +97,7 @@
         async function handleRegister(e) {
             e.preventDefault();
             hideError();
-            const email = document.getElementById('regPhone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const code = document.getElementById('regCode').value.trim();
             const nickname = document.getElementById('regNickname').value.trim();
             const password = document.getElementById('regPassword').value;
@@ -130,7 +130,7 @@
 
         let smsTimer = null;
         async function sendRegSms() {
-            const email = document.getElementById('regPhone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError(I18n.t('register.invalid_email'));
             hideError();
             const btn = document.getElementById('regSendBtn');
