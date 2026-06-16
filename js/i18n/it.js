@@ -37,16 +37,16 @@ window.i18nTranslations.it = {
   "brands": {
     "title": "Collezioni originali",
     "subtitle": "Esplora Qevora Studio per utilizzo",
-    "atelier": "手工C",
-    "crossbody": "手工M",
-    "woven": "手工G",
-    "dior": "手工D",
-    "fendi": "手工F",
-    "hermes": "手工H",
-    "bottega-veneta": "手工B",
-    "balenciaga": "手工A",
-    "evening": "手工E",
-    "custom": "手工S"
+    "atelier": "Fatto a mano C",
+    "crossbody": "Fatto a mano M",
+    "woven": "Fatto a mano G",
+    "dior": "Fatto a mano D",
+    "fendi": "Fatto a mano F",
+    "hermes": "Fatto a mano H",
+    "bottega-veneta": "Fatto a mano B",
+    "balenciaga": "Fatto a mano A",
+    "evening": "Fatto a mano E",
+    "custom": "Fatto a mano S"
   },
   "brand": {
     "heroTitle": "{englishName}",

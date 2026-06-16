@@ -37,16 +37,16 @@ window.i18nTranslations.ar = {
   "brands": {
     "title": "مجموعات أصلية",
     "subtitle": "تصفح Qevora Studio حسب الاستخدام",
-    "atelier": "手工C",
-    "crossbody": "手工M",
-    "woven": "手工G",
-    "dior": "手工D",
-    "fendi": "手工F",
-    "hermes": "手工H",
-    "bottega-veneta": "手工B",
-    "balenciaga": "手工A",
-    "evening": "手工E",
-    "custom": "手工S"
+    "atelier": "مصنوع يدوياً C",
+    "crossbody": "مصنوع يدوياً M",
+    "woven": "مصنوع يدوياً G",
+    "dior": "مصنوع يدوياً D",
+    "fendi": "مصنوع يدوياً F",
+    "hermes": "مصنوع يدوياً H",
+    "bottega-veneta": "مصنوع يدوياً B",
+    "balenciaga": "مصنوع يدوياً A",
+    "evening": "مصنوع يدوياً E",
+    "custom": "مصنوع يدوياً S"
   },
   "brand": {
     "heroTitle": "{englishName}",

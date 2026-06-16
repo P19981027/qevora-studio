@@ -339,6 +339,9 @@ const API = {
       if (method === 'POST' && path === '/admin/translate') {
         return await this._translateDemo(body);
       }
+      if (method === 'POST' && path === '/admin/translate-brands') {
+        return await this._translateBrandsDemo();
+      }
       return this._mockRequest(method, path, body);
     }
 
@@ -366,6 +369,106 @@ const API = {
       console.error('API error:', err);
       return { success: false, message: '网络错误，请确认服务器已启动 (npm start)' };
     }
+  },
+
+  // Client-side brand name translation for demo/static mode
+  async _translateBrandsDemo() {
+    const TARGET_LANGS = ['en', 'ko', 'ja', 'fr', 'es', 'ar', 'ru', 'de', 'pt', 'it', 'th', 'vi'];
+    const langMap = { zh: 'zh-CN', en: 'en', ko: 'ko', ja: 'ja', fr: 'fr', es: 'es', ar: 'ar', ru: 'ru', de: 'de', pt: 'pt', it: 'it', th: 'th', vi: 'vi' };
+
+    // Correct "手工" (handmade) translations per language - MyMemory often returns "manual" instead
+    const handmadeCorrections = {
+      en: [['Manual', 'Handmade'], ['manual', 'Handmade']],
+      ja: [['マニュアル', 'ハンドメイド'], ['手動', 'ハンドメイド']],
+      ko: [['수동', '수제'], ['매뉴얼', '수제']],
+      fr: [['Manuel', 'Fait main'], ['manuel', 'Fait main']],
+      es: [['Manual', 'Hecho a mano'], ['manual', 'Hecho a mano']],
+      de: [['Manuell', 'Handgefertigt'], ['manuell', 'Handgefertigt']],
+      pt: [['Manual', 'Feito à mão'], ['manual', 'Feito à mão']],
+      it: [['Manuale', 'Fatto a mano'], ['manuale', 'Fatto a mano']],
+      ru: [['Ручной', 'Ручной работы'], ['Мануальный', 'Ручной работы']],
+      ar: [['يدوي', 'مصنوع يدوياً']],
+      th: [['คู่มือ', 'ทำมือ'], ['แมนนวล', 'ทำมือ']],
+      vi: [['Thủ công', 'Thủ công'], ['Bằng tay', 'Thủ công']]
+    };
+
+    // Read brand names from zh i18n
+    const zhBrands = (window.i18nTranslations && window.i18nTranslations.zh && window.i18nTranslations.zh.brands) || {};
+    const brandSlugs = ['atelier', 'crossbody', 'woven', 'dior', 'fendi', 'hermes', 'bottega-veneta', 'balenciaga', 'evening', 'custom'];
+    const brandNames = {};
+    for (const slug of brandSlugs) {
+      if (zhBrands[slug]) brandNames[slug] = zhBrands[slug];
+    }
+
+    if (Object.keys(brandNames).length === 0) {
+      return { success: false, message: '未找到品牌名称数据' };
+    }
+
+    // Translate each brand name to all target languages
+    const translations = {}; // { en: { atelier: "...", ... }, ko: {...}, ... }
+    for (const lang of TARGET_LANGS) {
+      translations[lang] = {};
+    }
+
+    for (const [slug, zhName] of Object.entries(brandNames)) {
+      for (const lang of TARGET_LANGS) {
+        try {
+          const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(zhName)}&langpair=${langMap.zh}|${langMap[lang]}`;
+          const resp = await fetch(url);
+          const data = await resp.json();
+          if (data.responseData && data.responseData.translatedText) {
+            let translated = data.responseData.translatedText;
+            // Fix common MyMemory mistranslations for "手工" (handmade vs manual)
+            const corrections = handmadeCorrections[lang];
+            if (corrections) {
+              for (const [wrong, right] of corrections) {
+                translated = translated.replace(wrong, right);
+              }
+            }
+            if (translated === translated.toUpperCase() && translated.length < 50 && lang !== 'zh') {
+              translated = translated.charAt(0).toUpperCase() + translated.slice(1).toLowerCase();
+            }
+            translations[lang][slug] = translated;
+          } else {
+            translations[lang][slug] = zhName;
+          }
+        } catch (e) {
+          console.warn('Brand translation failed for', slug, lang, e);
+          translations[lang][slug] = zhName;
+        }
+        // Small delay to avoid API rate limiting
+        await new Promise(r => setTimeout(r, 300));
+      }
+    }
+
+    // Apply translations to window.i18nTranslations in memory
+    for (const lang of TARGET_LANGS) {
+      if (window.i18nTranslations && window.i18nTranslations[lang] && window.i18nTranslations[lang].brands) {
+        for (const [slug, translatedText] of Object.entries(translations[lang])) {
+          window.i18nTranslations[lang].brands[slug] = translatedText;
+        }
+      }
+    }
+
+    // Save translations to localStorage for persistence across page loads
+    try {
+      const saved = JSON.parse(localStorage.getItem('lb_brand_translations') || '{}');
+      for (const lang of TARGET_LANGS) {
+        saved[lang] = saved[lang] || {};
+        Object.assign(saved[lang], translations[lang]);
+      }
+      localStorage.setItem('lb_brand_translations', JSON.stringify(saved));
+    } catch (e) {
+      console.warn('Failed to save brand translations to localStorage', e);
+    }
+
+    const successCount = TARGET_LANGS.filter(l => Object.keys(translations[l]).length > 0).length;
+    return {
+      success: true,
+      message: `翻译完成: ${successCount} 种语言成功`,
+      translations,
+      demo: true
+    };
   },
 
   // Client-side translation using MyMemory free API (demo/static mode)

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Qevora Studio</title>
     <link href="css/fonts-admin.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/admin.css?v=20260616c">
+    <link rel="stylesheet" href="css/admin.css?v=20260616g">
 </head>
 <body>
     <nav class="admin-nav">
@@ -160,6 +160,7 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveHomepage()">保存</button>
+                    <button class="btn btn-translate-all" onclick="AdminApp.translateCMSFields('section-homepage', ['hero.subtitle','hero.title','hero.description','hero.explore','brands.title','brands.subtitle','quality.title','quality.subtitle'])">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetHomepage()">重置为默认</button>
                 </div>
             </div>
@@ -231,6 +232,7 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveBrands()">保存</button>
+                    <button class="btn btn-translate-all" onclick="AdminApp.translateBrandFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetBrands()">重置为默认</button>
                 </div>
             </div>
@@ -276,6 +278,7 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveContact()">保存</button>
+                    <button class="btn btn-translate-all" onclick="AdminApp.translateContactFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetContact()">重置为默认</button>
                 </div>
             </div>
@@ -305,6 +308,7 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveFooter()">保存</button>
+                    <button class="btn btn-translate-all" onclick="AdminApp.translateFooterFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetFooter()">重置为默认</button>
                 </div>
             </div>
@@ -453,15 +457,25 @@
                     <label id="labelImage">商品图片</label>
                     <div class="image-upload-area" id="imageUploadArea">
                         <div class="image-upload-hint" id="imageUploadHint">
-                            <span>点击或拖拽上传图片</span>
+                            <span>点击或拖拽上传主图</span>
                             <span class="image-upload-sub">支持 JPG / PNG / WebP</span>
                         </div>
                         <img id="imagePreview" class="image-preview" style="display:none" alt="preview" loading="lazy">
                         <input type="file" id="productImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
                     </div>
                     <div class="image-url-row">
-                        <input type="text" id="productImage" placeholder="或输入图片URL">
+                        <input type="text" id="productImage" placeholder="或输入图片URL/文件名">
                         <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.loadImageFromUrl()">加载</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>图片画廊 <span style="font-weight:normal;color:var(--silver);font-size:12px">(第一张为主图)</span></label>
+                    <div id="galleryEditor" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+                    <div class="image-url-row">
+                        <input type="text" id="galleryImageInput" placeholder="输入图片URL或文件名添加到画廊">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.addGalleryImage()">添加</button>
+                        <input type="file" id="galleryImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('galleryImageFile').click()">上传</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -496,14 +510,14 @@
         <p>&copy; 2026 Qevora Studio Admin</p>
     </footer>
 
-                                                        <script src="js/i18n/all.js?v=20260616c"></script>
-<script src="js/cms-manager.js?v=20260616c"></script>
-    <script src="js/language.js?v=20260616c"></script>
-    <script src="js/brands-config.js?v=20260616c"></script>
-    <script src="js/data-manager.js?v=20260616c"></script>
-    <script src="js/translator.js?v=20260616c"></script>
-    <script src="js/api.js?v=20260616c"></script>
-    <script src="js/auth.js?v=20260616c"></script>
-    <script src="js/admin.js?v=20260616c"></script>
+                                                        <script src="js/i18n/all.js?v=20260616h"></script>
+<script src="js/cms-manager.js?v=20260616g"></script>
+    <script src="js/language.js?v=20260616g"></script>
+    <script src="js/brands-config.js?v=20260616g"></script>
+    <script src="js/data-manager.js?v=20260616g"></script>
+    <script src="js/translator.js?v=20260616g"></script>
+    <script src="js/api.js?v=20260616g"></script>
+    <script src="js/auth.js?v=20260616g"></script>
+    <script src="js/admin.js?v=20260616g"></script>
 </body>
 </html>

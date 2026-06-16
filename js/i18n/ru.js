@@ -37,16 +37,16 @@ window.i18nTranslations.ru = {
   "brands": {
     "title": "Оригинальные коллекции",
     "subtitle": "Выберите Qevora Studio по назначению",
-    "atelier": "手工C",
-    "crossbody": "手工M",
-    "woven": "手工G",
-    "dior": "手工D",
-    "fendi": "手工F",
-    "hermes": "手工H",
-    "bottega-veneta": "手工B",
-    "balenciaga": "手工A",
-    "evening": "手工E",
-    "custom": "手工S"
+    "atelier": "Ручная работа C",
+    "crossbody": "Ручная работа M",
+    "woven": "Ручная работа G",
+    "dior": "Ручная работа D",
+    "fendi": "Ручная работа F",
+    "hermes": "Ручная работа H",
+    "bottega-veneta": "Ручная работа B",
+    "balenciaga": "Ручная работа A",
+    "evening": "Ручная работа E",
+    "custom": "Ручная работа S"
   },
   "brand": {
     "heroTitle": "{englishName}",

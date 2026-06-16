@@ -37,16 +37,16 @@ window.i18nTranslations.vi = {
   "brands": {
     "title": "Bộ sưu tập nguyên bản",
     "subtitle": "Duyệt Qevora Studio theo nhu cầu sử dụng",
-    "atelier": "手工C",
-    "crossbody": "手工M",
-    "woven": "手工G",
-    "dior": "手工D",
-    "fendi": "手工F",
-    "hermes": "手工H",
-    "bottega-veneta": "手工B",
-    "balenciaga": "手工A",
-    "evening": "手工E",
-    "custom": "手工S"
+    "atelier": "Thủ công C",
+    "crossbody": "Thủ công M",
+    "woven": "Thủ công G",
+    "dior": "Thủ công D",
+    "fendi": "Thủ công F",
+    "hermes": "Thủ công H",
+    "bottega-veneta": "Thủ công B",
+    "balenciaga": "Thủ công A",
+    "evening": "Thủ công E",
+    "custom": "Thủ công S"
   },
   "brand": {
     "heroTitle": "{englishName}",

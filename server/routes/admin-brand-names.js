@@ -18,7 +18,7 @@ router.post('/brand-names', authMiddleware, adminMiddleware, (req, res) => {
   }
 
   // Validate slugs
-  const validSlugs = ['atelier', 'totes', 'crossbody', 'woven', 'evening', 'custom', 'dior', 'hermes', 'balenciaga', 'bottega-veneta'];
+  const validSlugs = ['atelier', 'crossbody', 'woven', 'dior', 'fendi', 'hermes', 'bottega-veneta', 'balenciaga', 'evening', 'custom'];
   for (const slug of Object.keys(brands)) {
     if (!validSlugs.includes(slug)) {
       return res.status(400).json({ success: false, message: `无效的品牌标识: ${slug}` });

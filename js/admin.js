@@ -285,6 +285,14 @@ const AdminApp = {
         return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     },
 
+    resolveImgSrc(img) {
+        if (!img) return 'https://via.placeholder.com/300x200/f5f5f5/cccccc?text=No+Image';
+        if (img.startsWith('http') || img.startsWith('data:')) return img;
+        // Prefer .webp for smaller file size (global error handler falls back to .jpg)
+        const webpPath = img.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+        return Utils.resolveImage('/images/' + webpPath);
+    },
+
     async saveBrandNames() {
         const inputs = document.querySelectorAll('.brand-name-input');
         const brands = {};
@@ -306,7 +314,15 @@ const AdminApp = {
                 Object.entries(brands).forEach(([slug, name]) => {
                     const brand = BrandsConfig.getBrandBySlug(slug);
                     if (brand) brand.name = name;
+                    // Also update window.i18nTranslations.zh.brands so translation picks up new names
+                    if (window.i18nTranslations && window.i18nTranslations.zh && window.i18nTranslations.zh.brands) {
+                        window.i18nTranslations.zh.brands[slug] = name;
+                    }
                 });
+                // Save brand names to localStorage for demo mode persistence
+                try {
+                    localStorage.setItem('lb_brand_names_zh', JSON.stringify(brands));
+                } catch (e) {}
                 this.showNotification('品牌名称已保存，首页已生效', 'success');
             } else {
                 this.showNotification(res.message || '保存失败', 'error');
@@ -319,21 +335,33 @@ const AdminApp = {
     /** Translate all 10 brand names from Chinese to all 12 other languages,
      *  then write results to js/i18n/*.js files via backend API. */
     async translateBrandNames() {
-        if (!confirm('将把10个品牌的中文名称翻译为其他12种语言并写入i18n文件。\n\n请确保已先保存品牌中文名称。\n\n确认继续？')) return;
+        if (!confirm('将把品牌的中文名称翻译为其他12种语言。\n\n请确保已先保存品牌中文名称。\n\n确认继续？')) return;
 
         Translator.showProgress('正在翻译品牌名称（约需30秒）...');
         try {
             const res = await API.post('/admin/translate-brands', {}, true);
             Translator.hideProgress();
             if (res.success) {
-                // Refresh brand names editor to show latest from i18n
-                this.showNotification(res.message || '翻译完成', 'success');
-                // Reload the page to pick up new i18n files
-                setTimeout(() => {
-                    if (confirm('翻译已完成，刷新页面以加载新的品牌名称？')) {
-                        location.reload();
+                // Demo mode: translations already applied to window.i18nTranslations in memory
+                if (res.demo && res.translations) {
+                    this.showNotification(res.message || '翻译完成（已保存到浏览器）', 'success');
+                    // Refresh brand names editor to show translated names immediately
+                    if (typeof this.loadBrandNamesEditor === 'function') {
+                        this.loadBrandNamesEditor();
                     }
-                }, 500);
+                    // Re-apply current language to update UI
+                    if (window.Language && typeof Language.applyLanguage === 'function') {
+                        Language.applyLanguage(Language.current || 'zh');
+                    }
+                } else {
+                    this.showNotification(res.message || '翻译完成', 'success');
+                    // Reload the page to pick up new i18n files (server mode)
+                    setTimeout(() => {
+                        if (confirm('翻译已完成，刷新页面以加载新的品牌名称？')) {
+                            location.reload();
+                        }
+                    }, 500);
+                }
             } else {
                 this.showNotification(res.message || '翻译失败', 'error');
             }
@@ -607,6 +635,15 @@ const AdminApp = {
                 if (e.dataTransfer.files.length) this.handleBrandBgFile(e.dataTransfer.files[0]);
             });
         }
+
+        // Gallery image file upload
+        const galleryFileInput = document.getElementById('galleryImageFile');
+        if (galleryFileInput) {
+            galleryFileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) this.handleGalleryFile(e.target.files[0]);
+                e.target.value = '';
+            });
+        }
     },
 
     handleImageFile(file) {
@@ -616,6 +653,24 @@ const AdminApp = {
             const base64 = e.target.result;
             document.getElementById('productImage').value = base64;
             this.showImagePreview(base64);
+            // Also add to gallery
+            this._galleryImages.unshift(base64);
+            this.renderGallery();
+        };
+        reader.readAsDataURL(file);
+    },
+
+    handleGalleryFile(file) {
+        if (!file || !file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const base64 = e.target.result;
+            this._galleryImages.push(base64);
+            if (this._galleryImages.length === 1) {
+                document.getElementById('productImage').value = base64;
+                this.showImagePreview(base64);
+            }
+            this.renderGallery();
         };
         reader.readAsDataURL(file);
     },
@@ -646,6 +701,62 @@ const AdminApp = {
         }
     },
 
+    // --- Gallery (multi-image) editing ---
+    _galleryImages: [],
+
+    renderGallery() {
+        const container = document.getElementById('galleryEditor');
+        if (!container) return;
+        if (this._galleryImages.length === 0) {
+            container.innerHTML = '<span style="color:var(--silver);font-size:12px">暂无画廊图片</span>';
+            return;
+        }
+        container.innerHTML = this._galleryImages.map((img, i) => `
+            <div style="position:relative;width:72px;height:72px;border:1px solid var(--pale);border-radius:4px;overflow:hidden;flex-shrink:0">
+                <img src="${this.resolveImgSrc(img)}" style="width:100%;height:100%;object-fit:cover" loading="lazy">
+                ${i === 0 ? '<span style="position:absolute;bottom:0;left:0;right:0;background:var(--gold-dark);color:#fff;font-size:10px;text-align:center;padding:1px 0">主图</span>' : ''}
+                <button type="button" onclick="AdminApp.removeGalleryImage(${i})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:12px;cursor:pointer;line-height:18px;text-align:center;padding:0">&times;</button>
+            </div>
+        `).join('');
+    },
+
+    addGalleryImage() {
+        const input = document.getElementById('galleryImageInput');
+        const val = input.value.trim();
+        if (!val) return;
+        this._galleryImages.push(val);
+        // If first image, also set as main image
+        if (this._galleryImages.length === 1) {
+            document.getElementById('productImage').value = val;
+            this.showImagePreview(this.resolveImgSrc(val));
+        }
+        input.value = '';
+        this.renderGallery();
+    },
+
+    removeGalleryImage(index) {
+        this._galleryImages.splice(index, 1);
+        // Update main image if needed
+        if (this._galleryImages.length > 0) {
+            const mainImg = this._galleryImages[0];
+            document.getElementById('productImage').value = mainImg;
+            this.showImagePreview(this.resolveImgSrc(mainImg));
+        } else {
+            document.getElementById('productImage').value = '';
+            this.clearImagePreview();
+        }
+        this.renderGallery();
+    },
+
+    setGalleryAsMain(index) {
+        if (index < 0 || index >= this._galleryImages.length) return;
+        const img = this._galleryImages.splice(index, 1)[0];
+        this._galleryImages.unshift(img);
+        document.getElementById('productImage').value = img;
+        this.showImagePreview(this.resolveImgSrc(img));
+        this.renderGallery();
+    },
+
     handleFormSubmit() {
         const brand = document.getElementById('brandSelect').value;
         const lang = document.getElementById('productLangSelect')?.value || 'zh';
@@ -657,6 +768,7 @@ const AdminApp = {
         const size = document.getElementById('productSize').value.trim();
         const category = document.getElementById('productCategory').value;
         const featured = document.getElementById('productFeatured').checked;
+        const images = this._galleryImages.length > 0 ? [...this._galleryImages] : (image ? [image] : []);
 
         if (!brand || !name || !price) {
             this.showNotification(Language.t('admin.notificationRequired'), 'error');
@@ -676,7 +788,7 @@ const AdminApp = {
 
         if (this.data.editingProductId) {
             const result = DataManager.updateProduct(this.data.editingBrandSlug, this.data.editingProductId, {
-                name: finalName, price, image, description: finalDesc, color, size, category, featured
+                name: finalName, price, image, images, description: finalDesc, color, size, category, featured
             });
             if (result.success) {
                 this.showNotification(Language.t('admin.notificationUpdated'), 'success');
@@ -685,7 +797,7 @@ const AdminApp = {
             }
         } else {
             const result = DataManager.addProduct(brand, {
-                name: finalName, price, image, description: finalDesc, color, size, category, featured
+                name: finalName, price, image, images, description: finalDesc, color, size, category, featured
             });
             if (result.success) {
                 this.showNotification(Language.t('admin.notificationAdded'), 'success');
@@ -748,10 +860,16 @@ const AdminApp = {
 
         // Show image preview if product has image
         if (product.image) {
-            this.showImagePreview(product.image);
+            this.showImagePreview(this.resolveImgSrc(product.image));
         } else {
             this.clearImagePreview();
         }
+
+        // Load gallery images
+        this._galleryImages = (product.images && product.images.length > 0)
+            ? [...product.images]
+            : (product.image ? [product.image] : []);
+        this.renderGallery();
 
         document.getElementById('modalTitle').textContent = Language.t('admin.editProduct');
         document.getElementById('submitBtn').textContent = Language.t('admin.saveBtn');
@@ -774,10 +892,16 @@ const AdminApp = {
         this.data.productNames = {};
         this.data.productDescriptions = {};
         this.data.editingLang = Language.currentLang || 'zh';
+        this._galleryImages = [];
         document.getElementById('productForm').reset();
         const fileInput = document.getElementById('productImageFile');
         if (fileInput) fileInput.value = '';
+        const galleryFileInput = document.getElementById('galleryImageFile');
+        if (galleryFileInput) galleryFileInput.value = '';
+        const galleryInput = document.getElementById('galleryImageInput');
+        if (galleryInput) galleryInput.value = '';
         this.clearImagePreview();
+        this.renderGallery();
         const productLangSelect = document.getElementById('productLangSelect');
         if (productLangSelect) productLangSelect.value = this.data.editingLang;
         document.getElementById('modalTitle').textContent = Language.t('admin.addProduct');
@@ -1021,11 +1145,12 @@ const AdminApp = {
             const categoryName = Language.t('admin.category' + (product.category || 'classic').charAt(0).toUpperCase() + (product.category || 'classic').slice(1));
             const price = product.price || '-';
             const displayName = DataManager.getLocalizedName(product, Language.currentLang);
+            const imgSrc = this.resolveImgSrc(product.image);
 
             return `
                 <div class="admin-product-card">
                     <div class="card-image">
-                        <img src="${product.image || 'https://via.placeholder.com/300x200/f5f5f5/cccccc?text=No+Image'}" alt="${displayName}" loading="lazy">
+                        <img src="${imgSrc}" alt="${this.escapeHtml(displayName)}" loading="lazy">
                     </div>
                     <div class="card-body">
                         <h4 class="card-name">${displayName}</h4>
@@ -1092,6 +1217,173 @@ const AdminApp = {
             this.showNotification('同步失败: 网络错误', 'error');
         }
         if (btn) { btn.disabled = false; btn.textContent = '同步到服务器'; }
+    },
+
+    // Translate all CMS text fields from Chinese to other languages
+    async translateCMSFields(sectionId, fields) {
+        // Collect Chinese text values
+        const zhValues = {};
+        fields.forEach(key => {
+            const input = document.querySelector(`#${sectionId} [data-cms-key="${key}"]`);
+            if (input && input.value.trim()) zhValues[key] = input.value.trim();
+        });
+        const zhKeys = Object.keys(zhValues);
+        if (zhKeys.length === 0) {
+            this.showNotification('请先在中文模式下输入内容', 'error');
+            return;
+        }
+
+        // Save current lang values first
+        this.saveHomepage();
+
+        const allLangs = Object.keys(Language.nativeNames || {}).filter(l => l !== 'zh');
+        const texts = zhKeys.map(k => ({ text: zhValues[k], sourceLang: 'zh', targetLangs: allLangs }));
+
+        Translator.showProgress('正在翻译...');
+        try {
+            const res = await API.post('/admin/translate', { texts }, true);
+            if (res.success && res.translations) {
+                for (let i = 0; i < zhKeys.length; i++) {
+                    const key = zhKeys[i];
+                    const trans = res.translations[i] || {};
+                    for (const [lang, text] of Object.entries(trans)) {
+                        if (text && text.trim()) CMSManager.setOverride(lang, key, text.trim());
+                    }
+                }
+                Translator.hideProgress();
+                this.showNotification('翻译完成，切换语言可查看', 'success');
+            } else {
+                Translator.hideProgress();
+                this.showNotification('翻译失败: ' + (res.message || ''), 'error');
+            }
+        } catch (e) {
+            Translator.hideProgress();
+            this.showNotification('翻译失败: 网络错误', 'error');
+        }
+    },
+
+    async translateContactFields() {
+        const fields = ['contact.xValue', 'contact.wechatValue', 'contact.insValue'];
+        const zhValues = {};
+        fields.forEach(key => {
+            const input = document.querySelector(`#section-contact [data-cms-key="${key}"]`);
+            if (input && input.value.trim()) zhValues[key] = input.value.trim();
+        });
+        const zhKeys = Object.keys(zhValues);
+        if (zhKeys.length === 0) {
+            this.showNotification('请先在中文模式下输入内容', 'error');
+            return;
+        }
+        this.saveContact();
+        const allLangs = Object.keys(Language.nativeNames || {}).filter(l => l !== 'zh');
+        const texts = zhKeys.map(k => ({ text: zhValues[k], sourceLang: 'zh', targetLangs: allLangs }));
+        Translator.showProgress('正在翻译...');
+        try {
+            const res = await API.post('/admin/translate', { texts }, true);
+            if (res.success && res.translations) {
+                for (let i = 0; i < zhKeys.length; i++) {
+                    const key = zhKeys[i];
+                    const trans = res.translations[i] || {};
+                    for (const [lang, text] of Object.entries(trans)) {
+                        if (text && text.trim()) CMSManager.setOverride(lang, key, text.trim());
+                    }
+                }
+                Translator.hideProgress();
+                this.showNotification('翻译完成', 'success');
+            } else {
+                Translator.hideProgress();
+                this.showNotification('翻译失败', 'error');
+            }
+        } catch (e) {
+            Translator.hideProgress();
+            this.showNotification('翻译失败', 'error');
+        }
+    },
+
+    async translateBrandFields() {
+        const slug = document.getElementById('brandSlugSelect')?.value || 'atelier';
+        const fields = ['brandNameInput', 'brandHeroTitleInput', 'brandHeroPriceInput', 'brandHeroDescInput', 'brandIntroTitleInput', 'brandIntroP1Input', 'brandIntroP2Input'];
+        const zhValues = {};
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            if (input && input.value.trim()) zhValues[id] = input.value.trim();
+        });
+        const zhKeys = Object.keys(zhValues);
+        if (zhKeys.length === 0) {
+            this.showNotification('请先在中文模式下输入内容', 'error');
+            return;
+        }
+        this.saveBrands();
+        const allLangs = Object.keys(Language.nativeNames || {}).filter(l => l !== 'zh');
+        const texts = zhKeys.map(k => ({ text: zhValues[k], sourceLang: 'zh', targetLangs: allLangs }));
+        Translator.showProgress('正在翻译...');
+        try {
+            const res = await API.post('/admin/translate', { texts }, true);
+            if (res.success && res.translations) {
+                const brandData = CMSManager.getBrandData(slug) || {};
+                for (let i = 0; i < zhKeys.length; i++) {
+                    const id = zhKeys[i];
+                    const trans = res.translations[i] || {};
+                    const keyMap = {
+                        brandNameInput: 'name', brandHeroTitleInput: 'heroTitle', brandHeroPriceInput: 'heroPrice',
+                        brandHeroDescInput: 'heroDesc', brandIntroTitleInput: 'introTitle', brandIntroP1Input: 'introP1', brandIntroP2Input: 'introP2'
+                    };
+                    const dataKey = keyMap[id];
+                    if (!dataKey) continue;
+                    if (!brandData[dataKey]) brandData[dataKey] = {};
+                    for (const [lang, text] of Object.entries(trans)) {
+                        if (text && text.trim()) brandData[dataKey][lang] = text.trim();
+                    }
+                }
+                CMSManager.setBrandData(slug, brandData);
+                Translator.hideProgress();
+                this.showNotification('翻译完成，切换语言可查看', 'success');
+            } else {
+                Translator.hideProgress();
+                this.showNotification('翻译失败', 'error');
+            }
+        } catch (e) {
+            Translator.hideProgress();
+            this.showNotification('翻译失败', 'error');
+        }
+    },
+
+    async translateFooterFields() {
+        const fields = ['footer.logo', 'footer.text', 'footer.note'];
+        const zhValues = {};
+        fields.forEach(key => {
+            const input = document.querySelector(`#section-footer [data-cms-key="${key}"]`);
+            if (input && input.value.trim()) zhValues[key] = input.value.trim();
+        });
+        const zhKeys = Object.keys(zhValues);
+        if (zhKeys.length === 0) {
+            this.showNotification('请先在中文模式下输入内容', 'error');
+            return;
+        }
+        this.saveFooter();
+        const allLangs = Object.keys(Language.nativeNames || {}).filter(l => l !== 'zh');
+        const texts = zhKeys.map(k => ({ text: zhValues[k], sourceLang: 'zh', targetLangs: allLangs }));
+        Translator.showProgress('正在翻译...');
+        try {
+            const res = await API.post('/admin/translate', { texts }, true);
+            if (res.success && res.translations) {
+                for (let i = 0; i < zhKeys.length; i++) {
+                    const key = zhKeys[i];
+                    const trans = res.translations[i] || {};
+                    for (const [lang, text] of Object.entries(trans)) {
+                        if (text && text.trim()) CMSManager.setOverride(lang, key, text.trim());
+                    }
+                }
+                Translator.hideProgress();
+                this.showNotification('翻译完成', 'success');
+            } else {
+                Translator.hideProgress();
+                this.showNotification('翻译失败', 'error');
+            }
+        } catch (e) {
+            Translator.hideProgress();
+            this.showNotification('翻译失败', 'error');
+        }
     },
 
     showNotification(message, type) {

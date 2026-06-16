@@ -41,7 +41,28 @@ const Language = {
             const prefix = browserLang.split('-')[0];
             this.currentLang = langMap[prefix] || 'zh';
         }
+        this._loadSavedBrandTranslations();
         this.applyLanguage();
+    },
+
+    // Load previously saved brand translations from localStorage into window.i18nTranslations
+    _loadSavedBrandTranslations() {
+        try {
+            // Load saved Chinese brand names first
+            const savedZh = JSON.parse(localStorage.getItem('lb_brand_names_zh') || '{}');
+            if (window.i18nTranslations && window.i18nTranslations.zh && window.i18nTranslations.zh.brands) {
+                Object.assign(window.i18nTranslations.zh.brands, savedZh);
+            }
+            // Then load translated brand names for all other languages
+            const saved = JSON.parse(localStorage.getItem('lb_brand_translations') || '{}');
+            for (const [lang, brands] of Object.entries(saved)) {
+                if (window.i18nTranslations && window.i18nTranslations[lang] && window.i18nTranslations[lang].brands) {
+                    Object.assign(window.i18nTranslations[lang].brands, brands);
+                }
+            }
+        } catch (e) {
+            // Ignore parse errors
+        }
     },
 
     changeLanguage(lang) {

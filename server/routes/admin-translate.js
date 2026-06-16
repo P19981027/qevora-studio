@@ -13,6 +13,22 @@ const LANG_MAP = {
   ar: 'ar', ru: 'ru', de: 'de', pt: 'pt', it: 'it', th: 'th', vi: 'vi'
 };
 
+// Correct "手工" (handmade) translations - MyMemory often returns "manual" instead
+const HANDMADE_CORRECTIONS = {
+  en: [['Manual', 'Handmade'], ['manual', 'Handmade']],
+  ja: [['マニュアル', 'ハンドメイド'], ['手動', 'ハンドメイド']],
+  ko: [['수동', '수제'], ['매뉴얼', '수제']],
+  fr: [['Manuel', 'Fait main'], ['manuel', 'Fait main']],
+  es: [['Manual', 'Hecho a mano'], ['manual', 'Hecho a mano']],
+  de: [['Manuell', 'Handgefertigt'], ['manuell', 'Handgefertigt']],
+  pt: [['Manual', 'Feito à mão'], ['manual', 'Feito à mão']],
+  it: [['Manuale', 'Fatto a mano'], ['manuale', 'Fatto a mano']],
+  ru: [['Ручной', 'Ручной работы'], ['Мануальный', 'Ручной работы']],
+  ar: [['يدوي', 'مصنوع يدوياً']],
+  th: [['คู่มือ', 'ทำมือ'], ['แมนนวล', 'ทำมือ']],
+  vi: [['Thủ công', 'Thủ công'], ['Bằng tay', 'Thủ công']]
+};
+
 /**
  * Translate a single text via MyMemory API
  */
@@ -30,6 +46,13 @@ function translateText(text, sourceLang, targetLang) {
           const json = JSON.parse(data);
           if (json.responseStatus === 200 && json.responseData && json.responseData.translatedText) {
             let translated = json.responseData.translatedText;
+            // Fix common MyMemory mistranslations for "手工" (handmade vs manual)
+            const corrections = HANDMADE_CORRECTIONS[targetLang];
+            if (corrections) {
+              for (const [wrong, right] of corrections) {
+                translated = translated.replace(wrong, right);
+              }
+            }
             // Normalize all-caps results for non-Chinese languages
             if (translated === translated.toUpperCase() && translated.length > 3 && targetLang !== 'zh') {
               translated = translated.charAt(0).toUpperCase() + translated.slice(1).toLowerCase();
@@ -96,8 +119,8 @@ router.post('/translate-brands', authMiddleware, adminMiddleware, async (req, re
   }
 
   // Extract brand name entries from zh.js brands block
-  const brandSlugs = ['atelier', 'totes', 'crossbody', 'woven', 'evening', 'custom',
-                      'dior', 'hermes', 'balenciaga', 'bottega-veneta'];
+  const brandSlugs = ['atelier', 'crossbody', 'woven', 'dior', 'fendi', 'hermes',
+                      'bottega-veneta', 'balenciaga', 'evening', 'custom'];
   const brandNames = {};
   for (const slug of brandSlugs) {
     const regex = new RegExp(`"${slug}"\\s*:\\s*"([^"]*)"`, 'm');
