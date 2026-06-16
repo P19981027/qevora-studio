@@ -56,7 +56,8 @@ const API = {
   baseUrl: API_HOST + '/api',
 
   _isDemo() {
-    return window.location.hostname.includes('github.io');
+    const host = window.location.hostname;
+    return host.includes('github.io') || host.includes('pages.dev') || window.location.protocol === 'file:';
   },
 
   _mockRequest(method, path, body) {
