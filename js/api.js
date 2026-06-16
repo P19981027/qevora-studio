@@ -57,7 +57,8 @@ const API = {
 
   _isDemo() {
     const host = window.location.hostname;
-    return host.includes('github.io') || host.includes('pages.dev') || window.location.protocol === 'file:';
+    // Demo mode on any non-localhost domain (GitHub Pages, Cloudflare Pages, etc.)
+    return host !== 'localhost' && host !== '127.0.0.1';
   },
 
   _mockRequest(method, path, body) {
@@ -305,13 +306,14 @@ const API = {
       return ok({ message: '演示模式：品牌名称已保存' });
     }
     if (method === 'POST' && path === '/admin/translate') {
-      // Demo: return empty translations
+      // Handled by _translateDemo() in request() - this shouldn't be reached
       const { texts } = body || {};
       const translations = (texts || []).map(() => ({}));
-      return ok({ translations, message: '演示模式：翻译功能需要后端服务' });
+      return ok({ translations });
     }
     if (method === 'POST' && path === '/admin/translate-brands') {
-      return ok({ message: '演示模式：品牌翻译功能需要后端服务' });
+      // Handled by _translateDemo() in request()
+      return ok({ message: '翻译完成' });
     }
     if (method === 'GET' && path === '/admin/usdt-config') {
       return ok({ usdt: { address: 'TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', network: 'TRC20', rate: 7.25 } });
@@ -332,6 +334,10 @@ const API = {
           window.location.href = Utils.resolvePath('/login.html');
           return { success: false, message: '请先登录' };
         }
+      }
+      // Translation requires async API calls, handle separately
+      if (method === 'POST' && path === '/admin/translate') {
+        return await this._translateDemo(body);
       }
       return this._mockRequest(method, path, body);
     }
@@ -360,6 +366,43 @@ const API = {
       console.error('API error:', err);
       return { success: false, message: '网络错误，请确认服务器已启动 (npm start)' };
     }
+  },
+
+  // Client-side translation using MyMemory free API (demo/static mode)
+  async _translateDemo(body) {
+    const { texts } = body || {};
+    if (!texts || !texts.length) return { success: true, translations: [] };
+
+    const langMap = { zh: 'zh-CN', en: 'en', ko: 'ko', ja: 'ja', fr: 'fr', es: 'es', ar: 'ar', ru: 'ru', de: 'de', pt: 'pt', it: 'it', th: 'th', vi: 'vi' };
+
+    const translations = [];
+    for (const item of texts) {
+      const result = {};
+      const { text, sourceLang, targetLangs } = item;
+      const srcCode = langMap[sourceLang] || sourceLang;
+
+      for (const tgtLang of targetLangs) {
+        const tgtCode = langMap[tgtLang] || tgtLang;
+        try {
+          const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${srcCode}|${tgtCode}`;
+          const resp = await fetch(url);
+          const data = await resp.json();
+          if (data.responseData && data.responseData.translatedText) {
+            let translated = data.responseData.translatedText;
+            // MyMemory sometimes returns uppercase for short texts
+            if (translated === translated.toUpperCase() && translated.length < 50) {
+              translated = translated.charAt(0).toUpperCase() + translated.slice(1).toLowerCase();
+            }
+            result[tgtLang] = translated;
+          }
+        } catch (e) {
+          console.warn('Translation failed for', tgtLang, e);
+        }
+      }
+      translations.push(result);
+    }
+
+    return { success: true, translations };
   },
 
   get: (path, auth) => API.request('GET', path, null, auth),
