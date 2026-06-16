@@ -42,11 +42,11 @@ window.i18nTranslations.zh = {
     "woven": "手工G",
     "dior": "手工D",
     "fendi": "手工F",
-    "hermes": "敬请期待",
-    "bottega-veneta": "敬请期待",
-    "balenciaga": "敬请期待",
-    "evening": "敬请期待",
-    "custom": "敬请期待"
+    "hermes": "手工H",
+    "bottega-veneta": "手工B",
+    "balenciaga": "手工A",
+    "evening": "手工E",
+    "custom": "手工S"
   },
   "brand": {
     "heroTitle": "{englishName}",

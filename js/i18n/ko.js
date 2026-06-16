@@ -37,16 +37,16 @@ window.i18nTranslations.ko = {
   "brands": {
     "title": "오리지널 컬렉션",
     "subtitle": "용도별로 Qevora Studio 둘러보기",
-    "atelier": "수동 c",
-    "crossbody": "수동 m",
-    "woven": "Gucci G",
-    "dior": "수동 y",
-    "fendi": "Fendi F",
-    "hermes": "Coming Soon",
-    "bottega-veneta": "Coming Soon",
-    "balenciaga": "Coming Soon",
-    "evening": "敬请期待",
-    "custom": "敬请期待"
+    "atelier": "手工C",
+    "crossbody": "手工M",
+    "woven": "手工G",
+    "dior": "手工D",
+    "fendi": "手工F",
+    "hermes": "手工H",
+    "bottega-veneta": "手工B",
+    "balenciaga": "手工A",
+    "evening": "手工E",
+    "custom": "手工S"
   },
   "brand": {
     "heroTitle": "{englishName}",
