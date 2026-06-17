@@ -754,9 +754,66 @@ const AdminApp = {
             this.clearImagePreview();
         }
 
+        // Render product gallery
+        this.renderProductGallery(product);
+
         document.getElementById('modalTitle').textContent = Language.t('admin.editProduct');
         document.getElementById('submitBtn').textContent = Language.t('admin.saveBtn');
         document.getElementById('productModal').style.display = 'flex';
+    },
+
+    renderProductGallery(product) {
+        const gallery = document.getElementById('productGallery');
+        if (!gallery) return;
+        gallery.innerHTML = '';
+
+        const images = (product.images && product.images.length) ? product.images : (product.image ? [product.image] : []);
+        if (!images.length) return;
+
+        images.forEach(img => {
+            const src = (!img.startsWith('http')) ? Utils.resolveImage('/images/' + img) : img;
+            const isActive = (img === product.image);
+            const item = document.createElement('div');
+            item.className = 'gallery-item' + (isActive ? ' active' : '');
+            item.setAttribute('data-img', img);
+
+            const thumb = document.createElement('img');
+            thumb.src = src;
+            thumb.alt = img;
+
+            const btn = document.createElement('button');
+            btn.className = 'gallery-set-main';
+            btn.textContent = '设为主图';
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                product.image = img;
+                const previewImg = document.getElementById('imagePreview');
+                if (previewImg) {
+                    previewImg.src = src;
+                    previewImg.style.display = 'block';
+                }
+                const imageInput = document.getElementById('productImage');
+                if (imageInput) imageInput.value = img;
+                this.renderProductGallery(product);
+            });
+
+            item.appendChild(thumb);
+            item.appendChild(btn);
+
+            item.addEventListener('click', () => {
+                const previewImg = document.getElementById('imagePreview');
+                if (previewImg) {
+                    previewImg.src = src;
+                    previewImg.style.display = 'block';
+                }
+                const imageInput = document.getElementById('productImage');
+                if (imageInput) imageInput.value = img;
+                document.querySelectorAll('#productGallery .gallery-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+
+            gallery.appendChild(item);
+        });
     },
 
     deleteProduct(brand, productId) {
