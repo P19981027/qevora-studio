@@ -22,14 +22,8 @@
           "vi": "Chanel 25B Túi mạt chược sao chổi"
         },
         "price": "¥2,280",
-        "image": "chanel_3_13425096442662186.jpg",
+        "image": "chanel_3_13425096465622983.jpg",
         "images": [
-          "chanel_3_13425096442662186.jpg",
-          "chanel_3_13425096450060080.jpg",
-          "chanel_3_13425096451076950.jpg",
-          "chanel_3_13425096451923396.jpg",
-          "chanel_3_13425096452808847.jpg",
-          "chanel_3_13425096453620217.jpg",
           "chanel_3_13425096465622983.jpg",
           "chanel_3_13425096467475642.jpg",
           "chanel_3_13425096468264551.jpg",
@@ -59,7 +53,8 @@
         "size": "",
         "category": "classic",
         "featured": false,
-        "createdAt": "2026-06-15T21:10:35.882494"
+        "createdAt": "2026-06-15T21:10:35.882494",
+        "updatedAt": "2026-06-17T11:42:37.476Z"
       },
       {
         "id": "at4",
