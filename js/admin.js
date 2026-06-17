@@ -748,7 +748,8 @@ const AdminApp = {
 
         // Show image preview if product has image
         if (product.image) {
-            this.showImagePreview(product.image);
+            const resolvedImage = (!product.image.startsWith('http')) ? Utils.resolveImage('/images/' + product.image) : product.image;
+            this.showImagePreview(resolvedImage);
         } else {
             this.clearImagePreview();
         }
@@ -1025,8 +1026,16 @@ const AdminApp = {
             return `
                 <div class="admin-product-card" data-product-id="${product.id}">
                     <div class="card-image">
-                        <img src="${product.image || 'https://via.placeholder.com/300x200/f5f5f5/cccccc?text=No+Image'}" alt="${displayName}" loading="lazy">
+                        <img src="${(product.image && !product.image.startsWith('http')) ? Utils.resolveImage('/images/' + product.image) : (product.image || 'https://via.placeholder.com/300x200/f5f5f5/cccccc?text=No+Image')}" alt="${displayName}" loading="lazy">
                     </div>
+                    ${product.images && product.images.length > 1 ? `
+                    <div class="card-thumbnails">
+                        ${product.images.map((img, i) => {
+                            const thumbSrc = (!img.startsWith('http')) ? Utils.resolveImage('/images/' + img) : img;
+                            return `<img src="${thumbSrc}" class="card-thumb${i === 0 ? ' active' : ''}" data-index="${i}" alt="" loading="lazy">`;
+                        }).join('')}
+                    </div>
+                    ` : ''}
                     <div class="card-body">
                         <h4 class="card-name">${displayName}</h4>
                         <div class="card-meta">

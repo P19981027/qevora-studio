@@ -516,7 +516,7 @@
     <script src="js/translator.js?v=20260616"></script>
     <script src="js/api.js?v=20260616"></script>
     <script src="js/auth.js?v=20260616"></script>
-    <script src="js/admin.js?v=20260616"></script>
+    <script src="js/admin.js?v=20260617"></script>
     <script src="js/image-viewer.js?v=20260616"></script>
     <script>
     // Image viewer click handlers
@@ -537,6 +537,35 @@
             var startIdx = product.image ? imgList.indexOf(product.image) : 0;
             if (startIdx < 0) startIdx = 0;
             ImageViewer.open(imgList, startIdx);
+        });
+
+        // Card thumbnails click — switch main image, update active, and open viewer
+        document.getElementById('productsGrid').addEventListener('click', function (e) {
+            var thumb = e.target.closest('.card-thumb');
+            if (!thumb) return;
+            var card = thumb.closest('.admin-product-card');
+            if (!card) return;
+            var pid = card.getAttribute('data-product-id');
+            if (!pid) return;
+            var product = (AdminApp.data.products || []).find(function (p) { return p.id === pid; });
+            if (!product) return;
+            // Switch main image
+            var mainImg = card.querySelector('.card-image img');
+            var index = parseInt(thumb.getAttribute('data-index')) || 0;
+            if (mainImg && product.images && product.images[index]) {
+                var newSrc = (!product.images[index].startsWith('http'))
+                    ? Utils.resolveImage('/images/' + product.images[index])
+                    : product.images[index];
+                mainImg.src = newSrc;
+            }
+            // Update active class
+            card.querySelectorAll('.card-thumb').forEach(function (t) { t.classList.remove('active'); });
+            thumb.classList.add('active');
+            // Open image viewer at this index
+            var imgList = (product.images && product.images.length)
+                ? product.images
+                : (product.image ? [product.image] : []);
+            ImageViewer.open(imgList, index);
         });
 
         // Edit form image preview click

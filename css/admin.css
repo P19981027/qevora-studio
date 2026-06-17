@@ -514,6 +514,30 @@ body {
     object-fit: cover;
 }
 
+/* Card thumbnails */
+.card-thumbnails {
+    display: flex;
+    gap: 4px;
+    padding: 4px 8px;
+    overflow-x: auto;
+}
+
+.card-thumb {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.card-thumb.active {
+    border-color: #c9a96e;
+}
+
+.card-thumb:hover {
+    opacity: 0.8;
+}
+
 .card-body { padding: 14px; }
 
 .card-name {
