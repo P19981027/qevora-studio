@@ -79,4 +79,16 @@ router.put('/products/sync', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
+// Export products.json to Windows Desktop (for Cloudflare Pages deployment)
+router.put('/products/export-desktop', authMiddleware, adminMiddleware, (req, res) => {
+  try {
+    const os = require('os');
+    const desktopPath = path.join(os.homedir(), 'Desktop', 'products.json');
+    fs.writeFileSync(desktopPath, JSON.stringify(req.body, null, 2), 'utf-8');
+    res.json({ success: true, message: 'products.json 已保存到桌面', path: desktopPath });
+  } catch (err) {
+    res.status(500).json({ success: false, message: '保存到桌面失败: ' + err.message });
+  }
+});
+
 module.exports = router;

@@ -380,6 +380,40 @@ body {
 .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
 
 /* Translate Buttons */
+/* Sync to Website Button — prominent green */
+.btn-sync-site {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.25);
+}
+
+.btn-sync-site:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 4px 14px rgba(16,185,129,0.4);
+    transform: translateY(-1px);
+}
+
+.btn-sync-site:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(16,185,129,0.2);
+}
+
+.btn-sync-site:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .btn-translate-all {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;

@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Qevora Studio</title>
-    <link href="css/fonts-admin.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/admin.css?v=20260616g">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css?v=20260616">
 </head>
 <body>
     <nav class="admin-nav">
         <div class="admin-nav-container">
-            <a href="index.html" class="admin-nav-logo" id="navLogo"><img src="images/logo.png" alt="Logo" class="admin-logo-img"> Qevora Studio</a>
+            <a href="index.html" class="admin-nav-logo"><img src="images/logo.png" alt="Logo" class="admin-logo-img"> Qevora Studio</a>
             <div class="admin-nav-right">
                 <a href="index.html" class="admin-nav-link" id="navHome">返回网站</a>
                 <span class="admin-badge">Admin</span>
-                <a href="javascript:void(0)" onclick="Auth.logout()" class="admin-nav-link">退出登录</a>
                 <select id="langSelect" onchange="Language.changeLanguage(this.value)"></select>
             </div>
         </div>
@@ -71,6 +70,7 @@
                         <button class="btn btn-primary" onclick="AdminApp.openModal()" id="addProductBtn">+ 添加商品</button>
                         <button class="btn btn-outline" onclick="AdminApp.exportData()" id="exportBtn">导出数据</button>
                         <button class="btn btn-outline" onclick="AdminApp.syncToServer()" id="syncBtn">同步到服务器</button>
+                        <button class="btn btn-sync-site" onclick="AdminApp.syncToWebsite()" id="syncSiteBtn">同步到网站</button>
                         <button class="btn btn-outline" onclick="AdminApp.batchTranslateAll()">批量翻译全部商品</button>
                     </div>
                     <div class="toolbar-right">
@@ -160,7 +160,6 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveHomepage()">保存</button>
-                    <button class="btn btn-translate-all" onclick="AdminApp.translateCMSFields('section-homepage', ['hero.subtitle','hero.title','hero.description','hero.explore','brands.title','brands.subtitle','quality.title','quality.subtitle'])">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetHomepage()">重置为默认</button>
                 </div>
             </div>
@@ -194,7 +193,7 @@
                                 <span>点击或拖拽上传品牌背景图</span>
                                 <span class="image-upload-sub">建议尺寸 800x600 · JPG / PNG / WebP</span>
                             </div>
-                            <img id="brandBgPreview" class="image-preview" style="display:none" alt="preview" loading="lazy">
+                            <img id="brandBgPreview" class="image-preview" style="display:none" alt="preview">
                             <input type="file" id="brandBgImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
                         </div>
                         <div class="image-url-row">
@@ -232,7 +231,6 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveBrands()">保存</button>
-                    <button class="btn btn-translate-all" onclick="AdminApp.translateBrandFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetBrands()">重置为默认</button>
                 </div>
             </div>
@@ -278,7 +276,6 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveContact()">保存</button>
-                    <button class="btn btn-translate-all" onclick="AdminApp.translateContactFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetContact()">重置为默认</button>
                 </div>
             </div>
@@ -308,7 +305,6 @@
                 </div>
                 <div class="cms-actions">
                     <button class="btn btn-primary" onclick="AdminApp.saveFooter()">保存</button>
-                    <button class="btn btn-translate-all" onclick="AdminApp.translateFooterFields()">🌐 翻译所有语言</button>
                     <button class="btn btn-outline" onclick="AdminApp.resetFooter()">重置为默认</button>
                 </div>
             </div>
@@ -457,25 +453,15 @@
                     <label id="labelImage">商品图片</label>
                     <div class="image-upload-area" id="imageUploadArea">
                         <div class="image-upload-hint" id="imageUploadHint">
-                            <span>点击或拖拽上传主图</span>
+                            <span>点击或拖拽上传图片</span>
                             <span class="image-upload-sub">支持 JPG / PNG / WebP</span>
                         </div>
-                        <img id="imagePreview" class="image-preview" style="display:none" alt="preview" loading="lazy">
+                        <img id="imagePreview" class="image-preview" style="display:none" alt="preview">
                         <input type="file" id="productImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
                     </div>
                     <div class="image-url-row">
-                        <input type="text" id="productImage" placeholder="或输入图片URL/文件名">
+                        <input type="text" id="productImage" placeholder="或输入图片URL">
                         <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.loadImageFromUrl()">加载</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>图片画廊 <span style="font-weight:normal;color:var(--silver);font-size:12px">(第一张为主图)</span></label>
-                    <div id="galleryEditor" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
-                    <div class="image-url-row">
-                        <input type="text" id="galleryImageInput" placeholder="输入图片URL或文件名添加到画廊">
-                        <button type="button" class="btn btn-sm btn-outline" onclick="AdminApp.addGalleryImage()">添加</button>
-                        <input type="file" id="galleryImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
-                        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('galleryImageFile').click()">上传</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -510,14 +496,26 @@
         <p>&copy; 2026 Qevora Studio Admin</p>
     </footer>
 
-                                                        <script src="js/i18n/all.js?v=20260616h"></script>
-<script src="js/cms-manager.js?v=20260616g"></script>
-    <script src="js/language.js?v=20260616g"></script>
-    <script src="js/brands-config.js?v=20260616g"></script>
-    <script src="js/data-manager.js?v=20260616g"></script>
-    <script src="js/translator.js?v=20260616g"></script>
-    <script src="js/api.js?v=20260616g"></script>
-    <script src="js/auth.js?v=20260616g"></script>
-    <script src="js/admin.js?v=20260616g"></script>
+    <script src="js/i18n/zh.js?v=20260616"></script>
+    <script src="js/i18n/en.js?v=20260616"></script>
+    <script src="js/i18n/ko.js?v=20260616"></script>
+    <script src="js/i18n/ja.js?v=20260616"></script>
+    <script src="js/i18n/fr.js?v=20260616"></script>
+    <script src="js/i18n/es.js?v=20260616"></script>
+    <script src="js/i18n/ar.js?v=20260616"></script>
+    <script src="js/i18n/ru.js?v=20260616"></script>
+    <script src="js/i18n/de.js?v=20260616"></script>
+    <script src="js/i18n/pt.js?v=20260616"></script>
+    <script src="js/i18n/it.js?v=20260616"></script>
+    <script src="js/i18n/th.js?v=20260616"></script>
+    <script src="js/i18n/vi.js?v=20260616"></script>
+    <script src="js/cms-manager.js?v=20260616"></script>
+    <script src="js/language.js?v=20260616"></script>
+    <script src="js/brands-config.js?v=20260616"></script>
+    <script src="js/data-manager.js?v=20260616"></script>
+    <script src="js/translator.js?v=20260616"></script>
+    <script src="js/api.js?v=20260616"></script>
+    <script src="js/auth.js?v=20260616"></script>
+    <script src="js/admin.js?v=20260616"></script>
 </body>
 </html>

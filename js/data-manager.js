@@ -78,13 +78,14 @@ const DataManager = {
       name: productData.name,
       price: productData.price,
       image: productData.image,
+      images: productData.images || [],
       description: productData.description,
-      specs: productData.specs,
       color: productData.color,
       size: productData.size,
       category: productData.category,
       featured: productData.featured || false,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
     allProducts[brandSlug].products.push(newProduct);
