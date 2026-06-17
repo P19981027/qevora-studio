@@ -779,6 +779,106 @@ body {
 .notification.success { background: var(--success-light); color: var(--success); }
 .notification.error { background: var(--danger-light); color: var(--danger); }
 
+/* ===== Image Viewer ===== */
+.iv-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.iv-overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.iv-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.iv-image-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.iv-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.iv-close:hover { background: rgba(255, 255, 255, 0.25); }
+
+.iv-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1.6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.iv-arrow:hover { background: rgba(255, 255, 255, 0.22); }
+
+.iv-arrow-prev { left: 16px; }
+.iv-arrow-next { right: 16px; }
+
+.iv-counter {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* Zoom-in cursor for clickable images */
+.card-image img,
+.image-preview {
+    cursor: zoom-in;
+}
+
 /* RTL */
 [dir="rtl"] .admin-nav-container { flex-direction: row-reverse; }
 [dir="rtl"] .admin-nav-right { flex-direction: row-reverse; }

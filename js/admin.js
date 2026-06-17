@@ -1023,7 +1023,7 @@ const AdminApp = {
             const displayName = DataManager.getLocalizedName(product, Language.currentLang);
 
             return `
-                <div class="admin-product-card">
+                <div class="admin-product-card" data-product-id="${product.id}">
                     <div class="card-image">
                         <img src="${product.image || 'https://via.placeholder.com/300x200/f5f5f5/cccccc?text=No+Image'}" alt="${displayName}" loading="lazy">
                     </div>

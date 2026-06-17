@@ -517,5 +517,37 @@
     <script src="js/api.js?v=20260616"></script>
     <script src="js/auth.js?v=20260616"></script>
     <script src="js/admin.js?v=20260616"></script>
+    <script src="js/image-viewer.js?v=20260616"></script>
+    <script>
+    // Image viewer click handlers
+    (function () {
+        // Product card images — delegated click on products grid
+        document.getElementById('productsGrid').addEventListener('click', function (e) {
+            var img = e.target.closest('.card-image img');
+            if (!img) return;
+            var card = e.target.closest('.admin-product-card');
+            if (!card) return;
+            var pid = card.getAttribute('data-product-id');
+            if (!pid) return;
+            var product = (AdminApp.data.products || []).find(function (p) { return p.id === pid; });
+            if (!product) return;
+            var imgList = (product.images && product.images.length)
+                ? product.images
+                : (product.image ? [product.image] : []);
+            var startIdx = product.image ? imgList.indexOf(product.image) : 0;
+            if (startIdx < 0) startIdx = 0;
+            ImageViewer.open(imgList, startIdx);
+        });
+
+        // Edit form image preview click
+        var previewImg = document.getElementById('imagePreview');
+        if (previewImg) {
+            previewImg.addEventListener('click', function () {
+                var src = this.src;
+                if (src) ImageViewer.open([src], 0);
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
