@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (!origin) return next();
-  const localhost = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const localhost = /^http://(localhost|127.0.0.1)(:d+)?$/.test(origin);
   if (config.allowedOrigins.includes(origin) || (process.env.NODE_ENV !== 'production' && localhost)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Vary', 'Origin');
@@ -56,6 +56,7 @@ app.use('/js', express.static(path.join(root, 'js'), {
 }));
 app.use('/images', express.static(path.join(root, 'images')));
 app.use('/pages', express.static(path.join(root, 'pages')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/data/products.json', (req, res) => res.sendFile(path.join(root, 'data', 'products.json')));
 
 const htmlPages = ['index.html', 'cart.html', 'checkout.html', 'login.html', 'register.html', 'orders.html', 'payment.html', 'admin.html'];
