@@ -5,3 +5,8 @@ pages_build_output_dir = "."
 
 # Exclude server-side code from deployment
 # These are handled via .cfpagesignore
+
+# KV namespace for uploads
+[[kv_namespaces]]
+binding = "UPLOADS_KV"
+id = "55f4ef7c1b2c434d89cb9d87d8d222fd"
