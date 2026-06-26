@@ -637,16 +637,40 @@ const AdminApp = {
         }
     },
 
-    handleImageFile(file) {
+    ﻿async handleImageFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const base64 = e.target.result;
-            document.getElementById('productImage').value = base64;
-            this.showImagePreview(base64);
-        };
-        reader.readAsDataURL(file);
-    },
+        const preview = document.getElementById('imagePreview');
+        const hint = document.getElementById('imageUploadHint');
+        if (preview) preview.style.opacity = '0.5';
+        if (hint) hint.innerHTML = '<span>上传中...</span>';
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+            const token = localStorage.getItem('auth_token') || '';
+            const resp = await fetch('/api/admin/upload', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token },
+                body: formData
+            });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.error || '上传失败');
+            }
+            const result = await resp.json();
+            const imageUrl = window.location.origin + result.url;
+            document.getElementById('productImage').value = imageUrl;
+            this.showImagePreview(imageUrl);
+            if (preview) preview.style.opacity = '1';
+            if (hint) hint.innerHTML = '<span>点击或拖拽上传图片</span><span class="image-upload-sub">支持 JPG / PNG / WebP</span>';
+        } catch (err) {
+            alert('图片上传失败: ' + err.message);
+            if (preview) preview.style.opacity = '1';
+            if (hint) hint.innerHTML = '<span>点击或拖拽上传图片</span><span class="image-upload-sub">支持 JPG / PNG / WebP</span>';
+            const fileInput = document.getElementById('productImageFile');
+            if (fileInput) fileInput.value = '';
+        }
+    }
+,
 
     loadImageFromUrl() {
         const url = document.getElementById('productImage').value.trim();
