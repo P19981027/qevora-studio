@@ -1,26 +1,2 @@
-// Collection configuration for Qevora Studio
-const BrandsConfig = {
-  brands: [
-    { slug: 'atelier', name: '原创手作系列', englishName: 'HANDMADE C', description: 'Qevora Studio 的原创手工包系列，强调原创廓形、实用容量与可长期使用的质感。', products: [] },
-    { slug: 'crossbody', name: 'Miu Miu 手工系列', englishName: 'HANDMADE M', description: 'Miu Miu 手工精制系列，复古廓形与少女感元素碰撞，涵盖 Wander 手袋、保龄球包、托特包等经典包型。', products: [] },
-    { slug: 'woven', name: 'Gucci 系列', englishName: 'HANDMADE G', description: '意大利经典奢华，Horsebit 1955、Marmont、Ophidia、Dionysus 等标志性包型。', products: [] },
-    { slug: 'dior', name: 'Dior 系列', englishName: 'HANDMADE D', description: '经典廓形与现代花漾元素结合的优雅系列。', products: [] },
-    { slug: 'fendi', name: 'Fendi 系列', englishName: 'HANDMADE F', description: '意大利经典奢华，Peekaboo/Baguette/First 等标志性包型。', products: [] },
-    { slug: 'hermes', name: 'Hermès 系列', englishName: 'HANDMADE H', description: '敬请期待', products: [] },
-    { slug: 'bottega-veneta', name: 'Bottega Veneta 系列', englishName: 'HANDMADE B', description: '敬请期待', products: [] },
-    { slug: 'balenciaga', name: 'Balenciaga 系列', englishName: 'HANDMADE A', description: '敬请期待', products: [] },
-    { slug: 'evening', name: '晚宴小包系列', englishName: 'HANDMADE E', description: '敬请期待', products: [] },
-    { slug: 'custom', name: '定制服务系列', englishName: 'HANDMADE S', description: '敬请期待', products: [] }
-  ],
-
-    { slug: "handmade-l", name: "LV 手工系列", englishName: "HANDMADE LV", description: "Louis Vuitton 手工精制系列，经典 Monogram 与时尚廓形融合。", products: [] },
-    { slug: "handmade-mc", name: "MCM 手工系列", englishName: "HANDMADE MCM", description: "MCM 经典 Visetos 系列，干邑色与铆钉元素的完美结合。", products: [] },
-    { slug: "handmade-bb", name: "巴宝莉 手工系列", englishName: "HANDMADE BB", description: "Burberry 经典格纹系列，英伦风尚与精湛工艺相融。", products: [] },
-    { slug: "handmade-bl", name: "巴黎世家 手工系列", englishName: "HANDMADE BL", description: "Balenciaga 先锋设计系列，Hourglass 沙漏包等标志性包型。", products: [] },
-    { slug: "handmade-b", name: "宝格丽 手工系列", englishName: "HANDMADE B", description: "Bvlgari 奢华蛇头系列，珐琅工艺与意大利珠宝美学。", products: [] }  getAllBrands() { return this.brands; },
-  getBrandBySlug(slug) { return this.brands.find(b => b.slug === slug) || null; },
-  getBrandName(slug) { const brand = this.getBrandBySlug(slug); return brand ? brand.name : slug; },
-  getBrandOptions() { return this.brands.map(b => ({ value: b.slug, text: `${b.name} ${b.englishName}` })); },
-  getBrandOptionsHTML() { return this.brands.map(b => `<option value="${b.slug}">${b.englishName}</option>`).join(''); },
-  getBrandDescription(slug) { const brand = this.getBrandBySlug(slug); return brand ? brand.description : ''; }
-};
+// Collection configuration for Qevora Studioconst BrandsConfig = {  brands: [    { slug: 'atelier', name: '原创手作系列', englishName: 'HANDMADE C', description: 'Qevora Studio 的原创手工包系列，强调原创廓形、实用容量与可长期使用的质感。', products: [] },    { slug: 'crossbody', name: 'Miu Miu 手工系列', englishName: 'HANDMADE M', description: 'Miu Miu 手工精制系列，复古廓形与少女感元素碰撞，涵盖 Wander 手袋、保龄球包、托特包等经典包型。', products: [] },    { slug: 'woven', name: 'Gucci 系列', englishName: 'HANDMADE G', description: '意大利经典奢华，Horsebit 1955、Marmont、Ophidia、Dionysus 等标志性包型。', products: [] },    { slug: 'dior', name: 'Dior 系列', englishName: 'HANDMADE D', description: '经典廓形与现代花漾元素结合的优雅系列。', products: [] },    { slug: 'fendi', name: 'Fendi 系列', englishName: 'HANDMADE F', description: '意大利经典奢华，Peekaboo/Baguette/First 等标志性包型。', products: [] },    { slug: 'hermes', name: 'Hermès 系列', englishName: 'HANDMADE H', description: '敬请期待', products: [] },    { slug: 'bottega-veneta', name: 'Bottega Veneta 系列', englishName: 'HANDMADE B', description: '敬请期待', products: [] },    { slug: 'balenciaga', name: 'Balenciaga 系列', englishName: 'HANDMADE A', description: '敬请期待', products: [] },    { slug: 'evening', name: '晚宴小包系列', englishName: 'HANDMADE E', description: '敬请期待', products: [] },    { slug: 'custom', name: '定制服务系列', englishName: 'HANDMADE S', description: '敬请期待', products: [] },
+     slug: "handmade-l", name: "LV 手工系列", englishName: "HANDMADE LV", description: "Louis Vuitton 手工精制系列，经典 Monogram 与时尚廓形融合。", products: [] },    { slug: "handmade-mc", name: "MCM 手工系列", englishName: "HANDMADE MCM", description: "MCM 经典 Visetos 系列，干邑色与铆钉元素的完美结合。", products: [] },    { slug: "handmade-bb", name: "巴宝莉 手工系列", englishName: "HANDMADE BB", description: "Burberry 经典格纹系列，英伦风尚与精湛工艺相融。", products: [] },    { slug: "handmade-bl", name: "巴黎世家 手工系列", englishName: "HANDMADE BL", description: "Balenciaga 先锋设计系列，Hourglass 沙漏包等标志性包型。", products: [] },    { slug: "handmade-b", name: "宝格丽 手工系列", englishName: "HANDMADE B", description: "Bvlgari 奢华蛇头系列，珐琅工艺与意大利珠宝美学。", products: [] }  ],  getAllBrands() { return this.brands; },  getBrandBySlug(slug) { return this.brands.find(b => b.slug === slug) || null; },  getBrandName(slug) { const brand = this.getBrandBySlug(slug); return brand ? brand.name : slug; },  getBrandOptions() { return this.brands.map(b => ({ value: b.slug, text: `${b.name} ${b.englishName}` })); },  getBrandOptionsHTML() { return this.brands.map(b => `<option value="${b.slug}">${b.englishName}</option>`).join(''); },  getBrandDescription(slug) { const brand = this.getBrandBySlug(slug); return brand ? brand.description : ''; }};
