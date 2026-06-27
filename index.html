@@ -31,7 +31,6 @@
         </div>
     </nav>
 
-
     <section class="home-hero">
         <div class="home-hero-bg"></div>
         <div class="home-hero-inner">
@@ -45,7 +44,6 @@
         </div>
     </section>
 
-
     <section class="brands-section" id="brands">
         <div class="brands-header">
             <div class="vintage-divider">※</div>
@@ -55,7 +53,6 @@
         </div>
         <div class="brands-grid" id="brandsGrid"></div>
     </section>
-
 
     <section class="quality-section">
         <div class="quality-content">
@@ -68,7 +65,6 @@
             <div class="quality-grid" id="qualityGrid"></div>
         </div>
     </section>
-
 
     <section class="featured-section">
         <div class="featured-content">
@@ -84,7 +80,6 @@
             </div>
         </div>
     </section>
-
 
     <section class="contact-section">
         <div class="contact-content">
@@ -108,3 +103,107 @@
                     <p class="contact-value" data-i18n="contact.insValue">@QevoraStudio</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-watermark"></div>
+        <div class="footer-content">
+            <img src="images/logo.png" alt="" class="footer-logo-img-main">
+            <p class="footer-logo" data-i18n="footer.logo">Qevora Studio</p>
+            <hr class="vintage-rule" style="background: var(--gold); width: 30px; margin-bottom: 20px;">
+            <p class="footer-text" data-i18n="footer.text">原创设计手作手袋 · 精工细作 · 真实展示</p>
+            <p class="footer-note" data-i18n="footer.note">仅供展示 · 请尊重知识产权</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            CMSManager.applySettings();
+
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) langSelect.innerHTML = Language.getLanguageOptionsHTML();
+
+            const brandsGrid = document.getElementById('brandsGrid');
+            if (brandsGrid) {
+                const brands = BrandsConfig.getAllBrands();
+                brandsGrid.innerHTML = brands.map(brand => {
+                    const brandData = CMSManager.getBrandData(brand.slug) || {};
+                    const bgImage = brandData.homeBgImage || '';
+                    const hasBg = bgImage ? 'has-bg' : '';
+                    const bgStyle = bgImage ? `background-image:url('${bgImage}')` : '';
+                    return `
+                    <a href="pages/${brand.slug}/index.html" class="brand-card ${brand.slug} ${hasBg}" style="${bgStyle}">
+                        <div class="brand-name">${Language.t('brands.' + brand.slug)}</div>
+                        <div class="brand-subtitle">${brand.englishName}</div>
+                    </a>
+                `;
+                }).join('');
+            }
+
+            const qualityGrid = document.getElementById('qualityGrid');
+            if (qualityGrid) {
+                const features = CMSManager.getQualityFeatures();
+                if (features && features.length > 0) {
+                    qualityGrid.innerHTML = features.map((f, i) => `
+                        <div class="quality-card">
+                            <div class="quality-icon" data-i18n="quality.features.${i}.icon">${f.icon || ''}</div>
+                            <h3 data-i18n="quality.features.${i}.title">${f.title?.[Language.currentLang] || Language.t('quality.features.' + i + '.title')}</h3>
+                            <p data-i18n="quality.features.${i}.desc">${f.desc?.[Language.currentLang] || Language.t('quality.features.' + i + '.desc')}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    const transObj = Language.translations[Language.currentLang];
+                    if (transObj && transObj.quality && transObj.quality.features) {
+                        qualityGrid.innerHTML = transObj.quality.features.map((f, i) => `
+                            <div class="quality-card">
+                                <div class="quality-icon" data-i18n="quality.features.${i}.icon">${f.icon}</div>
+                                <h3 data-i18n="quality.features.${i}.title">${f.title}</h3>
+                                <p data-i18n="quality.features.${i}.desc">${f.desc}</p>
+                            </div>
+                        `).join('');
+                    }
+                }
+            }
+
+            // Load featured products
+            const featuredGrid = document.getElementById('featuredGrid');
+            if (featuredGrid) {
+                fetch('data/products.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        const atelierProds = data.atelier && data.atelier.products ? data.atelier.products : [];
+                        const featured = atelierProds.slice(0, 8);
+                        const lang = Language.currentLang;
+                        featuredGrid.innerHTML = featured.map(p => {
+                            const imgSrc = (p.images && p.images.length > 0)
+                                ? (p.images[0].startsWith('http') ? p.images[0] : Utils.resolveImage('/images/' + p.images[0]))
+                                : (p.image ? (p.image.startsWith('http') ? p.image : Utils.resolveImage('/images/' + p.image)) : '');
+                            const name = (typeof p.name === 'object' && p.name) ? (p.name[lang] || p.name['zh'] || '') : (p.name || '');
+                            const price = p.price || '询价';
+                            const imgCount = (p.images && p.images.length > 1) ? `<span class="card-img-count">${p.images.length} 张</span>` : '';
+                            return `
+                            <a href="pages/atelier/index.html" class="featured-card">
+                                <div class="featured-img" style="${imgSrc ? `background-image:url('${Utils.escapeHtml(imgSrc)}')` : ''}">${imgCount}</div>
+                                <div class="featured-info">
+                                    <h3 class="featured-name">${Utils.escapeHtml(name)}</h3>
+                                    <p class="featured-price">${Utils.escapeHtml(price)}</p>
+                                </div>
+                            </a>
+                            `;
+                        }).join('');
+                    })
+                    .catch(() => {
+                        featuredGrid.innerHTML = '<p style="text-align:center;color:var(--mid-gray);padding:40px;">商品加载中...</p>';
+                    });
+            }
+        });
+    </script>
+    <script src="js/script.js?v=20260616g"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Cart !== 'undefined') Cart.renderBadgeFromServer();
+        });
+    </script>
+</body>
+</html>
