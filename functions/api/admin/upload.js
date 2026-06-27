@@ -12,7 +12,8 @@ export async function onRequestPost(context) {
     const buf = await file.arrayBuffer();
     if (buf.byteLength > 5242880) return json({success:false,message:"图片不能超过5MB"},400);
     const ext = file.name.split(".").pop() || "png";
-    const key = "uploads/" + Date.now() + "-" + Math.random().toString(36).substring(2,8) + "." + ext;
+    const customKey = formData.get("key");
+    const key = customKey ? ("uploads/" + customKey) : ("uploads/" + Date.now() + "-" + Math.random().toString(36).substring(2,8) + "." + ext);
     const bytes = new Uint8Array(buf);
     let b64 = "";
     for (let i=0;i<bytes.length;i++) b64 += String.fromCharCode(bytes[i]);
